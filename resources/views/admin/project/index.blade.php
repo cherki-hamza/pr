@@ -51,7 +51,7 @@
                                 <div class="row">
 
                                     {{-- start project --}}
-                                    @foreach ($projects as $project)
+                                    @foreach ($all_projects as $project)
                                         <div class="col-md-4">
                                             <div class="card card-primary">
                                                 <ul class="list-group">
@@ -267,7 +267,7 @@
                     },
                     success: function(data) {
                         var data = data.data;
-                        console.console.log(data);
+                        //console.console.log(data);
                     },
                 });
             });

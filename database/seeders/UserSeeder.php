@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Profile;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -41,5 +42,23 @@ class UserSeeder extends Seeder
             'picture' => $client->GetGravatar(),
         ]);
         $client->assignRole('client');
+
+
+        // create 3 project
+        $project1 = Project::create([
+            'user_id'=> $superadmin->id,
+            'project_name'=> 'Google',
+            'project_url'=> 'https://google.com',
+        ]);
+        $project2 = Project::create([
+            'user_id'=> $superadmin->id,
+            'project_name'=> 'Amazone',
+            'project_url'=> 'https://amazone.com',
+        ]);
+        $project3 = Project::create([
+            'user_id'=> $superadmin->id,
+            'project_name'=> 'Github',
+            'project_url'=> 'https://github.com',
+        ]);
     }
 }

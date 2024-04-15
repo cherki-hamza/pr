@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('site_name')->nullable();
             $table->string('site_url')->nullable();
-            $table->json('site_category')->nullable();
+            $table->string('site_category')->nullable();
             $table->string('site_monthly_traffic')->nullable();
             $table->string('site_domain_rating')->nullable();
             $table->string('site_domain_authority')->nullable();

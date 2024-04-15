@@ -12,6 +12,9 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
+            <span class="btn btn-warning">Balance: $1000</span>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" id="btntheme" role="button">
                 <i id="icontheme" class="fas fa-sun"></i>
             </a>

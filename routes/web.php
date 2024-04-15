@@ -1,23 +1,13 @@
 <?php
 
-use App\Models\Mobile;
-use SignalWire\Rest\Client;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use App\Services\HttpClientService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ModuleController;
-use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\FileManagerController;
 use App\Http\Controllers\Backend\SiteController;
-use App\Http\Controllers\Backend\GroupController;
-use App\Http\Controllers\Backend\MobileController;
-use App\Http\Controllers\Backend\SocialController;
 use App\Http\Controllers\Backend\BillingController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ProjectController;
@@ -105,5 +95,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     // site publishers routes
     Route::get('publishers',[SiteController::class,'index'])->name('publishers');
+    Route::get('publishers/favorite/{site_id}',[SiteController::class,'favorite'])->name('favorite');
+    Route::get('publishers/favorite_publishers',[SiteController::class,'favorite_publishers'])->name('favorite_publishers');
 
 });

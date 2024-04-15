@@ -18,8 +18,8 @@ class ProjectController extends Controller
     public function index()
     {
         $title = 'Projects';
-        $projects = Project::paginate(9);
-        return view('admin.project.index',compact('title','projects'));
+        $all_projects = Project::paginate(9);
+        return view('admin.project.index',compact('title','all_projects'));
     }
 
     // method for store and create new project
