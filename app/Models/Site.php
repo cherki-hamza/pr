@@ -4,10 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use ChristianKuri\LaravelFavorite\Traits\Favoriteable;
 
 class Site extends Model
 {
-    use HasFactory;
+    use HasFactory ,Favoriteable;
+
+    // the site hasMany Orders
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
 
     public function publishers()
     {

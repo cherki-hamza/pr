@@ -179,6 +179,8 @@ return [
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
+        ChristianKuri\LaravelFavorite\FavoriteServiceProvider::class,
+        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 
         /*
          * Application Service Providers...

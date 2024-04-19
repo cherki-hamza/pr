@@ -13,10 +13,11 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
+                        <h4><strong>Project: <span style="color: goldenrod"> {{  \App\Models\Project::where('id',request()->project_id)->first()->project_name ?? '-'  }} </span> </strong></h4>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard </a></li>
                             <li class="breadcrumb-item active">{{ $title ?? '' }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -34,7 +35,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    Found: <span class="text-danger">{{$sites_count}} </span> Websites
+                                    Found: <span class="text-danger">{{$sites_count}} </span> Websites - {{$project_id}}
                                 </h3>
                             </div>
                             <!-- /.card-header -->
@@ -428,7 +429,7 @@
                                                     <strong class=" font-weight-bold">{{$site->site_domain_rating}}</strong>
                                                 </td>
 
-                                                <td class="text-center align-middle"><span class="badge badge-primary mr-1">M</span>DA <strong class=" font-weight-bold">{{$site->site_domain_authority}}</strong>
+                                                <td class="text-center align-middle"><span class="badge badge-primary mr-1">M</span>DA <strong class="font-weight-bold">{{$site->site_domain_authority}}</strong>
                                                     {{-- <br>Spam Score <strong class="text-facebook font-weight-bold">1%</strong> --}}
                                                 </td>
 
@@ -439,23 +440,23 @@
 
                                                <td class="">
                                                   <div class="btn-group btn-group-sm btn-block">
-                                                    <span style="width: 100px;" class="btn btn-success">Buy Again</span>
-                                                    <span style="width: 100px;" class="btn btn-primary">$ {{$site->site_price}}</span>
+                                                    <a href="{{route('order_index', ['project_id'=> request()->project_id , 'site_id' => $site->id ])}}" style="width: 100px;" class="btn btn-success">Buy Again</a>
+                                                    <a href="{{route('order_index', ['project_id'=> request()->project_id , 'site_id' => $site->id ])}}" style="width: 100px;" class="btn btn-primary">$ {{$site->site_price}}</a>
                                                   </div>
 
                                                   <div class="btn-group">
                                                     <div class="d-flex justify-content-between">
+
                                                         <div class="card my-2 mx-2">
-                                                            <form action="{{route('favorite' , ['site_id'=> $site->id])}}" method="GET">
-                                                                @csrf
+                                                            {{-- <form action="{{route('favorite')}}" method="POST">
+                                                                @csrf --}}
                                                                 <input type="hidden" name="site_id" value="{{$site->id}}">
-                                                              <button type="submit"  class="btn btn-white"><i style="color: #f5803e" class="fa fa-heart"></i></button>
-                                                            </form>
-                                                            {{-- <form action="https://icopify.co/saves" id="wishlist-f-1460" class="save-form" method="post">
-                                                                <input type="hidden" name="_token" value="Nb1bqw31WFqv95ceCwt5PyJAOTSJnVPvyr7Y6AhC">                                                        <input type="hidden" name="website_id" value="1460">
-                                                                   <button type="submit" class="btn btn-warning text-sm btn-sm btn-block mt-2 save-button" title="Add To Your Favourite"><svg class="svg-inline--fa fa-heart fa-w-16 ml-1 mr-1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="heart" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"></path></svg><!-- <i class="fas fa-heart ml-1 mr-1"></i> Font Awesome fontawesome.com --></button>
-                                                            </form> --}}
+                                                               {{--  <button type="submit" class="btn btn-white"><i style="color: #f5803e" class="fa fa-heart"></i></button> --}}
+                                                                <a href="{{route('favorite',  ['site_id'=>$site->id])}}" class="btn btn-white"><i style="color: {{ ($site->favoritesCount == 1) ? 'red' : '#f5803e' }}" class="fa fa-heart"></i></a>
+                                                                {{-- <button type="submit"  class="btn btn-white"/><i style="color: #f5803e" class="fa fa-heart"></i> --}}
+                                                           {{-- </form> --}}
                                                         </div>
+
 
                                                         <div style="float: center" class="card my-2 mx-2 ml-4 mr-4">
                                                             <form action="#" method="post">

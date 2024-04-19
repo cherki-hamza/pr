@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\BalanceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -9,6 +10,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Backend\SiteController;
 use App\Http\Controllers\Backend\BillingController;
+use App\Http\Controllers\Backend\OrderController;
+use App\Http\Controllers\Backend\Payment\PaypalController;
+use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ProjectController;
 
@@ -56,7 +60,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::delete('user', 'destroy')->middleware(['permission:delete user'])->name('user.destroy');
     });
 
-    // Securite routes
+    // Security routes
     Route::get('/security' , [UserController::class,'security'])->name('security');
     Route::put('/security/update_email' , [UserController::class,'update_email'])->name('update_email');
     Route::put('/security/update_mobile' , [UserController::class,'update_mobile'])->name('update_mobile');
@@ -85,17 +89,64 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::put('update_project' , [ProjectController::class,'update_project'])->name('update_project');
     Route::delete('destroy_project' , [ProjectController::class,'destroy_project'])->name('destroy_project');
     Route::resource('projects' , ProjectController::class);
+    Route::get('myprojects/{project_id}' , [SiteController::class,'site_index'])->name('site_index');
 
     // route for Billings
     Route::resource('billings' , BillingController::class);
 
     // route for Profile
+
+    // routes for orders
+    Route::get('project/{project_id?}/my_orders/not_started' , [OrderController::class,'not_started'])->name('not_started');
+    Route::get('project/{project_id?}/my_orders/in_progress' , [OrderController::class,'in_progress'])->name('in_progress');
+    Route::get('project/{project_id?}/my_orders/pending_approval' , [OrderController::class,'pending_approval'])->name('pending_approval');
+    Route::get('project/{project_id?}/my_orders/improvement' , [OrderController::class,'improvement'])->name('improvement');
+    Route::get('project/{project_id?}/my_orders/completed' , [OrderController::class,'completed'])->name('completed');
+    Route::get('project/{project_id?}/my_orders/rejected' , [OrderController::class,'rejected'])->name('rejected');
+    Route::resource('orders' , OrderController::class);
+
+    // Routes for show the  tasks
+    Route::get('project/{project_id?}/task/{task_id?}/show_task' , [OrderController::class,'show_task'])->name('show_task');
+
+    // Route for posts
+    // route for create new post by task an project
+    Route::get('project/{project_id?}/task/{task_id?}/post/create' , [PostController::class,'index'])->name('create_post');
+    // route for store new post and if its in_progress or client_approval
+    Route::post('project/{project_id?}/task/{task_id?}/post/store_post' , [PostController::class,'store_post'])->name('store_post');
+    // route for update the post
+    Route::post('project/{project_id?}/task/{task_id?}/post/{post_id?}/update_post' , [PostController::class,'update_post'])->name('update_post');
+    // route for show the client post
+    Route::get('project/{project_id?}/task/{task_id?}/show_client_post' , [PostController::class,'show_client_post'])->name('show_client_post');
+
+
+    Route::post('orders/store_cp/project/{project_id}/site/{site_id}' , [OrderController::class,'store_cp'])->name('store_cp');
+    Route::post('orders/store_ccp' , [OrderController::class,'store_ccp'])->name('store_ccp');
+
+    Route::get("order_post_from_publisher/project/{project_id}/site/{site_id}", [OrderController::class,'order_index'])->name('order_index');
+
+    // route for Profile
     Route::resource('profiles' , ProfileController::class);
+
+    Route::resource('billings' , BillingController::class);
 
 
     // site publishers routes
     Route::get('publishers',[SiteController::class,'index'])->name('publishers');
-    Route::get('publishers/favorite/{site_id}',[SiteController::class,'favorite'])->name('favorite');
-    Route::get('publishers/favorite_publishers',[SiteController::class,'favorite_publishers'])->name('favorite_publishers');
+    Route::post('/posts/{post}/favorite', 'FavoriteController@addToFavorites')->name('posts.favorite');
 
+    Route::get('/favorite_site/{site_id}',[SiteController::class,'favorite'])->name('favorite');
+
+    Route::get('publishers/{project_id}/favorite_publishers',[SiteController::class,'favorite_publishers'])->name('favorite_publishers');
+
+
+    // payements Gatways ***********************************************************************
+
+    //Balance page
+    Route::get('/balance' , [BalanceController::class , 'balance'])->name('balance');
+    Route::get('/add_funds' , [BalanceController::class , 'add_funds'])->name('add_funds');
+
+    // Paypal
+    Route::get('/payment' , [PaypalController::class , 'payment'])->name('payment');
+    Route::get('/cancel' , [PaypalController::class , 'cancel'])->name('cancel');
+    Route::get('/payment/success' , [PaypalController::class , 'success'])->name('success');
 });

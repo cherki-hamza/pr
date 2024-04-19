@@ -12,10 +12,9 @@ class BillingController extends Controller
     public function index()
     {
         $title = 'Billing';
-        $user_billing_count = Billing::where('user_id', auth()->user()->id)->get();
         $user_billing = Billing::where('user_id', auth()->user()->id)->first();
 
-        return view('admin.Billing.index',compact('title','user_billing','user_billing_count'));
+        return view('admin.Billing.index',compact('title','user_billing'));
     }
 
 
@@ -27,12 +26,32 @@ class BillingController extends Controller
 
     public function store(Request $request)
     {
+
+        //return $request->all();
+
+        $request->validate([
+            'name' => 'required',
+            'company_name' => 'required',
+            'country' => 'required',
+            'city' => 'required',
+            'address' => 'required',
+            'state' => 'required',
+            'postal_code' => 'required',
+        ]);
+
         Billing::create([
             'user_id' => auth()->user()->id,
+            'email'=> auth()->user()->email,
             'name'=> $request->name,
-            'email'=> $request->email,
-            'mobile'=> $request->mobile,
+            'company_name'=> $request->company_name,
+            'country'=> $request->country,
+            'state'=> $request->state,
             'address'=> $request->address,
+            'city'=> $request->city,
+            'postal_code'=> $request->postal_code,
+            'billing_confirmation'=> ($request->billing_confirmation == 'on') ? 1 : '',
+            'vat_number'=> $request->vat_number,
+            'payment_method'=> $request->payment_method,
         ]);
 
 

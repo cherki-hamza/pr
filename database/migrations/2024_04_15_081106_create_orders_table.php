@@ -13,19 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
             $table->integer('project_id');
             $table->integer('site_id');
-            $table->integer('order_id');
-            $table->integer('status')->default(0);
-            $table->text('task_editor_data')->nullable();
-            $table->enum('task_type',['c_p','c_c_p'])->nullable();
-            $table->string('task_target_url')->nullable();
-            $table->string('task_anchor_text');
-            $table->text('task_special_requirement')->nullable();
-            $table->text('task_post_placement_url')->nullable();
+            $table->integer('price');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }
@@ -37,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('orders');
     }
 };

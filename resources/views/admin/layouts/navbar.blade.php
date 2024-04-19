@@ -12,7 +12,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <span class="btn btn-warning">Balance: $1000</span>
+          <a href="{{ route('balance') }}">  <span class="btn btn-warning">Balance: $1000</span> </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="btntheme" role="button">

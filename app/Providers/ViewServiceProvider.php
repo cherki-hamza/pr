@@ -24,9 +24,9 @@ class ViewServiceProvider extends ServiceProvider
 
         //$projects = Project::where('user_id' , auth()->id())->where('status' , 1)->get();
        // if($projects){
-            //view::share('projects', $projects);
+            //view::share('projects', $projects);  // where('user_id' , auth()->id())->
             View::composer('*', function ($view) {
-                $view->with('projects', Project::where('user_id' , auth()->id())->where('status' , 1)->get());
+                $view->with('projects', Project::where('status' , 1)->get());
             });
 
            /*  View::composer('*', function ($view) {

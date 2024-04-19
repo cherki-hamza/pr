@@ -58,7 +58,22 @@
                                                     @if ($i->name == 'superadmin' || count($i->permissions) == count($permission))
                                                         All permission
                                                     @else
-                                                        {{ $i->permissions->implode('name', '|') }}
+
+                                                        {{-- {{ "<span>".$i->permissions->implode('</span>''..'<span>', $values)."</span>"; }} --}}
+                                                        @php
+                                                        $value = $i->permissions->implode('name', '|')
+                                                        @endphp
+                                                        {{-- {{ str_replace('_',' ',$i->permissions->implode('name', '-')) }} --}}
+
+                                                        @php
+                                                            $array = explode('-', str_replace('_',' ',$i->permissions->implode('name', '-')));
+                                                        @endphp
+                                                                           {{-- <span class="badge badge-primary">   </span> --}}
+
+                                                        {{ $i->permissions->implode('name', '  |  ') }}
+
+
+
                                                     @endif
                                                 </td>
                                                 <td>{{ $i->updated_at }}</td>

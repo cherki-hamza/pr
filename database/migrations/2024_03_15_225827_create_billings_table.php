@@ -18,9 +18,15 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('name')->nullable();
             $table->string('email')->nullable();
-            $table->string('mobile')->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
             $table->string('address')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('vat_number')->nullable();
             $table->string('payment_method')->nullable();
+            $table->integer('billing_confirmation')->nullable();
             $table->timestamps();
         });
     }
