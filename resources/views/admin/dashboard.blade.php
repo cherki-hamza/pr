@@ -23,7 +23,7 @@
         <section class="content">
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
-                <div class="row">
+                <div class="row d-flex justify-content-center">
 
                     @can('read user')
                     <div class="col-lg-4 col-6">
@@ -39,11 +39,12 @@
                         <a href="{{ route('user.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
-                    @else
+                    @endcan
+                   {{--  @else
                      <div class="card">
                         <h3 class="text-danger">hello there you are just a new client you dont have permission to access to the System, Please contact the OTT voip Administration for activate your account.</h1>
                      </div>
-                    @endcan
+                     --}}
                     <!-- ./col -->
 
                     @can('read role')
@@ -80,6 +81,23 @@
                     </div>
                     @endcan
                     <!-- ./col -->
+
+                    {{-- start project statistiques --}}
+                    <div class="col-lg-8 col-8">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{ \App\Models\Project::where('user_id',auth()->id())->count() }}</h3>
+
+                            <p>Projects</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-clipboard-list mr-2"></i>
+                        </div>
+                        <a href="{{ route('projects.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    {{-- end projects statistiques --}}
 
                 </div>
 

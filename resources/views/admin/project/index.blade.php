@@ -27,13 +27,16 @@
         <!-- /.content-header -->
 
         <!-- Main content -->
-        <section class="content">
+        <section style="font-size: 18px;" class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            @can('create user')
+                            {{-- @can('create user') --}}
                                 <div class="card-header">
+
+                                    @include('admin.inc.alerts.alert')
+
                                     <h3 class="card-title">
 
                                         <a href="#" class="btn btn-sm btn-success" data-toggle="modal"
@@ -44,7 +47,7 @@
                                         --}}
                                     </h3>
                                 </div>
-                            @endcan
+                            {{-- @endcan --}}
                             <!-- /.card-header -->
                             <div class="card-body">
 
@@ -85,18 +88,35 @@
                                                         <div class="p-2"><i class="fa fa-clipboard-list mr-2"></i>Content Writing</div>
 
                                                         <div class="ml-auto p-2">
-                                                            <a href="#">
-                                                                <span class="badge badge-primary p-2" title="number of tasks not started">0</span>
+                                                            <a href="{{ route('client_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 0]) }}">
+                                                                <span class="badge badge-secondary p-2" title="number of tasks not started">
+                                                                    {{ \App\Models\Project::where('id',$project->id)->where('user_id', $project->user_id)->first()->tasks_not_started->count() }}
+                                                                </span>
                                                             </a>
-                                                            <a href="#"><span class="badge badge-secondary p-2" title="number of tasks in progress">0</span>
-                                                                </a>
-                                                            <span class="badge badge-info p-2"title="number of tasks witing approval">0</span>
+                                                            <a href="{{ route('client_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 1]) }}">
+                                                                <span class="badge badge-info p-2" title="number of tasks in progress">
+                                                                {{ \App\Models\Project::where('id',$project->id)->where('user_id', $project->user_id)->first()->tasks_in_progress->count() }}
+                                                            </span>
                                                             </a>
-                                                            <a href="#"><span class="badge badge-warning p-2" title="number of tasks in approvement">0</span>
+                                                            <a href="{{ route('client_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 2]) }}">
+                                                            <span class="badge badge-warning p-2"title="number of tasks witing approval">
+                                                                {{ \App\Models\Project::where('id',$project->id)->where('user_id', $project->user_id)->first()->tasks_pending_approval->count() }}
+                                                            </span>
                                                             </a>
-                                                            <a href="#"><span class="badge badge-success p-2" title="number of tasks completed">0</span>
+                                                            <a href="{{ route('client_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 3]) }}">
+                                                                <span class="badge badge-primary p-2" title="number of tasks in approvement">
+                                                                {{ \App\Models\Project::where('id',$project->id)->where('user_id', $project->user_id)->first()->tasks_improvement->count() }}
+                                                            </span>
                                                             </a>
-                                                            <a href="#"><span class="badge badge-danger p-2" title="number of tasks rejected">0</span>
+                                                            <a href="{{ route('client_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 5]) }}">
+                                                                <span class="badge badge-success p-2" title="number of tasks completed">
+                                                                {{ \App\Models\Project::where('id',$project->id)->where('user_id', $project->user_id)->first()->tasks_completed->count() }}
+                                                            </span>
+                                                            </a>
+                                                            <a href="{{ route('client_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 6]) }}">
+                                                                <span class="badge badge-danger p-2" title="number of tasks rejected">
+                                                                {{ \App\Models\Project::where('id',$project->id)->where('user_id', $project->user_id)->first()->tasks_rejected->count() }}
+                                                            </span>
                                                             </a>
                                                         </div>
 
@@ -104,7 +124,7 @@
                                                     {{-- end content writer --}}
 
                                                     {{-- start Guest posting --}}
-                                                    <li class="d-flex">
+                                                    {{-- <li class="d-flex">
                                                         <div class="p-2"><i class="fa fa-link mr-2"></i>Guest posting</div>
 
                                                         <div class="ml-auto p-2">
@@ -123,12 +143,12 @@
                                                             </a>
                                                         </div>
 
-                                                    </li>
+                                                    </li> --}}
                                                     {{-- end Guest posting --}}
 
 
                                                     {{-- start Digital PR & SEO --}}
-                                                    <li class="d-flex">
+                                                    {{-- <li class="d-flex">
                                                         <div class="p-2"><i class="fa fa-signal mr-2"></i>Digital PR & SEO</div>
 
                                                         <div class="ml-auto p-2">
@@ -147,11 +167,11 @@
                                                             </a>
                                                         </div>
 
-                                                    </li>
+                                                    </li> --}}
                                                     {{-- end Digital PR & SEO --}}
 
                                                     {{-- start Paid Ads --}}
-                                                    <li class="d-flex">
+                                                    {{-- <li class="d-flex">
                                                         <div class="p-2"><i class="fa fa-grip-vertical  mr-2"></i>Paid Ads</div>
 
                                                         <div class="ml-auto p-2">
@@ -170,11 +190,11 @@
                                                             </a>
                                                         </div>
 
-                                                    </li>
+                                                    </li> --}}
                                                     {{-- end Paid Ads --}}
 
                                                     {{-- start Design & Video --}}
-                                                    <li class="d-flex">
+                                                    {{-- <li class="d-flex">
                                                         <div class="p-2"><i class="fa fa-film  mr-2"></i>Design & Video</div>
 
                                                         <div class="ml-auto p-2">
@@ -193,7 +213,7 @@
                                                             </a>
                                                         </div>
 
-                                                    </li>
+                                                    </li> --}}
                                                     {{-- end Design & Video --}}
 
                                                 </ul>
@@ -203,6 +223,12 @@
                                     {{-- end project --}}
 
                             </div>
+
+                            {{-- start pagination --}}
+                              <div  class="d-flex justify-content-center my-5">
+                                {{ $all_projects->links() }}
+                              </div>
+                            {{-- end pagination --}}
 
                         </div>
                         <!-- /.card-body -->
@@ -338,7 +364,7 @@
 </script>
 
 @section('modal')
-    {{-- Modal tambah --}}
+    {{-- start create new project --}}
     <div class="modal fade" id="create_project">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -377,6 +403,23 @@
                             </div>
                         </div>
 
+                        @if ((auth()->user()->role == 'super-admin'))
+                        <div class="input-group">
+                            <label>Link Project To User</label>
+                            <div class="input-group">
+                                <select  name="user_id" id="user_id" class="form-control  @error('user_id') is-invalid @enderror" placeholder="Select User">
+                                    @foreach (\App\Models\User::all() as $user)
+                                      <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('user_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        @endif
+
+
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -388,7 +431,9 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    {{-- Modal Update --}}
+     {{-- end create new project --}}
+
+     {{-- start edit project --}}
     <div class="modal fade" id="edit_project">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -437,7 +482,9 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    {{-- Modal delete --}}
+     {{-- end edit project --}}
+
+     {{-- start delete project --}}
     <div class="modal fade" id="modal-delete">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -464,4 +511,5 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+     {{-- end delete project --}}
 @endsection

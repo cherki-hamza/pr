@@ -16,63 +16,11 @@ class OrderController extends Controller
     {
         //
         $title = 'Orders';
-        return view('admin.order.order_index',compact('title'));
+        $price  = Site::where('id',$request->site_id)->first()->site_price;
+        return view('admin.order.order_index', compact('title','price'));
     }
 
-     // method for not started
-     public function not_started(Request $request,$project_id)
-     {
-         $title = 'Task Not Started';
-         $tasks = Task::where('user_id',auth()->id())->where('status',Task::NOT_STARDET)->where('project_id',$request->project_id)->get();
-         return view('admin.order.not_started',compact('title','tasks'));
-     }
 
-     // method for In Pprogress
-     public function in_progress(Request $request,$project_id=null)
-     {
-         //
-         $title = 'Task In Pprogress';
-         $tasks = Task::where('user_id',auth()->id())->where('status',Task::IN_PROGRESS)->where('project_id',$request->project_id)->get();
-        // return $tasks;
-         return view('admin.order.in_progress',compact('title','tasks'));
-     }
-
-      // method for Pending Approval
-      public function pending_approval(Request $request,$project_id)
-      {
-          //
-          $title = 'Task In Pprogress';
-          $tasks = Task::where('user_id',auth()->id())->where('status',Task::PENDING_APPROVAL)->where('project_id',$request->project_id)->get();
-          return view('admin.order.pending_approval',compact('title','tasks'));
-      }
-
-
-       // method for improvement
-       public function improvement(Request $request,$project_id)
-       {
-           //
-           $title = 'Task In Improvement';
-           $tasks = Task::where('user_id',auth()->id())->where('status',Task::IMPROVEMENT)->where('project_id',$request->project_id)->get();
-           return view('admin.order.improvement',compact('title','tasks'));
-       }
-
-       // method for completed
-       public function completed(Request $request,$project_id)
-       {
-           //
-           $title = 'Task Completed';
-           $tasks = Task::where('user_id',auth()->id())->where('status',Task::COMPLETED)->where('project_id',$request->project_id)->get();
-           return view('admin.order.completed',compact('title'));
-       }
-
-       // method for rejected
-       public function rejected(Request $request,$project_id)
-       {
-           //
-           $title = 'Task rejected';
-           $tasks = Task::where('user_id',auth()->id())->where('status',Task::REJECTED)->where('project_id',$request->project_id)->get();
-           return view('admin.order.rejected',compact('title','tasks'));
-       }
 
 
        // method for show the order

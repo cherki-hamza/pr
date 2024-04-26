@@ -15,6 +15,7 @@ use App\Http\Controllers\Backend\Payment\PaypalController;
 use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ProjectController;
+use App\Http\Controllers\Backend\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,13 +43,12 @@ Auth::routes([
     'confirm'   => false */
 ]);
 
-// google socaial auth
-/* Route::get('/auth/google/redirect', [SocialController::class, 'google_redirect'])->name('google_redirect');
-Route::get('/auth/google/callback', [SocialController::class, 'google_callback'])->name('google_callback'); */
 
 Route::middleware(['auth'])->get('/home', [DashboardController::class, 'index'])->name('home');
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
+
+
     Route::get('/', [DashboardController::class, 'index'])->name('admin');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -66,6 +66,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::put('/security/update_mobile' , [UserController::class,'update_mobile'])->name('update_mobile');
     Route::put('/security/update_password' , [UserController::class,'update_password'])->name('update_password');
 
+    // role routes
     Route::controller(RoleController::class)->group(function () {
         Route::get('role', 'index')->middleware(['permission:read role'])->name('role.index');
         Route::post('role', 'store')->middleware(['permission:create role'])->name('role.store');
@@ -74,6 +75,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::delete('role', 'destroy')->middleware(['permission:delete role'])->name('role.destroy');
     });
 
+    // permission routes
     Route::controller(PermissionController::class)->group(function () {
         Route::get('permission', 'index')->middleware(['permission:read permission'])->name('permission.index');
         Route::post('permission', 'store')->middleware(['permission:create permission'])->name('permission.store');
@@ -83,27 +85,31 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('permission/reload', 'reloadPermission')->middleware(['permission:create permission'])->name('permission.reload');
     });
 
-    // route for Projects
-    Route::post('projects/update_status' , [ProjectController::class,'update_status'])->name('update_status');
-    Route::post('projects/show' , [ProjectController::class,'show_project'])->name('show_project');
-    Route::put('update_project' , [ProjectController::class,'update_project'])->name('update_project');
-    Route::delete('destroy_project' , [ProjectController::class,'destroy_project'])->name('destroy_project');
-    Route::resource('projects' , ProjectController::class);
-    Route::get('myprojects/{project_id}' , [SiteController::class,'site_index'])->name('site_index');
 
-    // route for Billings
-    Route::resource('billings' , BillingController::class);
+
+   // payements Gatways ***********************************************************************
+
+    //Balance page
+    Route::get('/balance' , [BalanceController::class , 'balance'])->name('balance');
+    Route::get('/add_funds' , [BalanceController::class , 'add_funds'])->name('add_funds');
+
+    // Paypal
+    Route::get('/payment' , [PaypalController::class , 'payment'])->name('payment');
+    Route::get('/cancel' , [PaypalController::class , 'cancel'])->name('cancel');
+    Route::get('/payment/success' , [PaypalController::class , 'success'])->name('success');
+
+    // payements Gatways *************************************************************************
 
     // route for Profile
 
-    // routes for orders
-    Route::get('project/{project_id?}/my_orders/not_started' , [OrderController::class,'not_started'])->name('not_started');
-    Route::get('project/{project_id?}/my_orders/in_progress' , [OrderController::class,'in_progress'])->name('in_progress');
-    Route::get('project/{project_id?}/my_orders/pending_approval' , [OrderController::class,'pending_approval'])->name('pending_approval');
-    Route::get('project/{project_id?}/my_orders/improvement' , [OrderController::class,'improvement'])->name('improvement');
-    Route::get('project/{project_id?}/my_orders/completed' , [OrderController::class,'completed'])->name('completed');
-    Route::get('project/{project_id?}/my_orders/rejected' , [OrderController::class,'rejected'])->name('rejected');
-    Route::resource('orders' , OrderController::class);
+    // routes for tasks
+    Route::get('project/{project_id?}/my_orders/not_started' , [TaskController::class,'not_started'])->name('not_started');
+    Route::get('project/{project_id?}/my_orders/in_progress' , [TaskController::class,'in_progress'])->name('in_progress');
+    Route::get('project/{project_id?}/my_orders/pending_approval' , [TaskController::class,'pending_approval'])->name('pending_approval');
+    Route::get('project/{project_id?}/my_orders/improvement' , [TaskController::class,'improvement'])->name('improvement');
+    Route::get('project/{project_id?}/my_orders/completed' , [TaskController::class,'completed'])->name('completed');
+    Route::get('project/{project_id?}/my_orders/rejected' , [TaskController::class,'rejected'])->name('rejected');
+
 
     // Routes for show the  tasks
     Route::get('project/{project_id?}/task/{task_id?}/show_task' , [OrderController::class,'show_task'])->name('show_task');
@@ -115,38 +121,28 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('project/{project_id?}/task/{task_id?}/post/store_post' , [PostController::class,'store_post'])->name('store_post');
     // route for update the post
     Route::post('project/{project_id?}/task/{task_id?}/post/{post_id?}/update_post' , [PostController::class,'update_post'])->name('update_post');
-    // route for show the client post
-    Route::get('project/{project_id?}/task/{task_id?}/show_client_post' , [PostController::class,'show_client_post'])->name('show_client_post');
 
 
-    Route::post('orders/store_cp/project/{project_id}/site/{site_id}' , [OrderController::class,'store_cp'])->name('store_cp');
-    Route::post('orders/store_ccp' , [OrderController::class,'store_ccp'])->name('store_ccp');
 
-    Route::get("order_post_from_publisher/project/{project_id}/site/{site_id}", [OrderController::class,'order_index'])->name('order_index');
+    // route for all publisher sites for super admin
+    Route::get('all_publishers',[SiteController::class,'all_publishers'])->name('all_publishers');
 
-    // route for Profile
-    Route::resource('profiles' , ProfileController::class);
-
-    Route::resource('billings' , BillingController::class);
-
+    // add publisher site
+    Route::get('add_publishers',[SiteController::class,'add_publishers'])->name('add_publishers');
+    Route::post('store_publishers',[SiteController::class,'store_publishers'])->name('store_publishers');
+    Route::get('edit_publishers/{site_id}/edit',[SiteController::class,'edit_publishers'])->name('edit_publishers');
+    Route::put('update_publishers/{site_id}/update',[SiteController::class,'update_publishers'])->name('update_publishers');
 
     // site publishers routes
-    Route::get('publishers',[SiteController::class,'index'])->name('publishers');
-    Route::post('/posts/{post}/favorite', 'FavoriteController@addToFavorites')->name('posts.favorite');
-
+    //Route::get('publishers',[SiteController::class,'index'])->name('publishers');
+    // add to favorite
     Route::get('/favorite_site/{site_id}',[SiteController::class,'favorite'])->name('favorite');
-
+    // show all favorite publishers by user
     Route::get('publishers/{project_id}/favorite_publishers',[SiteController::class,'favorite_publishers'])->name('favorite_publishers');
 
 
-    // payements Gatways ***********************************************************************
 
-    //Balance page
-    Route::get('/balance' , [BalanceController::class , 'balance'])->name('balance');
-    Route::get('/add_funds' , [BalanceController::class , 'add_funds'])->name('add_funds');
 
-    // Paypal
-    Route::get('/payment' , [PaypalController::class , 'payment'])->name('payment');
-    Route::get('/cancel' , [PaypalController::class , 'cancel'])->name('cancel');
-    Route::get('/payment/success' , [PaypalController::class , 'success'])->name('success');
+
+
 });

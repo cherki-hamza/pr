@@ -37,18 +37,19 @@ class PostController extends Controller
 
             $post = Post::create([
                 'user_id'           => auth()->id(),
-                'project_id'           => $request->project_id,
+                'project_id'        => $request->project_id,
                 'site_id'           => $request->site_id,
                 'task_id'           => $request->task_id,
                 'status'            => Post::IN_PROGRESS,
-                'post_body'  => $request->get('post_editor_data'),
+                'post_title'        => $request->post_placement_url,
+                'post_body'         => $request->get('post_editor_data'),
             ]);
             // find the related task and update the status
             $task = Task::where('id',$request->task_id)->first();
             $task->update(['status'=> Post::IN_PROGRESS]);
 
             // go the the prgress page
-            return redirect()->back()->with('info' , 'The post created with success, And The Status is IN PROGRESS ');
+            return redirect()->back()->with('info' , 'The post created with success, And The Status is IN PROGRESS');
         }
 
 
@@ -65,6 +66,7 @@ class PostController extends Controller
                 'site_id'           => $request->site_id,
                 'task_id'           => $request->task_id,
                 'status'            => Post::PENDING_APPROVAL,
+                'post_title'        => $request->post_placement_url,
                 'post_body'         => $request->get('post_editor_data'),
             ]);
             // find the related task and update the status
@@ -92,6 +94,7 @@ class PostController extends Controller
             // update the post
             $post->update([
                 'status'     => Post::IN_PROGRESS,
+                'post_title' => $request->post_placement_url,
                 'post_body'  => $request->get('post_editor_data'),
             ]);
 
@@ -114,6 +117,7 @@ class PostController extends Controller
             // update the post
             $post->update([
                 'status'     => Post::PENDING_APPROVAL,
+                'post_title' => $request->post_placement_url,
                 'post_body'  => $request->get('post_editor_data'),
             ]);
 
@@ -130,10 +134,11 @@ class PostController extends Controller
 
 
     // method for client see the post
-    public function show_client_post(Request $request,$task_id,$project_id){
+    public function show_client_post(Request $request){
         $title = 'See The Post';
         $task = Task::where('user_id' , auth()->id())->where('project_id',request()->project_id)->first();
         $post = Post::where('task_id',$request->task_id)->first();
+        //return $task->task_target_url;
         return view('admin.client.client_post' , compact('title','task','post'));
     }
 

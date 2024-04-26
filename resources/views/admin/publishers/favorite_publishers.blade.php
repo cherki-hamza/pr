@@ -440,8 +440,8 @@
 
                                                <td class="">
                                                   <div class="btn-group btn-group-sm btn-block">
-                                                    <a href="{{-- {{route('order_index', ['project_id'=> request()->project_id , 'site_id' => $site->id ])}} --}}" style="width: 100px;" class="btn btn-success">Buy Again</a>
-                                                    <a href="{{-- {{route('order_index', ['project_id'=> request()->project_id , 'site_id' => $site->id ])}} --}}" style="width: 100px;" class="btn btn-primary">$ {{$site->site_price}}</a>
+                                                    <a href="{{route('order_index', ['project_id'=> request()->project_id , 'site_id' => $site->id ])}}" style="width: 100px;" class="btn btn-success">Buy Again</a>
+                                                    <a href="{{route('order_index', ['project_id'=> request()->project_id , 'site_id' => $site->id ])}}" style="width: 100px;" class="btn btn-primary">$ {{$site->site_price}}</a>
                                                   </div>
 
                                                   <div class="btn-group">

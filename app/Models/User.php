@@ -90,6 +90,7 @@ class User extends Authenticatable
         return $this->hasMany(Project::class);
     }
 
+
     // relationship between User and Category (the user can hase one or multiple Category)
     public function categories(){
         return $this->hasMany(Category::class);
@@ -100,5 +101,36 @@ class User extends Authenticatable
     public function tasks(){
         return $this->hasMany(Task::class);
     }
+
+    // tasks not started
+    public function tasks_not_started($site_id=null){
+        return $this->hasMany(Task::class)->where('status',Task::NOT_STARDET)->where('site_id',$site_id);
+    }
+
+    // tasks in progress
+    public function tasks_in_progress(){
+        return $this->hasMany(Task::class)->where('status',Task::IN_PROGRESS);
+    }
+
+    // tasks pending approval
+    public function tasks_pending_approval(){
+        return $this->hasMany(Task::class)->where('status',Task::PENDING_APPROVAL);
+    }
+
+    // tasks improvement
+    public function tasks_improvement(){
+        return $this->hasMany(Task::class)->where('status',Task::IMPROVEMENT);
+    }
+
+    // tasks completed
+    public function tasks_completed(){
+        return $this->hasMany(Task::class)->where('status',Task::COMPLETED);
+    }
+
+    // tasks rejected
+    public function tasks_rejected(){
+        return $this->hasMany(Task::class)->where('status',Task::REJECTED);
+    }
+
 
 }

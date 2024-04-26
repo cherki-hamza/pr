@@ -810,6 +810,10 @@ class SiteSeeder extends Seeder
         // Convert the list into an array, removing any duplicate entries
         $location_array = array_unique(array_filter(explode("\n", $locations)));
 
+        $sites = [
+
+        ];
+
         foreach(range(1, 100) as $index){
             $site1 = Site::create([
             'user_id' => 1,

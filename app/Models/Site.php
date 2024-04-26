@@ -10,6 +10,8 @@ class Site extends Model
 {
     use HasFactory ,Favoriteable;
 
+    protected $guarded = [];
+
     // the site hasMany Orders
     public function orders(){
         return $this->hasMany(Order::class);
