@@ -130,7 +130,7 @@
                                             </div>
                                             <div class="col-4 col-md-3">
                                                 <label>Site Price</label>
-                                                <input type="number" class="form-control" value="{{ $site->site_price ?? '' }}" name="site_price" placeholder="Enter Site Price">
+                                                <input type="number" class="form-control" value="{{  str_replace(',', '', $site->site_price)  ?? '' }}" name="site_price">
                                             </div>
                                         </div>
                                         {{--  --}}

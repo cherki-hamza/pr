@@ -39,9 +39,19 @@ class SiteController extends Controller
     // all publisheres for super admin
     public function all_publishers(Request $request){
 
+        if (!empty(request('search'))) {
+            //return $request->search;
+            $sites = Site::where('site_name', 'like', '%' . request('search') . '%')
+                          ->OrWhere('site_region_location' , 'like', '%' . request('search') . '%')
+                          ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->get();
+        } else {
+            $sites = Site::all();
+        }
+
+
         $title = "publishers";
         $project_id = $request->project_id;
-        $sites = Site::all();
+        //$sites = Site::all();
         $sites_count = Site::count();
         return view('admin.publishers.all_publishers',compact('project_id','sites','sites_count'));
     }

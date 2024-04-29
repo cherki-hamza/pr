@@ -38,6 +38,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     // route for all publisher sites for super admin
     Route::get('all_publishers',[SiteController::class,'all_publishers'])->name('all_publishers');
+    Route::post('all_publishers/{search?}',[SiteController::class,'all_publishers'])->name('all_publishers_search');
     // add publisher site
     Route::get('add_publishers',[SiteController::class,'add_publishers'])->name('add_publishers');
 
