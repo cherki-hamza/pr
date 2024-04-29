@@ -1,7 +1,7 @@
 @if ( !empty(\App\Models\Billing::where('user_id',auth()->id())->first()) )
 
 
-<a href="{{ route('payment') }}" class="btn bg-primary text-white">
+<button class="btn bg-primary text-white">
     <svg style="width: 25px"
         class="svg-inline--fa fa-credit-card fa-w-18 mr-2 ml-1"
         aria-hidden="true" focusable="false" data-prefix="far"
@@ -13,13 +13,12 @@
         </path>
     </svg>
     <!-- <i class="far fa-credit-card mr-2 ml-1"></i> Font Awesome fontawesome.com -->
-    <span class="font-weight-bold  mr-1" id="payButton">Pay with
-        Paypal </span>
-</a>
+    <span class="font-weight-bold  mr-1" id="payButton">Pay with Paypal 2024</span>
+    </button>
 
 @else
 
-<a href="#" class="btn bg-primary text-white"
+<a href="#test_dev" class="btn bg-primary text-white"
     data-toggle="modal" data-target="#billingInformation">
     <svg style="width: 25px"
         class="svg-inline--fa fa-credit-card fa-w-18 mr-2 ml-1"

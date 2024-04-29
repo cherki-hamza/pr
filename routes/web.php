@@ -16,6 +16,8 @@ use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\TaskController;
+use App\Models\Site;
+use SheetDB\SheetDB;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +36,36 @@ Route::get('/', function () {
 
 Route::get('/dev', function (Request $request) {
 
+    /* $sheetdb = new SheetDB('btvs8e6ku3z5m');
+
+    $data = @json_decode(json_encode($sheetdb->get()), true);
+
+
+    $sites = collect($data);
+
+    //return $sites[0]['site_name'];
+
+    foreach($sites as $site){
+        Site::create([
+            'user_id'   => 1,
+            'site_name' => $site['site_name'],
+            'site_url' => $site['site_url'],
+            'site_category' => $site['site_category'],
+            'site_price' => $site['site_price'],
+            'site_region_location' => $site['site_region_location'],
+
+            'site_domain_authority' => $site['site_domain_authority'],
+            'site_domain_rating' => $site['site_domain_rating'],
+            'site_sposored' => $site['site_sposored'],
+            'site_indexed' => $site['site_indexed'],
+
+            'site_dofollow' => $site['site_dofollow'],
+            'site_images' => $site['site_images'],
+            'site_time' => $site['site_time'],
+        ]);
+    } */
+
+    return 'success';
 
 })->name('dev');
 
@@ -93,8 +125,12 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/balance' , [BalanceController::class , 'balance'])->name('balance');
     Route::get('/add_funds' , [BalanceController::class , 'add_funds'])->name('add_funds');
 
+    Route::post('pay', [PaypalController::class, 'pay'])->name('paypal_pay');
+    Route::get('success/{paymentId}/{PayerID}', [PaypalController::class, 'success'])->name('success');
+    Route::get('error', [PaypalController::class, 'error'])->name('error');
+
     // Paypal
-    Route::get('/payment' , [PaypalController::class , 'payment'])->name('payment');
+    Route::post('/payment' , [PaypalController::class , 'payment'])->name('payment');
     Route::get('/cancel' , [PaypalController::class , 'cancel'])->name('cancel');
     Route::get('/payment/success' , [PaypalController::class , 'success'])->name('success');
 

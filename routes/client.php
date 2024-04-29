@@ -22,6 +22,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     // show all publishers site for every project by id : /myprojects/1
     Route::get('myprojects/{project_id}' , [SiteController::class,'site_index'])->name('site_index');
 
+    // route for search publisher by any keword
+    Route::post('myprojects/{project_id}/{search?}' , [SiteController::class,'site_index'])->name('site_index');
+
     // Get tasks by project for client
     Route::get('/tasks/user/{user_id}/project/{project_id}/client',[TaskController::class,'client_task_by_user_by_project'])->name('client_task_by_user_by_project');
 

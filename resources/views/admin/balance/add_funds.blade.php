@@ -54,9 +54,9 @@
                             <div class="ml-auto p-0">
                                 <h5>Your Current Balance: $670.22</h5>
                             </div>
-                            <form action="https://icopify.co/add-funds/pay" method="POST" id="paymentForm"
-                                onsubmit="this.querySelectorAll('[type=submit]').forEach(b => b.disabled = true)">
-                                <input type="hidden" name="_token" value="CammiquJuKDFAERZMfDAJbsoVcEgvrRbPoaoQ6ta">
+                            {{-- <form action="https://icopify.co/add-funds/pay" method="POST" id="paymentForm"
+                                onsubmit="this.querySelectorAll('[type=submit]').forEach(b => b.disabled = true)"> --}}
+
                                 <div class="row gutters-sm mt-3">
                                     <div class="col-md-12 col-lg-8 col-xl-8 mb-3">
                                         <div class="card h-100">
@@ -66,7 +66,7 @@
 
                                             <div class="card-body align-middle">
 
-                                                <div style="font-size: 20px" class="text-center mt-2 alert alert-dark">
+                                                {{-- <div style="font-size: 20px" class="text-center mt-2 alert alert-dark">
                                                     <span class="badge badge-soft-primary fs--1 mb-1"><strong
                                                             class="font-weight-bold">$10 - $499</strong> Get 5% Extra
                                                         Bonus</span>
@@ -85,7 +85,7 @@
                                                     <span class="badge badge-soft-primary fs--1 mb-1"><strong
                                                             class="font-weight-bold">$5000 - $10000</strong> Get 25% Extra
                                                         Bonus</span>
-                                                </div>
+                                                </div> --}}
 
 
                                                 <div class="row">
@@ -153,6 +153,9 @@
                                             </div>
                                             <div class="card-body">
 
+                                                <form action="{{ route('paypal_pay') }}" method="POST">
+                                                    @csrf
+
                                                 <div class="table-responsive" style="border-radius:5px">
                                                     <table class="table table-dashboard table-striped p-0">
                                                         <tbody>
@@ -172,10 +175,13 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class=""></td>
-                                                                <td class="text-right">Total: <span
-                                                                        class="text-facebook font-weight-bold h5">$<span
-                                                                            class="mt-n3"
-                                                                            id="totalSummary">10.00</span></span></td>
+                                                                <td class="text-right">
+                                                                    {{-- <input type="text" class="form-control" name="amount" id="totalSummary" value="10.00"> --}}
+                                                                    Total: <span class="text-facebook font-weight-bold h5">$<span class="mt-n3" id="totalSummary">10.00</span>
+                                                                    <input type="hidden" name="amount" id="app_total" value="10.00">
+                                                                    <input type="hidden" id="payment_method" name="payment_platform" value="paypal">
+                                                                </span>
+                                                               </td>
                                                             </tr>
 
                                                         </tbody>
@@ -208,13 +214,13 @@
                                                 </div>
                                                 <div class="text-danger mt-3" id="warningMessage"></div>
 
-
+                                            </form>
                                             </div>
                                         </div>
                                     </div>
 
                                 </div>
-                            </form>
+                            {{-- </form> --}}
 
 
                             {{-- start the card billing --}}
@@ -681,34 +687,28 @@
                                         {{-- start billing table info --}}
                                         <table
                                             class="table table-sm table-dashboard table-bordered table-striped fs--1 p-0">
-                                            <thead class="bg-facebook text-white">
+                                            <thead class="bg-primary text-white">
                                                 <tr>
                                                     <th class="">Date</th>
                                                     <th class="">Transaction Description</th>
                                                     <th class="">Transaction Amount</th>
-                                                    <th class="">Main Balance</th>
                                                     <th class="text-center">Payment Platform</th>
-                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
 
 
-
-
-
-
+                                                {{-- start --}}
+                                                @foreach ($payments as $payment)
                                                 <tr class="">
-
-                                                    <td class="">Wed 19 Jul 2023 23:51:29</td>
-                                                    <td class="">You have added funds to Your account via CoinBase
+                                                    <td class="">{{ $payment->created_at->diffForHumans() }}</td>
+                                                    <td class="">You have added funds to Your account via {{ $payment->payment_platform }}
                                                     </td>
-                                                    <td class="">$3000.00</td>
-                                                    <td class="">$3093.14</td>
-                                                    <td class="text-center">CoinBase</td>
-                                                    <td class="text-center">
+                                                    <td class="">${{ $payment->amount }}</td>
+                                                    <td class="text-center">{{ $payment->payment_platform }}</td>
+                                                    {{-- <td class="text-center">
                                                         <a href="#" id="billingInformation" data-toggle="modal"
-                                                            data-target="#billingInformation">Add Billing Details </a>
+                                                            data-target="#billingInformation">Add Billing Details</a>
                                                         <svg style="width:25px"
                                                             class="svg-inline--fa fa-info-circle fa-w-16 text-facebook"
                                                             data-html="true"
@@ -723,101 +723,12 @@
                                                                 d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z">
                                                             </path>
                                                         </svg><!-- <i class="fas fa-info-circle text-facebook" data-html="true" data-content="To view and print your invoices, you must add your billing information" data-placement="right" data-toggle="popover" data-container="body" data-trigger="hover"></i> Font Awesome fontawesome.com -->
-                                                    </td>
+                                                    </td> --}}
                                                 </tr>
+                                                @endforeach
+                                                {{-- end --}}
 
-                                                <!--Start  Modal Billing Information -->
 
-                                                <!-- End Modal Billing Information -->
-                                                <tr class="">
-
-                                                    <td class="">Mon 17 Jul 2023 09:12:21</td>
-                                                    <td class="">You have added funds to Your account via CoinBase
-                                                    </td>
-                                                    <td class="">$3000.00</td>
-                                                    <td class="">$3927.53</td>
-                                                    <td class="text-center">CoinBase</td>
-                                                    <td class="text-center">
-                                                        <a href="#" id="billingInformation" data-toggle="modal"
-                                                            data-target="#billingInformation">Add Billing Details </a>
-                                                        <svg style="width:25px"
-                                                            class="svg-inline--fa fa-info-circle fa-w-16 text-facebook"
-                                                            data-html="true"
-                                                            data-content="To view and print your invoices, you must add your billing information"
-                                                            data-placement="right" data-toggle="popover"
-                                                            data-container="body" data-trigger="hover"
-                                                            aria-hidden="true" focusable="false" data-prefix="fas"
-                                                            data-icon="info-circle" role="img"
-                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                                            data-fa-i2svg="" data-original-title="" title="">
-                                                            <path fill="currentColor"
-                                                                d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z">
-                                                            </path>
-                                                        </svg><!-- <i class="fas fa-info-circle text-facebook" data-html="true" data-content="To view and print your invoices, you must add your billing information" data-placement="right" data-toggle="popover" data-container="body" data-trigger="hover"></i> Font Awesome fontawesome.com -->
-                                                    </td>
-                                                </tr>
-
-                                                <!--Start  Modal Billing Information -->
-
-                                                <!-- End Modal Billing Information -->
-                                                <tr class="">
-
-                                                    <td class="">Fri 28 Apr 2023 13:19:42</td>
-                                                    <td class="">You have added funds to Your account via CoinBase
-                                                    </td>
-                                                    <td class="">$2500.00</td>
-                                                    <td class="">$3104.96</td>
-                                                    <td class="text-center">CoinBase</td>
-                                                    <td class="text-center">
-                                                        <a href="#" id="billingInformation" data-toggle="modal"
-                                                            data-target="#billingInformation">Add Billing Details </a>
-                                                        <svg style="width:25px"
-                                                            class="svg-inline--fa fa-info-circle fa-w-16 text-facebook"
-                                                            data-html="true"
-                                                            data-content="To view and print your invoices, you must add your billing information"
-                                                            data-placement="right" data-toggle="popover"
-                                                            data-container="body" data-trigger="hover"
-                                                            aria-hidden="true" focusable="false" data-prefix="fas"
-                                                            data-icon="info-circle" role="img"
-                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                                            data-fa-i2svg="" data-original-title="" title="">
-                                                            <path fill="currentColor"
-                                                                d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z">
-                                                            </path>
-                                                        </svg><!-- <i class="fas fa-info-circle text-facebook" data-html="true" data-content="To view and print your invoices, you must add your billing information" data-placement="right" data-toggle="popover" data-container="body" data-trigger="hover"></i> Font Awesome fontawesome.com -->
-                                                    </td>
-                                                </tr>
-
-                                                <!--Start  Modal Billing Information -->
-
-                                                <!-- End Modal Billing Information -->
-                                                <tr class="">
-
-                                                    <td class="">Sun 23 Apr 2023 14:18:41</td>
-                                                    <td class="">You have added funds to Your account via CoinBase
-                                                    </td>
-                                                    <td class="">$1000.00</td>
-                                                    <td class="">$1000.00</td>
-                                                    <td class="text-center">CoinBase</td>
-                                                    <td class="text-center">
-                                                        <a href="#" id="billingInformation" data-toggle="modal"
-                                                            data-target="#billingInformation">Add Billing Details </a>
-                                                        <svg style="width:25px"
-                                                            class="svg-inline--fa fa-info-circle fa-w-16 text-facebook"
-                                                            data-html="true"
-                                                            data-content="To view and print your invoices, you must add your billing information"
-                                                            data-placement="right" data-toggle="popover"
-                                                            data-container="body" data-trigger="hover"
-                                                            aria-hidden="true" focusable="false" data-prefix="fas"
-                                                            data-icon="info-circle" role="img"
-                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                                            data-fa-i2svg="" data-original-title="" title="">
-                                                            <path fill="currentColor"
-                                                                d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z">
-                                                            </path>
-                                                        </svg><!-- <i class="fas fa-info-circle text-facebook" data-html="true" data-content="To view and print your invoices, you must add your billing information" data-placement="right" data-toggle="popover" data-container="body" data-trigger="hover"></i> Font Awesome fontawesome.com -->
-                                                    </td>
-                                                </tr>
 
                                                 <!--Start  Modal Billing Information -->
 
@@ -835,7 +746,7 @@
                             <div>
                                 <ul class="pagination justify-content-center mb-0 pt-3">
                                     <li class="page-item">
-                                      1-2-3-4
+                                      {{ $payments->links() }}
                                     </li>
                                 </ul>
                             </div>
@@ -894,13 +805,17 @@
         function toggleAmount() {
             var selectedGateway = document.getElementById("amount").value;
 
-            console.log(selectedGateway);
+            //console.log(selectedGateway);
 
             let amountSummary = document.getElementById("amountSummary");
             amountSummary.textContent = selectedGateway;
 
             let totalSummary = document.getElementById("totalSummary");
             totalSummary.textContent = selectedGateway;
+
+            let app = document.getElementById("app_total").value = selectedGateway;
+            //app.value = selectedGateway
+           // console.log(app);
         }
         // end function to change amount
     </script>

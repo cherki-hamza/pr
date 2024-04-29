@@ -47,9 +47,9 @@
 
 
         <!-- Buyer Balance -->
-                            <div class="row gutters-sm">
+       <div class="row gutters-sm ">
         <!-- Bonus -->
-    <div class="col-sm-6 col-xl-4 mb-3">
+    {{-- <div class="col-sm-6 col-xl-4 mb-3">
         <div class="card h-100">
             <div class="card-body">
                 <div class="h2 d-flex justify-content-between mb-2">
@@ -63,11 +63,11 @@
                 <p class="small mb-0">The total amount that may be added during promotion campaigns</p>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- / Bonus -->
 
     <!-- Reserved -->
-    <div class="col-sm-6 col-xl-4 mb-3">
+    {{-- <div class="col-sm-6 col-xl-4 mb-3">
         <div class="card h-100">
             <div class="card-body">
                 <div class="h2 d-flex justify-content-between mb-2">
@@ -78,7 +78,7 @@
                 <p class="small text-secondary mb-0">The Total amount that have been reserved for incompleted tasks</p>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- / Reserved -->
 
     <!-- MAIN BALANCE -->
@@ -86,7 +86,11 @@
         <div class="card h-100">
             <div class="card-body">
                 <div class="h2 d-flex justify-content-between mb-2">
-                    <span class="">$670.22</span>
+                    @if (!auth()->user()->role == 'super-admin')
+                       <span class="">$ {{ \App\Models\Payment::sum('amount') }}</span>
+                    @else
+                       <span class="">$ {{ \App\Models\Payment::where('user_id' , auth()->id())->sum('amount') }}</span>
+                    @endif
                     <i class="mr-2 font-size-lg text-facebook" data-fa-i2svg=""><svg class="svg-inline--fa fa-money-check-alt fa-w-20" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="money-check-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="M608 32H32C14.33 32 0 46.33 0 64v384c0 17.67 14.33 32 32 32h576c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zM176 327.88V344c0 4.42-3.58 8-8 8h-16c-4.42 0-8-3.58-8-8v-16.29c-11.29-.58-22.27-4.52-31.37-11.35-3.9-2.93-4.1-8.77-.57-12.14l11.75-11.21c2.77-2.64 6.89-2.76 10.13-.73 3.87 2.42 8.26 3.72 12.82 3.72h28.11c6.5 0 11.8-5.92 11.8-13.19 0-5.95-3.61-11.19-8.77-12.73l-45-13.5c-18.59-5.58-31.58-23.42-31.58-43.39 0-24.52 19.05-44.44 42.67-45.07V152c0-4.42 3.58-8 8-8h16c4.42 0 8 3.58 8 8v16.29c11.29.58 22.27 4.51 31.37 11.35 3.9 2.93 4.1 8.77.57 12.14l-11.75 11.21c-2.77 2.64-6.89 2.76-10.13.73-3.87-2.43-8.26-3.72-12.82-3.72h-28.11c-6.5 0-11.8 5.92-11.8 13.19 0 5.95 3.61 11.19 8.77 12.73l45 13.5c18.59 5.58 31.58 23.42 31.58 43.39 0 24.53-19.05 44.44-42.67 45.07zM416 312c0 4.42-3.58 8-8 8H296c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h112c4.42 0 8 3.58 8 8v16zm160 0c0 4.42-3.58 8-8 8h-80c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h80c4.42 0 8 3.58 8 8v16zm0-96c0 4.42-3.58 8-8 8H296c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h272c4.42 0 8 3.58 8 8v16z"></path></svg></i>
                 </div>
                 <h5>Main Balance</h5>
@@ -97,7 +101,7 @@
     <!-- / MAIN BALANCE -->
 
 
-
+   @if (auth()->user()->role == 'client')
     <div class="col">
         <div class="d-flex justify-content-between float-right">
 
@@ -108,6 +112,8 @@
        </a>
         </div>
     </div>
+    @endif
+
 </div>
 
 
@@ -153,30 +159,23 @@
                         <th class="d-table-cell">Date</th>
                         <th class="d-xl-table-cell d-none">Transaction Description</th>
                         <th class="d-table-cell">Transaction Amount</th>
-                        <th class="d-table-cell">Main Balance</th>
                     </tr>
                     </thead>
                     <tbody>
-                                            <tr class="text-center">
-                            <td class="row d-table-cell">8 months ago</td>
-                            <td class="d-xl-table-cell d-none">You have transfer your bonus to your main balance</td>
-                            <td class="d-table-cell">$1200.00</td>
-                            <td class="d-table-cell">$3299.63</td>
-                        </tr>
-                                            <tr class="text-center">
-                            <td class="row d-table-cell">11 months ago</td>
-                            <td class="d-xl-table-cell d-none">You have transfer your bonus to your main balance</td>
-                            <td class="d-table-cell">$500.00</td>
-                            <td class="d-table-cell">$580.40</td>
-                        </tr>
-                                            <tr class="text-center">
-                            <td class="row d-table-cell">11 months ago</td>
-                            <td class="d-xl-table-cell d-none">You have transfer your bonus to your main balance</td>
-                            <td class="d-table-cell">$150.00</td>
-                            <td class="d-table-cell">$604.96</td>
-                        </tr>
-                                        </tbody>
+
+                        @foreach ($transactions as $transaction)
+                            <tr class="text-center">
+                                <td class="row d-table-cell">{{  $transaction->created_at->diffForHumans() }}</td>
+                                <td class="d-xl-table-cell d-none">You have transfer your bonus to your main balance from client name :  <span class="text-danger">{{ $transaction->user->name }}</span></td>
+                                <td class="d-table-cell">${{ $transaction->amount }}</td>
+                            </tr>
+                        @endforeach
+
+                       </tbody>
                 </table>
+                   <div class="my-4">
+                      {{ $transactions->links() }}
+                   </div>
             </div>
         </div>
     </div>

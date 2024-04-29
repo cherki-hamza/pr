@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
-use App\DataTables\UsersDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Site;
 
@@ -12,9 +11,18 @@ class SiteController extends Controller
 
     public function site_index(Request $request){
 
+        if (!empty(request('search'))) {
+            //return $request->search;
+            $sites = Site::where('site_name', 'like', '%' . request('search') . '%')
+                          ->OrWhere('site_region_location' , 'like', '%' . request('search') . '%')
+                          ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->get();
+        } else {
+            $sites = Site::all();
+        }
+
         $title = "publishers";
         $project_id = $request->project_id;
-        $sites = Site::all();
+        //$sites = Site::all();
         $sites_count = Site::count();
         return view('admin.publishers.publishers',compact('project_id','sites','sites_count'));
     }
@@ -55,14 +63,14 @@ class SiteController extends Controller
         $site = Site::where('id' , $request->site_id)->first();
 
 
-        $request->validate([
+        /* $request->validate([
             'site_name' => 'required',
             'site_url' => 'required',
             'site_cat' => 'required',
             'site_price' => 'required',
             'site_tat' => 'required',
             'site_country' => 'required',
-         ]);
+         ]); */
 
         $site->update([
              'site_name' => $request->get('site_name'),
@@ -107,14 +115,14 @@ class SiteController extends Controller
 
     // function for store publishers site
     public function store_publishers(Request $request){
-        $request->validate([
+        /* $request->validate([
            'site_name' => 'required',
            'site_url' => 'required',
            'site_cat' => 'required',
            'site_price' => 'required',
            'site_tat' => 'required',
            'site_country' => 'required',
-        ]);
+        ]); */
 
         Site::create([
             'user_id'   => auth()->id(),
