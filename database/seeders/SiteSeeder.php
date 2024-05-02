@@ -38,6 +38,7 @@ class SiteSeeder extends Seeder
                 'site_category' => $site['site_category'],
                 'site_price' => $site['site_price'],
                 'site_region_location' => $site['site_region_location'],
+                'site_monthly_traffic' => $site['site_monthly_traffic'],
 
                 'site_domain_authority' => $site['site_domain_authority'],
                 'site_domain_rating' => $site['site_domain_rating'],
@@ -63,23 +64,24 @@ class SiteSeeder extends Seeder
 
         //return $sites[0]['site_name'];
 
-        foreach($sites2 as $site){
+        foreach($sites2 as $site2){
             Site::create([
                 'user_id'   => 1,
-                'site_name' => $site['site_name'],
-                'site_url' => $site['site_url'],
-                'site_category' => $site['site_category'],
-                'site_price' => $site['site_price'],
-                'site_region_location' => $site['site_region_location'],
+                'site_name' => $site2['site_name'],
+                'site_url' => $site2['site_url'],
+                'site_category' => $site2['site_category'],
+                'site_price' => $site2['site_price'],
+                'site_region_location' => $site2['site_region_location'],
+                'site_monthly_traffic' => $site2['site_monthly_traffic'],
 
-                'site_domain_authority' => $site['site_domain_authority'],
-                'site_domain_rating' => $site['site_domain_rating'],
-                'site_sposored' => $site['site_sposored'],
-                'site_indexed' => $site['site_indexed'],
+                'site_domain_authority' => $site2['site_domain_authority'],
+                'site_domain_rating' => $site2['site_domain_rating'],
+                'site_sposored' => $site2['site_sposored'],
+                'site_indexed' => $site2['site_indexed'],
 
-                'site_dofollow' => $site['site_dofollow'],
-                'site_images' => $site['site_images'],
-                'site_time' => $site['site_time'],
+                'site_dofollow' => $site2['site_dofollow'],
+                'site_images' => $site2['site_images'],
+                'site_time' => $site2['site_time'],
             ]);
         }
 
@@ -93,27 +95,28 @@ class SiteSeeder extends Seeder
         $data3 = @json_decode(json_encode($sheetdb3->get()), true);
 
 
-        $sites3 = collect($data2);
+        $sites3 = collect($data3);
 
         //return $sites[0]['site_name'];
 
-        foreach($sites3 as $site){
+        foreach($sites3 as $site3){
             Site::create([
                 'user_id'   => 1,
-                'site_name' => $site['site_name'],
-                'site_url' => $site['site_url'],
-                'site_category' => $site['site_category'],
-                'site_price' => $site['site_price'],
-                'site_region_location' => $site['site_region_location'],
+                'site_name' => $site3['site_name'],
+                'site_url' => $site3['site_url'],
+                'site_category' => $site3['site_category'],
+                'site_price' => $site3['site_price'],
+                'site_region_location' => $site3['site_region_location'],
+                'site_monthly_traffic' => $site3['site_monthly_traffic'],
 
-                'site_domain_authority' => $site['site_domain_authority'],
-                'site_domain_rating' => $site['site_domain_rating'],
-                'site_sposored' => $site['site_sposored'],
-                'site_indexed' => $site['site_indexed'],
+                'site_domain_authority' => $site3['site_domain_authority'],
+                'site_domain_rating' => $site3['site_domain_rating'],
+                'site_sposored' => $site3['site_sposored'],
+                'site_indexed' => $site3['site_indexed'],
 
-                'site_dofollow' => $site['site_dofollow'],
-                'site_images' => $site['site_images'],
-                'site_time' => $site['site_time'],
+                'site_dofollow' => $site3['site_dofollow'],
+                'site_images' => $site3['site_images'],
+                'site_time' => $site3['site_time'],
             ]);
         }
 

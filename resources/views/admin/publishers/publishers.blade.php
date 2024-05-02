@@ -149,7 +149,8 @@
                                                     @else
                                                       <a href="#" style="width: 100px;" class="btn btn-danger">The Price Not Yet</a>
                                                     @endif
-                                                    {{-- <a href="{{route('order_index', ['project_id'=> request()->project_id && 1 , 'site_id' => $site->id ])}}" style="width: 100px;" class="btn btn-primary">$ {{$site->site_price}}</a> Buy Again --}}
+                                                    {{-- <a href="{{route('order_index', ['project_id'=> request()->project_id && 1 , 'site_id' => $site->id ])}}" style="width: 100px;"
+                                                         class="btn btn-primary">$ {{$site->site_price}}</a> Buy Again --}}
                                                   </div>
 
                                                   <div class="btn-group">
