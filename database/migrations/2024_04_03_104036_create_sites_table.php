@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('site_images')->nullable();
             $table->string('site_language')->nullable();
             $table->string('site_price')->nullable();
+            $table->string('site_price2')->nullable();
             $table->string('site_sposored')->nullable();
             $table->string('site_indexed')->nullable();
             $table->string('site_dofollow')->nullable();

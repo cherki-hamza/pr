@@ -30,5 +30,55 @@ class Site extends Model
 
     }
 
+    // method for handl the category return from database
+    public function handle_category(){
+        if(!empty($this->site_category)){
+
+            if($this->site_category == '-'){
+                 return 'No Category';
+            }else{
+                 return $this->site_category;
+            }
+
+        }else{
+            return 'No Category';
+        }
+
+    }
+
+
+    // method for handl the country : site_region_location return from database
+    public function handle_country(){
+        if(!empty($this->site_region_location)){
+
+            if($this->site_region_location == '-'){
+                 return 'All';
+            }else{
+                 return $this->site_region_location;
+            }
+
+        }else{
+            return 'All';
+        }
+
+    }
+
+
+    // method for handl the monthly_traffic : site_monthly_traffic return from database
+    public function handle_monthly_traffic(){
+        if(!empty($this->site_monthly_traffic)){
+
+            if($this->site_monthly_traffic == '-'){
+                 return 'Not Defined';
+            }else{
+                 return $this->site_monthly_traffic;
+            }
+
+        }else{
+            return 'Not Defined';
+        }
+
+    }
+
 
 }

@@ -101,11 +101,13 @@
 
                 </div>
 
+                @can('read user')
                 <div class="row">
                     <div class="container col-md-6">
                         <canvas id="myChart"></canvas>
                       </div>
                 </div>
+                @endcan
                 <!-- /.row (main row) -->
             </div><!-- /.container-fluid -->
         </section>

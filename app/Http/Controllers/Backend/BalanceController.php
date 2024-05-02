@@ -11,7 +11,7 @@ class BalanceController extends Controller
     // method for add balance
     public function balance(){
         $title = 'Balance';
-        $transactions =Payment::paginate(10);
+        $transactions = Payment::paginate(10);
 
        return view('admin.balance.balance',compact('title','transactions'));
     }

@@ -117,7 +117,7 @@
                                 <div class="card-body">
                                     <div class="my-2">
                                       <label for="post_placement_url">Post Placement URL:</label>
-                                      <input style="color: red;" value="{{ ($post) ? $post->post_title : '' }}" type="text" class="form-control" name="post_placement_url" id="post_placement_url">
+                                      <input style="color: red;" value="{{ (!empty($post->post_title)) ? $post->post_title : $task->site->site_url }}" type="text" class="form-control" name="post_placement_url" id="post_placement_url">
                                     </div>
 
                                     <div class="my-2">
@@ -130,25 +130,83 @@
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" name="action" value="in_progress"  class="btn btn-info  mx-5"><i class="fas fa-save mr-2"></i>
+
+                            @if(!empty($task))
+
+                                    @if(empty($post))
+                                    <button style="font-size: 18px" type="submit" name="action" value="in_progress"  class="btn btn-primary  mx-5">
+                                        <i class="fas fa-save mr-2"></i>
+                                        Save The Post & is still in Progress
+                                    </button>
+
+                                    @else
+
+                                        @if ($post->status == 1 || $post->status == 2)
+                                        <button {{ ($post->status == 2) ? 'disabled' : ''}} style="font-size: 18px"  type="submit" name="action" value="in_progress"  class="btn btn-info mx-5">
+                                            <i class="fas fa-spinner mr-2"></i>
+                                            Update The Post & is still in Progress
+                                        </button>
+                                        @endif
+
+                                                @if($post->status == '2')
+                                                    <button style="font-size: 18px" disabled  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
+                                                        <i class="fas fa-check mr-2"></i>The Notification Already sent to Client At [{{$post->updated_at->diffForHumans()}} ] waiting The Approval  Or Improvement Or Rejectd
+                                                    </button>
+                                                @elseif($post->status == '1')
+                                                    <button style="font-size: 18px"  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
+                                                        <i class="fas fa-check mr-2"></i>
+                                                        Send The Post To Client for Get The Approval
+                                                    </button>
+                                                 @elseif($post->status == '4')
+                                                    <button style="font-size: 18px" type="submit" name="action" value="client_approval"  class="btn btn-info mx-5">
+                                                        <i class="fas fa-spinner mr-2"></i>
+                                                        Improve the post and update it
+                                                    </button>
+                                                    <button style="font-size: 18px"  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
+                                                        <i class="fas fa-check mr-2"></i>
+                                                        Send The Post To Client for Get The Approval
+                                                    </button>
+                                                    @elseif($post->status == '6')
+                                                    <button style="font-size: 18px" type="submit" name="action" value="client_approval"  class="btn btn-info mx-5">
+                                                        <i class="fas fa-spinner mr-2"></i>
+                                                        Speak with client and Improve and update the post
+                                                    </button>
+                                                    <button style="font-size: 18px"  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
+                                                        <i class="fas fa-check mr-2"></i>
+                                                        Send The Post To Client for Get The Approval
+                                                    </button>
+
+                                                    @else
+                                                           <span class="btn btn-success">This Task Already Done</span>
+                                                @endif
+
+
+                                    @endif
+
+                            @else
+                               <button class="btn btn-danger">There is no task now</button>
+                            @endif
+
+                            {{-- <button type="submit" name="action" value="in_progress"  class="btn btn-info  mx-5"><i class="fas fa-save mr-2"></i>
                              {{ ($post) ? 'Update The Post, and  is still In Progress' : 'Save The Post, And Send To Client ' }}
-                            </button>
+                            </button> --}}
 
                             {{-- @if ($post->status == 1 || $post->status == 0)
                             <button  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5"><i class="fas fa-check mr-2"></i>Send To Client for Get The Approval</button>
                             @endif --}}
 
-                            @if (!empty($post))
+                           {{--  @if (!empty($post))
 
                                 @if ($post->status == 2)
                                 <button disabled  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
-                                    <i class="fas fa-check mr-2"></i>The Notification Already sent to Client At [{{$post->updated_at->diffForHumans()}} ] waiting The Approval</button>
+                                    <i class="fas fa-check mr-2"></i>The Notification Already sent to Client At [{{$post->updated_at->diffForHumans()}} ] waiting The Approval
+                                </button>
                                 @else
                                 <button  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
                                     <i class="fas fa-check mr-2"></i>Send To Client for Get The Approval</button>
                                 @endif
 
-                            @endif
+                            @endif --}}
 
                             <input type="hidden" name="site_id" value="{{$task->site->id}}">
                         </div>

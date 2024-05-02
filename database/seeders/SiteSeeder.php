@@ -19,7 +19,9 @@ class SiteSeeder extends Seeder
     public function run()
     {
 
-        $sheetdb = new SheetDB('btvs8e6ku3z5m');
+        //**********************  1 ********************************//
+        // hpac 1 :  hzup0f5v2ttx8
+        $sheetdb = new SheetDB('hzup0f5v2ttx8');
 
         $data = @json_decode(json_encode($sheetdb->get()), true);
 
@@ -47,6 +49,76 @@ class SiteSeeder extends Seeder
                 'site_time' => $site['site_time'],
             ]);
         }
+
+      //****************************************************************//
+
+      //**********************  2  ********************************//
+        // hpac 2 :  tqrbuhd4u5rud
+        $sheetdb2 = new SheetDB('tqrbuhd4u5rud');
+
+        $data2 = @json_decode(json_encode($sheetdb2->get()), true);
+
+
+        $sites2 = collect($data2);
+
+        //return $sites[0]['site_name'];
+
+        foreach($sites2 as $site){
+            Site::create([
+                'user_id'   => 1,
+                'site_name' => $site['site_name'],
+                'site_url' => $site['site_url'],
+                'site_category' => $site['site_category'],
+                'site_price' => $site['site_price'],
+                'site_region_location' => $site['site_region_location'],
+
+                'site_domain_authority' => $site['site_domain_authority'],
+                'site_domain_rating' => $site['site_domain_rating'],
+                'site_sposored' => $site['site_sposored'],
+                'site_indexed' => $site['site_indexed'],
+
+                'site_dofollow' => $site['site_dofollow'],
+                'site_images' => $site['site_images'],
+                'site_time' => $site['site_time'],
+            ]);
+        }
+
+      //****************************************************************//
+
+
+        //**********************  3  ********************************//
+        // hpac 3 :  84t4a75u6u25w
+        $sheetdb3 = new SheetDB('84t4a75u6u25w');
+
+        $data3 = @json_decode(json_encode($sheetdb3->get()), true);
+
+
+        $sites3 = collect($data2);
+
+        //return $sites[0]['site_name'];
+
+        foreach($sites3 as $site){
+            Site::create([
+                'user_id'   => 1,
+                'site_name' => $site['site_name'],
+                'site_url' => $site['site_url'],
+                'site_category' => $site['site_category'],
+                'site_price' => $site['site_price'],
+                'site_region_location' => $site['site_region_location'],
+
+                'site_domain_authority' => $site['site_domain_authority'],
+                'site_domain_rating' => $site['site_domain_rating'],
+                'site_sposored' => $site['site_sposored'],
+                'site_indexed' => $site['site_indexed'],
+
+                'site_dofollow' => $site['site_dofollow'],
+                'site_images' => $site['site_images'],
+                'site_time' => $site['site_time'],
+            ]);
+        }
+
+      //****************************************************************//
+
 
     }
 }

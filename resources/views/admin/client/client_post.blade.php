@@ -91,9 +91,7 @@
                                             <tr>
                                                 <td class="bg-primary text-white">Special Requirement</td>
                                                 <td>
-                                                    <textarea class="form-control" rows="6" wrap="soft" readonly="">
-                                                        {!! $task->task_special_requirement !!}
-                                                    </textarea>
+                                                    <textarea class="form-control" rows="6" wrap="soft" readonly="">{!! $task->task_special_requirement !!}</textarea>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -105,23 +103,23 @@
                         </div>
                         <div class="mt-3">
                             <div class="card ">
-                                <div class="card-header bg-primary">
+                                <div class="card-header">
                                     @if (!empty($post))
 
                                     @if ($post->status == 2)
-                                    <p class="alert alert-warning my-4 text-center">Your Post Content is Ready Now , check it and if it's Satisfy for You  Approve it for complete the Task Or Take it To the Improvement zone</p>
+                                    <p style="font-size: 20px" class="alert alert-warning my-4 text-center">Your Post Content is Ready Now , check it and if it's Satisfy for You  Approve it for complete the Task Or Take it To the Improvement zone Or Reject It And Write a note for Improve and Regenerate you Post</p>
 
                                     @endif
 
 
                                   @endif
-                                       <h6 class="text-white mt-n2 mb-n2">Your Post Content</h6>
+
                                 </div>
 
                                 <div class="card-body">
 
                                     {{-- <button onclick="Export2Doc('content-to-pdf');">Export as .doc</button> --}}
-                                    @if ($post)
+                                    @if ($post->status == 5)
                                     <div  class="my-3">
                                     <button onclick="Export2Doc('exportContent');"  class="btn  ml-1 mt-2" style="background-color:#3c5a99; color:white">
                                         <i class="mr-2" data-fa-i2svg="">
@@ -134,7 +132,16 @@
                                     </div>
                                     @endif
 
-                                    <textarea readonly="true" id="summernote" class="my-3" name="post_editor_data">{!! $post->post_body ?? '' !!}</textarea>
+                                    <hr style="border: #3c5a99 solid 2px;">
+                                    <label>Your Post Content :</label>
+                                    <textarea readonly="true" id="summernote" class="my-3" name="post_editor_data">{!! $post->post_body ?? '' !!}</textarea> <br>
+
+                                    <hr style="border: #3c5a99 solid 2px;">
+
+                                    @if($post->status == 2)
+                                      <label for="">Write Your Notes: <span class="text-danger">(This note is not Important you can leave empty)</span></label>
+                                      <textarea class="form-control" name="post_note" cols="30" rows="3" placeholder="Write your Notes"></textarea>
+                                    @endif
 
                                     {{-- <div style="display: none;" id="content-to-pdf">
                                         {!! $post->post_body ?? '' !!}
@@ -148,14 +155,48 @@
                         @if (!empty($post))
                         <div class="text-center">
 
-                            @if($task->status == 2 && $task->status != 0 && $task->status != 1 && $task->status != 3 && $task->status != 4 && $task->status != 5 && $task->status != 6)
+                            @if ($post->status == '5')
+                            <button {{ ($post->status == 5) ? 'disabled' : '' }} style="width: {{ ($post->status == 5) ? '300' : '150' }}px" type="submit" name="action" value="approve"  class="btn btn-warning my-2  mx-5">
+                                <i class="fas fa-check mr-2"></i>
+                                {{ ($post->status == 5) ? 'You Already Aproved The Post' : 'Approve' }}
+                            </button>
+                            @elseif($post->status == 4)
+                            <button style="font-size: 20px" {{ ($post->status == 4) ? 'disabled' : '' }} style="width:500px" type="submit" name="action" value="approve"  class="btn btn-info my-2  mx-5">
+                                <i class="fas fa-check mr-2"></i>
+                                 You Already Send To The Pr Content Team For Doing More Improvement, Wait Response :) ...
+                            </button>
+
+                            @elseif($post->status == 6)
+                                <span disabled="true" style="font-size: 20px" style="width:500px"  class="btn btn-danger my-2  mx-5">
+                                    <i class="fas fa-check mr-2"></i>
+                                    Your Rejected This Post
+                                </span>
+                            @else
+                                <button {{ ($post->status == 5) ? 'disabled' : '' }} style="width: {{ ($post->status == 5) ? '300' : '150' }}px" type="submit" name="action" value="approve"  class="btn btn-warning my-2  mx-5">
+                                    <i class="fas fa-check mr-2"></i>
+                                    {{ ($post->status == 5) ? 'You Already Aproved The Post' : 'Approve' }}
+                                </button>
+
+                                <button {{ ($post->status == 5) ? 'disabled' : '' }} style="width: 150px"  name="action" value="improve"  class="btn btn-info my-2  mx-5">
+                                        <i class="fa fa-wrench mr-2" aria-hidden="true"></i>
+                                        Improve
+                                </button>
+
+                                <button {{ ($post->status == 5) ? 'disabled' : '' }} style="width: 150px" type="submit" name="action" value="reject"  class="btn btn-danger my-2  mx-5">
+                                        <i class="fas fa-ban mr-2"></i>
+                                        Reject
+                                </button>
+                            @endif
+
+
+                            {{-- @if($task->status == 2)
                             <button style="width: 150px" type="submit" name="action" value="approve"  class="btn btn-warning my-2  mx-5"><i class="fas fa-check mr-2"></i>
                                 Approve
                            </button>
 
                            @else
                               <p class="alert alert-success">Your Post is Completed</p>
-                           @endif
+                           @endif --}}
 
                            {{-- @if($task->status == 6 && $task->status != 0 && $task->status != 1 && $task->status != 2 && $task->status != 3 && $task->status != 4 && $task->status != 5)
                             <button disabled="true" type="submit" name="action" value="approve_allready"  class="btn btn-warning my-2  mx-5"><i class="fas fa-check mr-2"></i>

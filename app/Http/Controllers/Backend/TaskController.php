@@ -96,7 +96,7 @@ class TaskController extends Controller
     }
 
 
-    // method for task  task_approve
+    // method for task  task_approve or task_improve or task rejected
     public function handel_task(Request $request){
 
         // get the params from request
@@ -111,8 +111,14 @@ class TaskController extends Controller
            $task = Task::where('user_id',$user_id)->where('id',$task_id)->first();
            $post = Post::where('task_id',$task_id)->first();
 
-            $task->update(['status' => Task::COMPLETED]);
-            $post->update(['status' => Task::COMPLETED]);
+            $task->update([
+                'status'      => Task::COMPLETED,
+                'task_status' => 1
+            ]);
+            $post->update([
+                'status' => Task::COMPLETED,
+                'post_note'   => $request->post_note,
+            ]);
 
             return redirect()->back()->with('success' , 'The post is Approved AND Completed , So Your Post is ready To Be Published');
 
@@ -124,8 +130,13 @@ class TaskController extends Controller
             $task = Task::where('user_id',$user_id)->where('id',$task_id)->first();
             $post = Post::where('task_id',$task_id)->first();
 
-            $task->update(['status' => Task::IMPROVEMENT]);
-            $post->update(['status' => Task::IMPROVEMENT]);
+            $task->update([
+                'status'     => Task::IMPROVEMENT,
+            ]);
+            $post->update([
+                'status' => Task::IMPROVEMENT,
+                'post_note'  => $request->post_note
+            ]);
 
             return redirect()->back()->with('info' , 'The post is in Improvement Proccessing');
 
@@ -137,8 +148,13 @@ class TaskController extends Controller
             $task = Task::where('user_id',$user_id)->where('id',$task_id)->first();
             $post = Post::where('task_id',$task_id)->first();
 
-            $task->update(['status' => Task::REJECTED]);
-            $post->update(['status' => Task::REJECTED]);
+            $task->update([
+                'status'     => Task::REJECTED,
+            ]);
+            $post->update([
+                'status' => Task::REJECTED,
+                'post_note'  => $request->post_note
+            ]);
 
             return redirect()->back()->with('danger' , 'The post is Rejected');
 

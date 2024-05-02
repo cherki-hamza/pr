@@ -49,7 +49,7 @@
                                     @csrf
                                 <div style="float: right" class="form-group row">
 
-                                    <input type="text" style="width: 280px;" class="form-control mx-2" value="{{ old('search') }}" name="search" placeholder="Enter Search Keword">
+                                    <input type="text" style="width: 280px;" class="form-control mx-2" autocomplete="on" value="{{ request()->search ?? '' }}" required  name="search" placeholder="Enter Search Keword">
                                     <button type="submit" class="btn btn-primary btn-sm loading-trigger mr-3">
                                         <svg style="width: 25px" class="svg-inline--fa fa-search fa-w-16 mr-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
                                     </svg>Search</button>
@@ -71,6 +71,10 @@
                                                 <tr>
                                                     <th>
                                                         Websites
+                                                    </th>
+
+                                                    <th>
+                                                        Websites Name
                                                     </th>
 
                                                     <th>
@@ -120,12 +124,15 @@
 
                                                 </td>
 
-                                                <td><span class="badge badge-primary">{!!  (!empty($site->site_category)) ? $site->site_category  : 'Not Yet'  !!}</span></td>
+                                                <td>{{ $site->site_name }}</td>
+
+                                                <td><span class="badge badge-primary">{{ $site->handle_category() }}</span></td>
+
 
                                                 <td class="text-center align-middle">
                                                     Monthly Traffic <br>
                                                     <img src="https://www.icopify.co/img/google-analytics-icon.svg" alt="google analytic icon" class=" mb-1" width="13px">
-                                                    <span class="font-weight-bold h6"> 10000,924 </span>
+                                                    <span class="font-weight-bold h6"> {{ $site->handle_monthly_traffic() }} </span>
                                                 </td>
 
                                                 <td class="text-center align-middle">
@@ -139,7 +146,7 @@
 
                                                 <td class="text-center align-middle">
                                                     {{-- <img src="https://www.icopify.co/img/flags/us.jpg" alt="" class="shadow"> --}}
-                                                   <br><span>{{  $site->site_region_location ?? '*'   }}</span>
+                                                    <br><span>{{ $site->handle_country()  }}</span>
                                                </td>
 
                                                <td class="text-center align-middle">

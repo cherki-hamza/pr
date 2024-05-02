@@ -48,16 +48,21 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($users as $user)
+                                          @php
+                                              if ($user->role == 'super-admin') {
+                                                continue;
+                                              }
+                                          @endphp
                                             <tr class="text-center">
                                                 <td>{{ $user->id }}</td>
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->role }}</td>
-                                                <td><span style="font-size: 18px;" class="badge badge-warning"> {{ count($user->projects) }}</span></td>
+                                                <td><span style="font-size: 18px;" class="badge badge-warning"> {{ count($user->projects) }} </span></td>
                                                 <td class="text-center">
-                                                    <div class="btn-group">
+                                                     <div class="btn-group">
                                                        <a href="{{ route('all_user_projects' , ['user_id' => $user->id]) }}" style="font-size: 18px;" class="btn btn-sm btn-primary"><i class="fas fa-folder mr-2"></i>See Projects</a>
-                                                    </div>
+                                                     </div>
                                                 </td>
                                             </tr>
                                         @endforeach
