@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('balances', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('balane')->nullable();
+            $table->string('balance')->nullable();
             $table->string('bonus')->nullable();
             $table->string('reserved')->nullable();
             $table->string('transaction_description')->nullable();

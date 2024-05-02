@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Balance;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Site;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller
 {
@@ -14,12 +17,24 @@ class OrderController extends Controller
     // order_index
     public function order_index(Request $request,$project_id,$site_id)
     {
-        //
+
+        // get the price of order
         $title = 'Orders';
         $price  = Site::where('id',$request->site_id)->first()->site_price;
-        return view('admin.order.order_index', compact('title','price'));
-    }
 
+        // befor client order or buy task we need to check if hase enough
+        $balance =  Payment::where('user_id', auth()->id() )->sum('amount');
+
+        if($balance <= $price){
+            $name = auth()->user()->name;
+            Session::flash('message', "Hello There $name, Your Balance is Not Enough, Please add Fond !");
+            return redirect()->route('add_funds')->with('danger', 'Your Balance Not Enough, Please add Fond !');
+        }else{
+            return view('admin.order.order_index', compact('title','price'));
+        }
+
+
+    }
 
 
 
@@ -91,22 +106,40 @@ class OrderController extends Controller
         ]);
 
 
+        // store the balance result for every user
+        // 1) get the Total payments by auth user
+        $auth_user_payments = Payment::where('user_id', auth()->id())->sum('amount');
+        // 2) get the Total Tska Payed
+        $task_site_prices = Task::where('user_id' , auth()->id())->site->sum('site_price');
+        // count the balance balance = (Total_Payments - Total_Tasks);
+        $balance = ($auth_user_payments - $task_site_prices);
+
+        Balance::updateOrCreate([
+            'user_id' => auth()->id()
+        ], [
+            'balance' => $balance
+        ]);
+
+
         return redirect()->route('projects.index')->with('success', 'Content Placement Task Order Successfully!');
     }
 
-    // store task c_c_p
+    // store task
     public function store_ccp(Request $request)
     {
+
         $site_id = $request->site_id;
         $site_price =   Site::where('id',$site_id)->first()->site_price;
         $project_id = $request->project_id;
 
+        // get the client balance and check if its enough
+
 
         // validate the data
         $request->validate([
-           'task_target_url'          => 'required',
-           'task_anchor_text'         => 'required',
-           'task_special_requirement' => 'required',
+           'task_target_url'             => 'required',
+           'task_anchor_text'            => 'required',
+           'task_special_requirement'    => 'required',
         ]);
 
         // create the order
@@ -114,7 +147,7 @@ class OrderController extends Controller
             'user_id' => auth()->user()->id,
             'project_id' => $project_id,
             'site_id' => $site_id,
-            'price'   => '14.91' //$site_price
+            'price'   => $site_price
         ]);
 
         // create the task
@@ -128,11 +161,15 @@ class OrderController extends Controller
             'task_target_url' => $request->task_target_url,
             'task_anchor_text' => $request->task_anchor_text,
             'task_special_requirement' => $request->task_special_requirement,
+            'task_price'        => $site_price
         ]);
 
 
         return redirect()->route('projects.index')->with('success', 'Content Creation and Placement Task Order Successfully!');
     }
+
+
+    // methode for show orders by client
 
     /**
      * Display the specified resource.

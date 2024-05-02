@@ -43,16 +43,19 @@
                         <!-- Order Form -->
 
 
-
+                        @if(Session::has('message'))
                         <div class="alert alert-warning text-center font-weight-bold" role="alert">
-                            Get <span class="font-weight-extra-bold h5 text-danger"> up to 25%</span>
-                            of the funds you add to your account
-                        </div>
+                            <span class="font-weight-extra-bold h5 text-danger">
+                                <strong>  {{ session()->get('message') }}</strong>
+                            </span>
+                       </div>
+                        @endif
+
 
                         <div>
 
                             <div class="ml-auto p-0">
-                                <h5>Your Current Balance: $670.22</h5>
+                                <h5>Your Current Balance: ${{ \App\Models\Payment::where('user_id', auth()->id())->sum('amount') }}</h5>
                             </div>
                             {{-- <form action="https://icopify.co/add-funds/pay" method="POST" id="paymentForm"
                                 onsubmit="this.querySelectorAll('[type=submit]').forEach(b => b.disabled = true)"> --}}

@@ -19,7 +19,8 @@
             @if (auth()->user()->role == 'super-admin')
                <span style="font-size: 20px;">PR Content Balance: ${{ \App\Models\Payment::sum('amount') }} </span>
             @else
-            <span style="font-size: 20px;">Balance: ${{ \App\Models\Payment::where('user_id',auth()->user()->id)->sum('amount') }} </span>
+            <span style="font-size: 20px;">Balance: ${{ $balance ?? 0 }} </span>
+           {{--  <span style="font-size: 20px;">Balance: ${{ \App\Models\Payment::where('user_id',auth()->user()->id)->sum('amount') }} </span> --}}
             @endif
 
         </span> </a>

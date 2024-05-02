@@ -132,5 +132,10 @@ class User extends Authenticatable
         return $this->hasMany(Task::class)->where('status',Task::REJECTED);
     }
 
+    // relashion between user and ayement
+    public function payments(){
+        return $this->hasMany(Payment::class);
+    }
+
 
 }

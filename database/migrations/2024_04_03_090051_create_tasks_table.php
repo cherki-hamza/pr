@@ -20,10 +20,12 @@ return new class extends Migration
             $table->integer('site_id');
             $table->integer('order_id');
             $table->integer('status')->default(0);
+            $table->integer('task_status')->default(0);
             $table->text('task_editor_data')->nullable();
             $table->enum('task_type',['c_p','c_c_p'])->nullable();
             $table->string('task_target_url')->nullable();
             $table->string('task_anchor_text');
+            $table->string('task_price')->nullable();
             $table->text('task_special_requirement')->nullable();
             $table->text('task_post_placement_url')->nullable();
             $table->timestamps();

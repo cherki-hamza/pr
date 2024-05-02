@@ -9,6 +9,7 @@ use App\Models\Site;
 class SiteController extends Controller
 {
 
+    // all publishers for client
     public function site_index(Request $request){
 
         if (!empty(request('search'))) {
@@ -43,6 +44,7 @@ class SiteController extends Controller
             //return $request->search;
             $sites = Site::where('site_name', 'like', '%' . request('search') . '%')
                           ->OrWhere('site_region_location' , 'like', '%' . request('search') . '%')
+                          ->OrWhere('site_category' , 'like', '%' . request('search') . '%')
                           ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->get();
         } else {
             $sites = Site::all();
