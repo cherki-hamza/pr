@@ -46,7 +46,7 @@ class SiteController extends Controller
             $sites = Site::where('site_name', 'like', '%' . request('search') . '%')
                           ->OrWhere('site_region_location' , 'like', '%' . request('search') . '%')
                           ->OrWhere('site_category' , 'like', '%' . request('search') . '%')
-                          ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->get();
+                          ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->paginate(12);
         } else {
             $sites = Site::paginate(12);
         }
