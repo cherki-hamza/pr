@@ -70,6 +70,15 @@ class SiteController extends Controller
         return view('admin.publishers.edit_publisher' , compact('site'));
     }
 
+
+    // method for eframe publisher data in datatabe in home site page
+    public function publisher_data(){
+        $sites = Site::latest()->paginate(5);
+        $site_count = Site::count();
+        $latest_update = Site::latest()->first()->created_at->format('M d Y');
+        return view('admin.publishers.publisher_data',compact('sites','site_count','latest_update'));
+    }
+
     // method for update the site publisher
     public function update_publishers(Request $request){
 

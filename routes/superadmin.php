@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\SiteController;
 use App\Http\Controllers\Backend\TaskController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -62,5 +63,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     // ********************************************************************************************************************************************************************************
 
+    // route for Contact page
+    Route::resource('contacts' , ContactController::class);
 
 });

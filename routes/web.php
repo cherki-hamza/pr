@@ -31,8 +31,11 @@ use SheetDB\SheetDB;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $sites = Site::all();
+    return view('site' , compact('sites'));
 })->name('index');
+
+Route::get('publishers/publisher_data' , [SiteController::class , 'publisher_data'])->name('publisher_data');
 
 Route::get('/dev', function (Request $request) {
 
