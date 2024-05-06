@@ -25,4 +25,9 @@ class Post extends Model
         return $this->belongsTo(Task::class);
     }
 
+    // relation betwenn post and task
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 }

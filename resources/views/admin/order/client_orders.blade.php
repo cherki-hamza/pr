@@ -29,50 +29,46 @@
                             @can('create user')
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    user Projects
+                                    Client Orders
                                 </h3>
                             </div>
                             @endcan
                             <!-- /.card-header -->
                             <div class="card-body table-responsive">
                                 <table class="table table-bordered table-hover datatable">
-                                    <thead>
+                                    <thead class="bg-info">
                                         <tr>
                                             <th>ID#</th>
-                                            <th>Name</th>
+                                            <th>Client Name</th>
                                             <th>Email</th>
-                                            <th>Projects</th>
-                                            <th class="bg-secondary">Not Started</th>
-                                            <th class="bg-primary">In Progress</th>
-                                            <th class="bg-warning">Waiting Approve from Client</th>
-                                            <th class="bg-info">Need Improvement</th>
-                                            <th class="bg-success">Completed</th>
-                                            <th class="bg-danger">Rejected</th>
-                                            <th>See Projects</th>
+                                            <th>Tasks Waiting</th>
+                                            <th>Price</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($users as $user)
                                           @php
                                               if ($user->role == 'super-admin') {
-                                                    continue;
+                                                continue;
                                               }
                                           @endphp
                                             <tr class="text-center">
                                                 <td>{{ $user->id }}</td>
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
-                                                <td><span style="font-size: 18px;" class="badge badge-warning"> {{ count($user->projects) }} </span></td>
-                                                <td><span style="font-size: 18px;" class="badge badge-primary"> {{ count($user->tasks_not_started_projects  ) }} </span></td>
-                                                <td><span style="font-size: 22px;" class="badge badge-secondary">{{ count($user->tasks_in_progress_projects) }}</span></td>
-                                                <td><span style="font-size: 22px;" class="badge badge-warning">{{ count($user->tasks_pending_approval_projects) }}</span></td>
-                                                <td><span style="font-size: 22px;" class="badge badge-info">{{ count($user->tasks_improvment_projects) }}</span></td>
-                                                <td><span style="font-size: 22px;" class="badge badge-success">{{ count($user->tasks_completed_projects) }}</span></td> 
-                                                <td><span style="font-size: 22px;" class="badge badge-danger">{{ count($user->tasks_rejected_projects) }}</span></td>
+                                                <td>
+                                                    <span style="font-size: 22px;">
+                                                        <a href="{{ route('all_user_projects' , ['user_id' => $user->id]) }}" style="font-size: 18px;" class="badge badge-warning">
+                                                          {{  $user->tasks_not_started_projects->count()  }}
+                                                        </a>
+                                                    </span>
+                                                </td>
                                                 <td class="text-center">
-                                                     <div class="btn-group">
-                                                       <a href="{{ route('all_user_projects' , ['user_id' => $user->id]) }}" style="font-size: 18px;" class="btn btn-sm btn-primary"><i class="fas fa-folder mr-2"></i>See Projects</a>
-                                                     </div>
+                                                    <div class="btn-group">
+                                                        <a href="{{ route('all_user_projects' , ['user_id' => $user->id]) }}" style="font-size: 18px;" class="btn btn-sm btn-success">
+                                                            <i class="fas fa-folder mr-2"></i>Show Tasks
+                                                        </a>
+                                                      </div>
                                                 </td>
                                             </tr>
                                         @endforeach

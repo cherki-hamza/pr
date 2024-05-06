@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Backend\SiteController;
 use App\Http\Controllers\Backend\TaskController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,14 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     // rote for client for handel the post if ( approve or improve or rejected )
     Route::post('task/{task_id?}/post/{post_id?}/user/{user_id?}/project/{project_id?}/handel_task',[TaskController::class,'handel_task'])->name('handel_task');
+
+    // route for show the client invoices
+    Route::get('client/invoices' , [OrderController::class,'client_invoices'])->name('client_invoices');
+
+    // ckeditor
+   /*  Route::get('client/ck' , [HomeController::class,'ck'])->name('ck');
+
+    Route::post('client/store_ck' , [HomeController::class,'store_ck'])->name('store_ck'); */
 
 
 });

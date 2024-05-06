@@ -703,12 +703,12 @@
 
                                                 {{-- start --}}
                                                 @foreach ($payments as $payment)
-                                                <tr class="">
-                                                    <td class="">{{ $payment->created_at->diffForHumans() }}</td>
-                                                    <td class="">You have added funds to Your account via {{ $payment->payment_platform }}
+                                                <tr style="font-size: 20px">
+                                                    <td class="text-primary">{{ $payment->created_at->diffForHumans() }}</td>
+                                                    <td class="text-primary">You have added funds to Your account via {{ $payment->payment_platform }}
                                                     </td>
-                                                    <td class="">${{ $payment->amount }}</td>
-                                                    <td class="text-center">{{ $payment->payment_platform }}</td>
+                                                    <td class="text-primary">${{ $payment->amount }}</td>
+                                                    <td class="text-center text-primary">{{ $payment->payment_platform }}</td>
                                                     {{-- <td class="text-center">
                                                         <a href="#" id="billingInformation" data-toggle="modal"
                                                             data-target="#billingInformation">Add Billing Details</a>

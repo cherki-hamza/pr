@@ -55,17 +55,17 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="row">
-                                   {{--  <h3>publishers..</h3> --}}
+                                   {{--  <h3>publishers..</h3> --}} {{--  datatable --}}
                                     <div class="table-responsive col-md-12">
-                                        <table class="table table-bordered table-hover datatable">
+                                        <table class="table table-bordered table-hover">
                                             <thead class="bg-300">
 
                                                 <tr>
-                                                    <th>
-                                                         Websites
+                                                    <th style="width: 250px;">
+                                                        Websites
                                                     </th>
 
-                                                    <th>
+                                                    <th style="width: 254px;">
                                                         Websites Name
                                                     </th>
 
@@ -85,8 +85,7 @@
                                                          Moz DA
                                                     </th>
 
-
-                                                    <th>
+                                                    <th style="width: 150px;">
                                                         REGION / LOCATION
                                                     </th>
 
@@ -134,7 +133,9 @@
                                                 </td>
 
                                                 <td class="text-center align-middle"><span class="badge badge-primary mr-1">M</span>DA <strong class="font-weight-bold">{{$site->site_domain_authority}}</strong>
-                                                    {{-- <br>Spam Score <strong class="text-facebook font-weight-bold">1%</strong> --}}
+                                                    @if (!empty($site->spam_score) && $site->spam_score != '-' )
+                                                    <br>Spam Score <strong class="text-primary font-weight-bold">{{$site->spam_score}}%</strong>
+                                                    @endif
                                                 </td>
 
                                                 <td class="text-center align-middle">
@@ -145,7 +146,7 @@
                                                <td class="">
                                                   <div class="btn-group btn-group-sm btn-block">
                                                     @if(!empty($site->site_price))
-                                                      <a href="{{route('order_index', ['project_id'=> request()->project_id && 1 , 'site_id' => $site->id ])}}" style="width: 100px;" class="btn btn-success">{{ ($site->site_price) ? "$$site->site_price" : '$0'}}</a>
+                                                      <a href="{{route('order_index', ['project_id'=> request()->project_id , 'site_id' => $site->id ])}}" style="width: 100px;" class="btn btn-success">{{ ($site->site_price) ? "$$site->site_price" : '$0'}}</a>
                                                     @else
                                                       <a href="#" style="width: 100px;" class="btn btn-danger">The Price Not Yet</a>
                                                     @endif
@@ -194,7 +195,7 @@
                                             </tbody>
                                         </table>
                                         <div style="float: right" class="">
-                                          {{-- {{$sites->links()}} --}}
+                                          {{$sites->links()}}
                                         </div>
                                     </div>
                                 </div>

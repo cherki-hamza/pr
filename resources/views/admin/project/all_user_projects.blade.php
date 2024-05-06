@@ -71,7 +71,7 @@
 
                                                         {{-- start content writer --}}
                                                         <li readonly class="d-flex">
-                                                            <div class="p-2"><i class="fa fa-clipboard-list mr-2"></i>Content Writing </div>
+                                                            <div class="p-2"><i class="fa fa-clipboard-list mr-2"></i>Content Writing & Placement </div>
 
                                                             <div class="ml-auto p-2">
 

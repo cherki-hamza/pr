@@ -16,9 +16,10 @@ class SiteController extends Controller
             //return $request->search;
             $sites = Site::where('site_name', 'like', '%' . request('search') . '%')
                           ->OrWhere('site_region_location' , 'like', '%' . request('search') . '%')
-                          ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->get();
+                          ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->paginate(12);
         } else {
-            $sites = Site::all();
+            //$sites = Site::all();
+            $sites = Site::paginate(12);
         }
 
         $title = "publishers";
@@ -47,7 +48,7 @@ class SiteController extends Controller
                           ->OrWhere('site_category' , 'like', '%' . request('search') . '%')
                           ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->get();
         } else {
-            $sites = Site::all();
+            $sites = Site::paginate(12);
         }
 
 
@@ -65,14 +66,14 @@ class SiteController extends Controller
 
     // method for sow the page when to edit the site publisher
     public function edit_publishers(Request $request){
-        $site = Site::where('id' , $request->site_id)->first();
+        $site = Site::where('id' , $request->site_id)->firstOrFail();
         return view('admin.publishers.edit_publisher' , compact('site'));
     }
 
     // method for update the site publisher
     public function update_publishers(Request $request){
 
-        $site = Site::where('id' , $request->site_id)->first();
+        $site = Site::where('id' , $request->site_id)->firstOrFail();
 
 
         /* $request->validate([
@@ -113,7 +114,7 @@ class SiteController extends Controller
     }
 
     public function favorite(Request $request,$site_id){
-        $site = Site::where('id',request()->site_id)->first();
+        $site = Site::where('id',request()->site_id)->firstOrFail();
         $check = $site->favoritesCount;
         if($check){
             $site->toggleFavorite();

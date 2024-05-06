@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('site_dofollow')->nullable();
             $table->string('site_time')->nullable();
             $table->string('site_region_location')->nullable();
+            $table->string('spam_score')->nullable();
             $table->timestamps();
         });
     }

@@ -137,5 +137,37 @@ class User extends Authenticatable
         return $this->hasMany(Payment::class);
     }
 
+    //************************************* */
+
+    // tasks NOT_STARDET
+    public function tasks_not_started_projects($site_id=null){
+        return $this->hasMany(Task::class)->where('status',Task::NOT_STARDET);
+    }
+
+    // tasks IN_PROGRESS
+    public function tasks_in_progress_projects($site_id=null){
+        return $this->hasMany(Task::class)->where('status',Task::IN_PROGRESS);
+    }
+
+    // tasks PENDING_APPROVAL
+    public function tasks_pending_approval_projects($site_id=null){
+        return $this->hasMany(Task::class)->where('status',Task::PENDING_APPROVAL);
+    }
+
+    // tasks IMPROVEMENT
+    public function tasks_improvment_projects($site_id=null){
+        return $this->hasMany(Task::class)->where('status',Task::IMPROVEMENT);
+    }
+
+    // tasks COMPLETED
+    public function tasks_completed_projects($site_id=null){
+        return $this->hasMany(Task::class)->where('status',Task::COMPLETED);
+    }
+
+    // tasks REJECTED
+    public function tasks_rejected_projects($site_id=null){
+        return $this->hasMany(Task::class)->where('status',Task::REJECTED);
+    }
+
 
 }

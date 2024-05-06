@@ -79,7 +79,7 @@
                                                                     <i class="fas fa-eye mr-2"></i> Your Post Still In Progress
                                                             </a>
                                                             @else
-                                                                <a href="{{ route('super_admin_open_task' , ['task_id' => $task->id , 'user_id' => $task->user->id , "project_id" => $project->id]) }}"
+                                                                <a href="{{ route('show_client_post' , ['task_id' => $task->id , 'user_id' => $task->user->id , "project_id" => $project->id]) }}"
                                                                 class="btn btn-sm btn-success">
                                                                 <i class="fas fa-eye mr-2"></i> Open Your Post
                                                                 </a>

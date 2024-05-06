@@ -8,8 +8,10 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Site;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -19,18 +21,29 @@ class OrderController extends Controller
     {
 
         // get the price of order
+        $site = Site::where('id',$request->site_id)->first();
         $title = 'Orders';
-        $price  = Site::where('id',$request->site_id)->first()->site_price;
+        $price  = $site->site_price;
+        $site_url = $site->site_url;
+        $site_time = $site->site_time;
+
+        $createdAt = Carbon::parse($site->created_at);
+        $date = $createdAt->format('M d Y');
+        $from = $createdAt->addWeek()->format('M d Y');
+        $to = $createdAt->addWeek(1)->format('M d Y');
+
+
 
         // befor client order or buy task we need to check if hase enough
         $balance =  Payment::where('user_id', auth()->id() )->sum('amount');
+        $client_orders = Order::where('user_id', auth()->id() )->sum('price');
 
-        if($balance <= $price){
+        if( ($balance- $client_orders) <= $price){
             $name = auth()->user()->name;
             Session::flash('message', "Hello There $name, Your Balance is Not Enough, Please add Fond !");
             return redirect()->route('add_funds')->with('danger', 'Your Balance Not Enough, Please add Fond !');
         }else{
-            return view('admin.order.order_index', compact('title','price'));
+            return view('admin.order.order_index', compact('title','price','site_url','site_time','date','from','to'));
         }
 
 
@@ -169,7 +182,17 @@ class OrderController extends Controller
     }
 
 
-    // methode for show orders by client
+    // methode for show client orders
+    public function client_orders(Request $request){
+        $title = 'Client Orders';
+        $users = User::all();
+        return view('admin.order.client_orders', compact('title','users'));
+    }
+
+    // method for show invoices payement to the client
+    public function client_invoice(){
+        return view('');
+    }
 
     /**
      * Display the specified resource.
@@ -214,5 +237,13 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    // method for show client invoices and payments and orders
+    public function client_invoices(){
+
+        $transactions = Order::where('user_id', auth()->id())->paginate(10);
+        $title = 'client Invoices';
+        return view('admin.client.client_invoices' , compact('title','transactions'));
     }
 }

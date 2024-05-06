@@ -70,10 +70,16 @@
                                                     <td>DoFollow</td>
                                                 </tr>
 
+                                                {{-- @php
+                                                    if (str_contains('How are you', 'are')) {
+                                                    echo 'true';
+                                                }
+                                                @endphp --}}
+
                                                 <tr>
                                                     <td class="bg-primary text-white">Publisher's URL</td>
-                                                    <td><a href="{{ $task->site->site_url }}" target="_blank" rel="nofollow">
-                                                            {{ $task->site->site_url }}
+                                                    <td><a href="{{ str_contains($task->site->site_url, 'https') ? $task->site->site_url : $task->site->site_url }}" target="_blank" rel="nofollow">
+                                                        {{ str_contains($task->site->site_url, 'https') ? $task->site->site_url : 'https://'.$task->site->site_url }}
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -89,7 +95,7 @@
                                                 <tr>
                                                     <td class="bg-primary text-white">Post Placement URL</td>
                                                     <td class="table-success"><a href="#" target="_blank"
-                                                            class="font-weight-bold">{{-- {{ ($task) ? $post->post_title : '' }} --}}</a>
+                                                            class="font-weight-bold">{{ $post->post_title ?? '' }}</a>
                                                     </td>
                                                 </tr>
 
@@ -99,6 +105,16 @@
                                                         <textarea  class="form-control" rows="6" readonly="">{!! $task->task_special_requirement !!}</textarea>
                                                     </td>
                                                 </tr>
+
+                                                @if (!Empty($post) && $post->status == 6)
+                                                <tr>
+                                                    <td class="bg-danger text-white">Rejection Reason</td>
+                                                    <td>
+                                                        <textarea  class="form-control" rows="3" readonly="">This task has been rejected because the client said : {{ $post->post_note }}</textarea>
+                                                    </td>
+                                                </tr>
+                                                @endif
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -111,18 +127,27 @@
                         {{-- start c_c_p --}}
                         <div class="mt-3">
                             <div class="card ">
-                                <div class="card-header bg-primary">
-                                    <h6 class="text-white mt-n2 mb-n2"> Start Create The Post Content , Now the Task is {{ ($post) ? $task->show_status() : '' }}  </h6>
+                                <div class="card-header bg-info">
+                                    <h3 class="text-white mt-n2 mb-n2"> Start Create The Post Content , And  Now the Task {{ ($post) ? $task->show_status() : '' }}  </h3>
                                 </div>
                                 <div class="card-body">
+                                    @if (!empty($post))
+                                    @if ($post->status == 4)
                                     <div class="my-2">
-                                      <label for="post_placement_url">Post Placement URL:</label>
-                                      <input style="color: red;" value="{{ (!empty($post->post_title)) ? $post->post_title : $task->site->site_url }}" type="text" class="form-control" name="post_placement_url" id="post_placement_url">
+                                        <label class="text-primary" for="post_placement_url">Note From Client : <span class="text-primary"> {{ $task->user->name }} </span> For Update The Post:</label>
+                                        <textarea readonly name="note" class="form-control" cols="30" rows="5">{{ $post->post_note }}</textarea>
+                                    </div>
+                                    @endif
+                                    @endif
+
+                                    <div class="my-2">
+                                      <label class="text-primary" for="post_placement_url">Post Placement URL:</label>
+                                      <input  style="color: red;" value="{{ (!empty($post->post_title)) ? $post->post_title : 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) }}" type="text" class="form-control" name="post_placement_url" id="post_placement_url">
                                     </div>
 
                                     <div class="my-2">
-                                        <label for="post_editor_data">Post Content	</label>
-                                        <textarea  id="summernote"   class="my-3" name="post_editor_data">{!! ($post) ? $post->post_body : '' !!}</textarea>
+                                        <label class="text-primary" for="post_editor_data">Post Content :	</label>
+                                        <textarea  id="post_editor_data"   class="my-3" name="post_editor_data">{!! ($post) ? $post->post_body : '' !!}</textarea>
                                       </div>
 
                                 </div>
@@ -148,16 +173,16 @@
                                         </button>
                                         @endif
 
-                                                @if($post->status == '2')
+                                                @if($post->status == 2)
                                                     <button style="font-size: 18px" disabled  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
                                                         <i class="fas fa-check mr-2"></i>The Notification Already sent to Client At [{{$post->updated_at->diffForHumans()}} ] waiting The Approval  Or Improvement Or Rejectd
                                                     </button>
-                                                @elseif($post->status == '1')
+                                                @elseif($post->status == 1)
                                                     <button style="font-size: 18px"  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
                                                         <i class="fas fa-check mr-2"></i>
                                                         Send The Post To Client for Get The Approval
                                                     </button>
-                                                 @elseif($post->status == '4')
+                                                 @elseif($post->status == 4)
                                                     <button style="font-size: 18px" type="submit" name="action" value="client_approval"  class="btn btn-info mx-5">
                                                         <i class="fas fa-spinner mr-2"></i>
                                                         Improve the post and update it
@@ -166,7 +191,10 @@
                                                         <i class="fas fa-check mr-2"></i>
                                                         Send The Post To Client for Get The Approval
                                                     </button>
-                                                    @elseif($post->status == '6')
+                                                    @elseif($post->status == 6)
+
+                                                    <p aria-readonly="true" class="btn btn-danger btn-block my-3">The Client Reject the Post</p>
+
                                                     <button style="font-size: 18px" type="submit" name="action" value="client_approval"  class="btn btn-info mx-5">
                                                         <i class="fas fa-spinner mr-2"></i>
                                                         Speak with client and Improve and update the post
@@ -178,6 +206,11 @@
 
                                                     @else
                                                            <span class="btn btn-success">This Task Already Done</span>
+
+                                                           {{-- <button style="font-size: 18px" type="submit" name="action" value="client_approval"  class="btn btn-info mx-5">
+                                                            <i class="fas fa-spinner mr-2"></i>
+                                                            Super admin permession :  Edit And Update The Post
+                                                        </button> --}}
                                                 @endif
 
 
@@ -186,27 +219,6 @@
                             @else
                                <button class="btn btn-danger">There is no task now</button>
                             @endif
-
-                            {{-- <button type="submit" name="action" value="in_progress"  class="btn btn-info  mx-5"><i class="fas fa-save mr-2"></i>
-                             {{ ($post) ? 'Update The Post, and  is still In Progress' : 'Save The Post, And Send To Client ' }}
-                            </button> --}}
-
-                            {{-- @if ($post->status == 1 || $post->status == 0)
-                            <button  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5"><i class="fas fa-check mr-2"></i>Send To Client for Get The Approval</button>
-                            @endif --}}
-
-                           {{--  @if (!empty($post))
-
-                                @if ($post->status == 2)
-                                <button disabled  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
-                                    <i class="fas fa-check mr-2"></i>The Notification Already sent to Client At [{{$post->updated_at->diffForHumans()}} ] waiting The Approval
-                                </button>
-                                @else
-                                <button  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
-                                    <i class="fas fa-check mr-2"></i>Send To Client for Get The Approval</button>
-                                @endif
-
-                            @endif --}}
 
                             <input type="hidden" name="site_id" value="{{$task->site->id}}">
                         </div>
@@ -274,12 +286,19 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="{{ asset('public/template/admin/plugins/jquery/jquery.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script> --}}
 
-    <script src="https://cdn.jsdelivr.net/npm/ckeditor5-full-screen@0.0.2/src/fullscreen.min.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/super-build/ckeditor.js"></script>
     <script>
-        $(document).ready(function() {
+        CKEDITOR.replace( 'post_editor_data', {
+            language: 'en',
+            uiColor: '#9AB8F3',
+            uiColor: '#9AB8F3',
+            filebrowserUploadUrl: "{{ route('admin') }}/upload?_token="{{request()->token}},
+            filebrowserUploadMethod: 'form',
+        });
+    </script>
+
+    <script>
+       /*  $(document).ready(function() {
 
             /* CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
                 // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
@@ -436,9 +455,9 @@
                     'PasteFromOfficeEnhanced',
                     'CaseChange'
                 ]
-            }); */
+            });
 
-           $('#summernote').summernote({
+            $('#summernote').summernote({
                 height: 250,
                 disableDragAndDrop: true,
                 toolbar: [
@@ -464,6 +483,6 @@
                 ],
            });
 
-        });
+        }); */
     </script>
 @endsection

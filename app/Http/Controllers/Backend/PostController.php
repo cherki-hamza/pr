@@ -19,9 +19,9 @@ class PostController extends Controller
         $imageFile = $dom->getElementsByTagName('imageFile');
         return $imageFile; */
         $title = 'Post';
-        $task = Task::where('user_id',auth()->user()->id)->where('project_id',request()->project_id)->first();
+        $task = Task::where('user_id',auth()->user()->id)->where('project_id',request()->project_id)->firstOrFail();
 
-        $post = Post::where('task_id',$request->task_id)->first();
+        $post = Post::where('task_id',$request->task_id)->firstOrFail();
         return view('admin.posts.post',compact('title','task','post'));
     }// end index post
 
@@ -46,7 +46,7 @@ class PostController extends Controller
                 'post_body'         => $request->get('post_editor_data'),
             ]);
             // find the related task and update the status
-            $task = Task::where('id',$request->task_id)->first();
+            $task = Task::where('id',$request->task_id)->firstOrFail();
             $task->update(['status'=> Post::IN_PROGRESS]);
 
             // go the the prgress page
@@ -71,7 +71,7 @@ class PostController extends Controller
                 'post_body'         => $request->get('post_editor_data'),
             ]);
             // find the related task and update the status
-            $task = Task::where('id',$request->task_id)->first();
+            $task = Task::where('id',$request->task_id)->firstOrFail();
             $task->update(['status'=> Post::PENDING_APPROVAL]);
 
             // go the the prgress page
@@ -91,7 +91,7 @@ class PostController extends Controller
                 'post_editor_data' => 'required',
             ]);
             // find the post by id the post
-            $post = Post::where('id',$request->post_id)->first();
+            $post = Post::where('id',$request->post_id)->firstOrFail();
             // update the post
             $post->update([
                 'status'     => Post::IN_PROGRESS,
@@ -100,7 +100,7 @@ class PostController extends Controller
             ]);
 
             // find the related task and update the status
-            $task = Task::where('id',$request->task_id)->first();
+            $task = Task::where('id',$request->task_id)->firstOrFail();
             $task->update(['status'=> Post::IN_PROGRESS]);
 
             // go the the prgress page
@@ -114,7 +114,7 @@ class PostController extends Controller
                 'post_editor_data' => 'required',
             ]);
             // find the post by id the post
-            $post = Post::where('id',$request->post_id)->first();
+            $post = Post::where('id',$request->post_id)->firstOrFail();
             // update the post
             $post->update([
                 'status'     => Post::PENDING_APPROVAL,
@@ -123,7 +123,7 @@ class PostController extends Controller
             ]);
 
             // find the related task and update the status
-            $task = Task::where('id',$request->task_id)->first();
+            $task = Task::where('id',$request->task_id)->firstOrFail();
             $task->update(['status'=> Post::PENDING_APPROVAL]);
 
             // go the the prgress page
@@ -137,8 +137,8 @@ class PostController extends Controller
     // method for client see the post
     public function show_client_post(Request $request){
         $title = 'See The Post';
-        $task = Task::where('user_id' , auth()->id())->where('project_id',request()->project_id)->first();
-        $post = Post::where('task_id',$request->task_id)->first();
+        $task = Task::where('user_id' , auth()->id())->where('project_id',request()->project_id)->firstOrFail();
+        $post = Post::where('task_id',$request->task_id)->firstOrFail();
         //return $task->task_target_url;
         return view('admin.client.client_post' , compact('title','task','post'));
     }

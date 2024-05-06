@@ -20,8 +20,8 @@ return new class extends Migration
             $table->integer('site_id')->nullable();
             $table->integer('task_id')->nullable();
             $table->string('post_title')->nullable();
-            $table->text('post_body')->nullable();
-            $table->text('post_note')->nullable();
+            $table->longText('post_body')->nullable();
+            $table->longText('post_note')->nullable();
             $table->integer('status')->default(0);
             $table->integer('client_status')->default(0);
             $table->timestamps();

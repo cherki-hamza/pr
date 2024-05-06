@@ -103,10 +103,12 @@
                                                                             {{ ($task->status == 1) ? 'Open The Post' : 'Wiating Approval from Client' }}
                                                                         </a>
                                                                         @else
-                                                                        <a href="{{route('show_client_post' , ['project_id' => request()->project_id , 'task_id' => $task->id ])}}" class="btn  btn-primary mx-2" ><i class="fa fa-eye mr-2"></i>
+                                                                        <a href="#" class="btn  btn-primary mx-2" ><i class="fa fa-eye mr-2"></i>
                                                                             See The Post
                                                                         </a>
                                                                         @endif
+
+                                                                        {{-- {{route('show_client_post' , ['project_id' => request()->project_id , 'task_id' => $task->id ])}} --}}
 
 
                                                                             {{-- <button class="btn btn-sm btn-primary mx-2">

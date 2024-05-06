@@ -14,7 +14,7 @@ class TaskController extends Controller
     // (super admin) method for get the tasks for every user for every project // ,$user_id,$project_id
     public function super_admin_task_by_user_by_project(Request $request){
 
-        $project = Project::where('id',$request->project_id)->first();
+        $project = Project::where('id',$request->project_id)->firstOrFail();
         $project_name = $project->project_name;
         $user = $project->user->name;
 
@@ -30,7 +30,7 @@ class TaskController extends Controller
      public function client_task_by_user_by_project(Request $request){
 
         // get the project for every client
-        $project = Project::where('id',$request->project_id)->first();
+        $project = Project::where('id',$request->project_id)->firstOrFail();
         // get the name of project
         $project_name = $project->project_name;
         $user = $project->user->name;
@@ -69,8 +69,8 @@ class TaskController extends Controller
         // approve button
         if($request->input('action') == 'approve'){
 
-           $task = Task::where('user_id',$user_id)->where('id',$task_id)->first();
-           $post = Post::where('task_id',$task_id)->first();
+           $task = Task::where('user_id',$user_id)->where('id',$task_id)->firstOrFail();
+           $post = Post::where('task_id',$task_id)->firstOrFail();
 
             $task->update(['status' => Task::APPROVAL]);
             $post->update(['status' => Task::APPROVAL]);
@@ -82,8 +82,8 @@ class TaskController extends Controller
         // rejected button
         if($request->input('action') == 'reject'){
 
-            $task = Task::where('user_id',$user_id)->where('id',$task_id)->first();
-            $post = Post::where('task_id',$task_id)->first();
+            $task = Task::where('user_id',$user_id)->where('id',$task_id)->firstOrFail();
+            $post = Post::where('task_id',$task_id)->firstOrFail();
 
             $task->update(['status' => Task::REJECTED]);
             $post->update(['status' => Task::REJECTED]);
@@ -108,8 +108,8 @@ class TaskController extends Controller
         // approve button
         if($request->input('action') == 'approve'){
 
-           $task = Task::where('user_id',$user_id)->where('id',$task_id)->first();
-           $post = Post::where('task_id',$task_id)->first();
+           $task = Task::where('user_id',$user_id)->where('id',$task_id)->firstOrFail();
+           $post = Post::where('task_id',$task_id)->firstOrFail();
 
             $task->update([
                 'status'      => Task::COMPLETED,
@@ -127,8 +127,8 @@ class TaskController extends Controller
          // rejected button
          if($request->input('action') == 'improve'){
 
-            $task = Task::where('user_id',$user_id)->where('id',$task_id)->first();
-            $post = Post::where('task_id',$task_id)->first();
+            $task = Task::where('user_id',$user_id)->where('id',$task_id)->firstOrFail();
+            $post = Post::where('task_id',$task_id)->firstOrFail();
 
             $task->update([
                 'status'     => Task::IMPROVEMENT,
@@ -145,8 +145,8 @@ class TaskController extends Controller
         // rejected button
         if($request->input('action') == 'reject'){
 
-            $task = Task::where('user_id',$user_id)->where('id',$task_id)->first();
-            $post = Post::where('task_id',$task_id)->first();
+            $task = Task::where('user_id',$user_id)->where('id',$task_id)->firstOrFail();
+            $post = Post::where('task_id',$task_id)->firstOrFail();
 
             $task->update([
                 'status'     => Task::REJECTED,

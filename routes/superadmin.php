@@ -33,7 +33,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('billings' , BillingController::class);
     // route for Orders
     Route::resource('orders' , OrderController::class);
-
+    // route for get all client orders
+    Route::get('client_orders',[OrderController::class,'client_orders'])->name('client_orders');
 
 
     // route for all publisher sites for super admin

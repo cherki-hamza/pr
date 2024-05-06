@@ -58,7 +58,7 @@ class Task extends Model
         }elseif($this->status == 3){
             return 'approval';
         }elseif($this->status == 4){
-            return 'IMPROVEMENT';
+            return 'Need IMPROVEMENT';
         }elseif($this->status == 5){
             return 'COMPLETED';
         }elseif($this->status == 6){

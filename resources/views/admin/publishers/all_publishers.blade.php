@@ -63,17 +63,17 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="row">
-                                   {{--  <h3>publishers..</h3> --}}
+                                   {{--  <h3>publishers..</h3>  datatable --}}
                                     <div class="table-responsive col-md-12">
-                                        <table class="table table-bordered table-hover datatable">
+                                        <table class="table table-bordered table-hover">
                                             <thead class="bg-300">
 
                                                 <tr>
-                                                    <th>
+                                                    <th style="width: 250px;">
                                                         Websites
                                                     </th>
 
-                                                    <th>
+                                                    <th style="width: 254px;">
                                                         Websites Name
                                                     </th>
 
@@ -94,7 +94,7 @@
                                                     </th>
 
 
-                                                    <th>
+                                                    <th style="width: 150px;">
                                                         REGION / LOCATION
                                                     </th>
                                                     <th>Price</th>
@@ -113,7 +113,7 @@
                                                     </a><br>
 
                                                       <span><svg style="width: 15px" class="svg-inline--fa fa-bezier-curve fa-w-20" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bezier-curve" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="M368 32h-96c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h96c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zM208 88h-84.75C113.75 64.56 90.84 48 64 48 28.66 48 0 76.65 0 112s28.66 64 64 64c26.84 0 49.75-16.56 59.25-40h79.73c-55.37 32.52-95.86 87.32-109.54 152h49.4c11.3-41.61 36.77-77.21 71.04-101.56-3.7-8.08-5.88-16.99-5.88-26.44V88zm-48 232H64c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h96c17.67 0 32-14.33 32-32v-96c0-17.67-14.33-32-32-32zM576 48c-26.84 0-49.75 16.56-59.25 40H432v72c0 9.45-2.19 18.36-5.88 26.44 34.27 24.35 59.74 59.95 71.04 101.56h49.4c-13.68-64.68-54.17-119.48-109.54-152h79.73c9.5 23.44 32.41 40 59.25 40 35.34 0 64-28.65 64-64s-28.66-64-64-64zm0 272h-96c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h96c17.67 0 32-14.33 32-32v-96c0-17.67-14.33-32-32-32z"></path></svg><!-- <i class="fas fa-bezier-curve"></i> Font Awesome fontawesome.com -->
-                                                        <span>Max </span> <strong class="font-weight-normal text-primary"> {{ ($site->site_dofollow == 'Y') ? 'Yes DoFollow links' : 'No Follow links' }} </strong>
+                                                        <span>Max </span> <strong class="font-weight-normal text-primary"> {{ ($site->site_dofollow == 'Yes') ? 'Yes DoFollow links' : 'No Follow links' }} </strong>
                                                       </span><br>
 
                                                       <span><svg style="width: 15px" class="svg-inline--fa fa-clock fa-w-16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="clock" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm92.49,313h0l-20,25a16,16,0,0,1-22.49,2.5h0l-67-49.72a40,40,0,0,1-15-31.23V112a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16V256l58,42.5A16,16,0,0,1,348.49,321Z"></path></svg><!-- <i class="fas fa-clock"></i> Font Awesome fontawesome.com --> <span>Turnaround Time: </span>
@@ -141,7 +141,9 @@
                                                 </td>
 
                                                 <td class="text-center align-middle"><span class="badge badge-primary mr-1">M</span>DA <strong class="font-weight-bold">{{$site->site_domain_authority}}</strong>
-                                                    {{-- <br>Spam Score <strong class="text-facebook font-weight-bold">1%</strong> --}}
+                                                    @if (!empty($site->spam_score) && $site->spam_score != '-' )
+                                                    <br>Spam Score <strong class="text-primary font-weight-bold">{{$site->spam_score}}%</strong>
+                                                    @endif
                                                 </td>
 
                                                 <td class="text-center align-middle">
@@ -163,7 +165,7 @@
                                             </tbody>
                                         </table>
                                         <div style="float: right" class="">
-                                          {{-- {{$sites->links()}} --}}
+                                          {{$sites->links()}}
                                         </div>
                                     </div>
                                 </div>

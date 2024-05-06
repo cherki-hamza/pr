@@ -23,12 +23,6 @@ class PaypalController extends Controller
     public function pay(Request $request)
     {
 
-       //return $request->get('payment_platform');
-
-
-        //return $request->all();
-
-        //return 'paypale';
         try {
 
             $response = $this->gateway->purchase(array(

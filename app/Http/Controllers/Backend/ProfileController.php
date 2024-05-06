@@ -49,7 +49,7 @@ class ProfileController extends Controller
 
          // get user profile and update the profile informations
          $user = auth()->user()->id;
-         $profile = Profile::find($id);
+         $profile = Profile::findOrFail($id);
         //return public_path('assets\images\profiles');
 
        // return public_path('/assets/images/profiles');

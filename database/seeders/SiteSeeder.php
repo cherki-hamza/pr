@@ -48,6 +48,7 @@ class SiteSeeder extends Seeder
                 'site_dofollow' => $site['site_dofollow'],
                 'site_images' => $site['site_images'],
                 'site_time' => $site['site_time'],
+                'spam_score' => $site['spam_score'] ?? '-',
             ]);
         }
 
@@ -82,6 +83,7 @@ class SiteSeeder extends Seeder
                 'site_dofollow' => $site2['site_dofollow'],
                 'site_images' => $site2['site_images'],
                 'site_time' => $site2['site_time'],
+                'spam_score' => $site['spam_score'] ?? '-',
             ]);
         }
 
@@ -117,6 +119,7 @@ class SiteSeeder extends Seeder
                 'site_dofollow' => $site3['site_dofollow'],
                 'site_images' => $site3['site_images'],
                 'site_time' => $site3['site_time'],
+                'spam_score' => $site['spam_score'] ?? '-',
             ]);
         }
 

@@ -25,4 +25,14 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    // ckeditor method
+    public function ck(){
+        return view('admin.client.ck');
+    }
+
+    // method for store ck
+    public function store_ck(Request $request){
+        return $request->all();
+    }
 }
