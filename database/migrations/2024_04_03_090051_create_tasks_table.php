@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('task_target_url')->nullable();
             $table->string('task_anchor_text');
             $table->string('task_price')->nullable();
+            $table->string('task_package')->nullable();
             $table->text('task_special_requirement')->nullable();
             $table->text('task_post_placement_url')->nullable();
             $table->timestamps();

@@ -133,19 +133,19 @@
                                 <div class="card-body">
                                     @if (!empty($post))
                                     @if ($post->status == 4)
-                                    <div class="my-2">
+                                    <div class="my-2 px-5">
                                         <label class="text-primary" for="post_placement_url">Note From Client : <span class="text-primary"> {{ $task->user->name }} </span> For Update The Post:</label>
                                         <textarea readonly name="note" class="form-control" cols="30" rows="5">{{ $post->post_note }}</textarea>
                                     </div>
                                     @endif
                                     @endif
 
-                                    <div class="my-2">
+                                    <div class="my-2 px-5">
                                       <label class="text-primary" for="post_placement_url">Post Placement URL:</label>
                                       <input  style="color: red;" value="{{ (!empty($post->post_title)) ? $post->post_title : 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) }}" type="text" class="form-control" name="post_placement_url" id="post_placement_url">
                                     </div>
 
-                                    <div class="my-2">
+                                    <div class="my-2 px-5">
                                         <label class="text-primary" for="post_editor_data">Post Content :	</label>
                                         <textarea  id="post_editor_data"   class="my-3" name="post_editor_data">{!! ($post) ? $post->post_body : '' !!}</textarea>
                                       </div>
@@ -250,14 +250,41 @@
                                         <div id="editor">
                                         </div>
                                     </div> --}}
-                                        <textarea  id="summernote"   class="my-3" name="post_editor_data">{!! $task->task_editor_data ?? '' !!}</textarea>
+                                    <div class="my-2 px-5">
+                                        <label class="text-primary" for="post_placement_url">Post Placement URL:</label>
+                                        <input  style="color: red;" value="{{ ( !empty($task->task_anchor_text)) ? 'https://'.$task->task_target_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_target_url }}" type="text" class="form-control" name="post_placement_url" id="post_placement_url">
+                                    </div>
+
+                                    <div class="my-2 px-5">
+                                        <label class="text-primary" for="post_editor_data">Post Content :	</label>
+                                        <textarea  class="my-3" rows="60" name="post_editor_data">{!! $task->task_editor_data ?? '' !!}</textarea>
+                                      </div>
+
+
                                 </div>
                             </div>
 
-                            <div class="text-center">
-                                <button>
 
-                                </button type="submit" name="action" value="in_progress"  class="btn btn-info  mx-5"><i class="fas fa-save mr-2"></i>
+                            <div class="text-center">
+                               @if ($task->status == 6)
+                                    <span class="btn btn-danger">This Task is Rejected</span>
+
+                               @elseif($task->status == 5)
+                                 <span class="btn btn-success">This Task is AlReady Approved</span>
+                               @else
+                               <a href="{{route('super_admin_approve' , ['task_id' => $task->id ])}}"  class="btn btn-info  mx-5">
+                                <i class="fas fa-save mr-2"></i>Approve
+                                </a>
+
+                                <a href="{{route('super_admin_reject' , ['task_id' => $task->id ])}}" class="btn btn-danger  mx-5">
+                                    <i class="fas fa-ban mr-2"></i>Reject
+                                </a>
+                               @endif
+
+                                {{-- <button type="submit" name="action" value="reject"  class="btn btn-danger  mx-5"><i class="fas fa-ban mr-2"></i>
+                                     Reject
+                                </button> --}}
+
                                 {{-- <button type="submit" name="action" value="in_progress"  class="btn btn-info  mx-5"><i class="fas fa-save mr-2"></i>
                                  {{ ($post) ? 'Update The Post, and  is still In Progress' : 'Save The Post, And is  Still In Progress' }}
                                 </button> --}}

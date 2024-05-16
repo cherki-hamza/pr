@@ -32,6 +32,7 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -66,41 +67,8 @@
                                    {{--  <h3>publishers..</h3>  datatable --}}
                                     <div class="table-responsive col-md-12">
                                         <table class="table table-bordered table-hover">
-                                            <thead class="bg-300">
-
-                                                <tr>
-                                                    <th style="width: 250px;">
-                                                        Websites
-                                                    </th>
-
-                                                    <th style="width: 254px;">
-                                                        Websites Name
-                                                    </th>
-
-                                                    <th>
-                                                        Categories
-                                                    </th>
-
-                                                    <th>
-                                                        Monthly Traffic
-                                                    </th>
-
-                                                    <th>
-                                                        Ahrefs DR
-                                                    </th>
-
-                                                    <th>
-                                                        Moz DA
-                                                    </th>
-
-
-                                                    <th style="width: 150px;">
-                                                        REGION / LOCATION
-                                                    </th>
-                                                    <th>Price</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
+                                            
+                                            @include('admin.inc.publisher.thead_recovery')
 
                                             <tbody>
 
@@ -124,7 +92,7 @@
 
                                                 </td>
 
-                                                <td>{{ $site->site_name }}</td>
+                                                {{-- <td>{{ $site->site_name }}</td> --}}
 
                                                 <td><span class="badge badge-primary">{{ $site->handle_category() }}</span></td>
 

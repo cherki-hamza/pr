@@ -30,4 +30,12 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+
+    // relation betwenn post and note
+    public function notes(){
+        return $this->hasMany(Note::class);
+    }
+
+
+
 }

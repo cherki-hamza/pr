@@ -49,6 +49,7 @@ class Task extends Model
         return $this->hasOne(Post::class);
     }
 
+
     // method for return the name of status
     public function show_status(){
         if($this->status == 1){
@@ -95,6 +96,16 @@ class Task extends Model
         }else{
             return 'Content Creation And Placement';
         }
+    }
+
+    // relation between task and ClientStatus
+    public function client_status(){
+        return $this->hasOne(ClientStatus::class);
+    }
+
+    // relation between task and PublisherStatus
+    public function publisher_status(){
+        return $this->hasOne(PublisherStatus::class);
     }
 
 

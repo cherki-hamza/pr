@@ -27,33 +27,33 @@ class Project extends Model
     }
 
     // tasks not started
-    public function tasks_not_started(){
-        return $this->hasMany(Task::class)->where('status',Task::NOT_STARDET);
+    public function tasks_not_started($type=null){
+        return $this->hasMany(Task::class)->where('task_type',$type)->where('status',Task::NOT_STARDET);
     }
 
     // tasks in progress
-    public function tasks_in_progress(){
-        return $this->hasMany(Task::class)->where('status',Task::IN_PROGRESS);
+    public function tasks_in_progress($type=null){
+        return $this->hasMany(Task::class)->where('task_type',$type)->where('status',Task::IN_PROGRESS);
     }
 
     // tasks pending approval
-    public function tasks_pending_approval(){
-        return $this->hasMany(Task::class)->where('status',Task::PENDING_APPROVAL);
+    public function tasks_pending_approval($type=null){
+        return $this->hasMany(Task::class)->where('task_type',$type)->where('status',Task::PENDING_APPROVAL);
     }
 
     // tasks improvement
-    public function tasks_improvement(){
-        return $this->hasMany(Task::class)->where('status',Task::IMPROVEMENT);
+    public function tasks_improvement($type=null){
+        return $this->hasMany(Task::class)->where('task_type',$type)->where('status',Task::IMPROVEMENT);
     }
 
     // tasks completed
-    public function tasks_completed(){
-        return $this->hasMany(Task::class)->where('status',Task::COMPLETED);
+    public function tasks_completed($type=null){
+        return $this->hasMany(Task::class)->where('task_type',$type)->where('status',Task::COMPLETED);
     }
 
     // tasks rejected
-    public function tasks_rejected(){
-        return $this->hasMany(Task::class)->where('status',Task::REJECTED);
+    public function tasks_rejected($type=null){
+        return $this->hasMany(Task::class)->where('task_type',$type)->where('status',Task::REJECTED);
     }
 
     public function site(){

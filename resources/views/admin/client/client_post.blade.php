@@ -104,11 +104,13 @@
                         <div class="mt-3">
                             <div class="card ">
                                 <div class="card-header">
-                                    @if (!empty($post))
+                                    @if (!empty($post) )
 
                                     @if ($post->status == 2)
-                                    <p style="font-size: 20px" class="alert alert-warning my-4 text-center">Your Post Content is Ready Now , check it and if it's Satisfy for You  Approve it for complete the Task Or Take it To the Improvement zone Or Reject It And Write a note for Improve and Regenerate you Post</p>
-
+                                     <p style="font-size: 20px" class="alert alert-warning my-4 text-center">
+                                        Your Post Content is Ready Now , check it and if it's Satisfy for You  Approve it for complete the Task Or Take it To the
+                                        Improvement zone Or Reject It And Write a note for Improve and Regenerate you Post
+                                    </p>
                                     @endif
 
 
@@ -136,6 +138,23 @@
 
                                     @endif --}}
 
+                                    @if (!empty($task) || $task->type == 'c_p')
+
+                                    @if($task->status == 5)
+                                    <div class="my-2 px-5">
+                                        <label class="text-primary" for="post_placement_url">Post Placement URL:</label>
+                                        <input  style="color: red;" value="{{ (!empty($task)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) : '' }}" type="text" class="form-control" name="post_placement_url" id="post_placement_url">
+                                    </div>
+                                    @endif
+
+                                      <div class="my-2 px-5">
+                                          <label class="text-primary" for="post_editor_data">Post Content :	</label>
+                                          <textarea  id="post_editor_data"   class="my-3" name="post_editor_data">{!! ($task) ? $task->task_editor_data : '' !!}</textarea>
+                                        </div>
+
+                                    @else
+
+
                                     <hr style="border: #3c5a99 solid 2px;">
                                     <label>Your Post Content :</label>
                                     {{-- <textarea readonly="true" id="summernote" class="my-3" name="post_editor_data">{!! $post->post_body ?? '' !!}</textarea> --}}
@@ -153,7 +172,11 @@
 
                                     @if(!empty($post) && $post->status == 4)
                                     <label>Your Note :</label>
-                                    <textarea readonly class="form-control text-info"  name="post_note" cols="30" rows="5">{{ $post->post_note }}</textarea>
+
+                                    {{-- @php echo str_replace("<br/>","\n\n",$the_notes); @endphp --}}
+                                    <textarea readonly class="form-control text-info"  name="post_note" cols="30" rows="5">@php $the_notes = '';$index = 1;foreach ($post->notes as $note) {$the_notes = "$index ) :  $note->post_note <br/>";echo str_replace("<br/>","\n\n",$the_notes);$index++;} @endphp</textarea>
+
+                                    @endif
 
                                     @endif
 
@@ -166,41 +189,18 @@
                             </div>
                         </div>
 
-                        @if (!empty($post))
+                        @if (!empty($task))
                         <div class="text-center">
 
-                            @if ($post->status == '5')
-                            <button {{ ($post->status == 5) ? 'disabled' : '' }} style="width: {{ ($post->status == 5) ? '300' : '150' }}px" type="submit" name="action" value="approve"  class="btn btn-warning my-2  mx-5">
-                                <i class="fas fa-check mr-2"></i>
-                                {{ ($post->status == 5) ? 'You Already Aproved The Post' : 'Approve' }}
-                            </button>
-                            @elseif($post->status == 4)
-                            <button style="font-size: 20px" {{ ($post->status == 4) ? 'disabled' : '' }} style="width:500px" type="submit" name="action" value="approve"  class="btn btn-info my-2  mx-5">
-                                <i class="fas fa-check mr-2"></i>
-                                 You Already Send To The Pr Content Team For Doing More Improvement, Wait Response :) ...
-                            </button>
-
-                            @elseif($post->status == 6)
-                                <span disabled="true" style="font-size: 20px" style="width:500px"  class="btn btn-danger my-2  mx-5">
-                                    <i class="fas fa-check mr-2"></i>
-                                    Your Rejected This Post
-                                </span>
+                            @if ($task->status == 6)
+                             <span class="btn btn-danger">This Task is Rejected</span>
+                            @elseif($task->status == 5)
+                                <span class="btn btn-success">This Task is AlReady Approved</span>
                             @else
-                                <button {{ ($post->status == 5) ? 'disabled' : '' }} style="width: {{ ($post->status == 5) ? '300' : '150' }}px" type="submit" name="action" value="approve"  class="btn btn-warning my-2  mx-5">
-                                    <i class="fas fa-check mr-2"></i>
-                                    {{ ($post->status == 5) ? 'You Already Aproved The Post' : 'Approve' }}
-                                </button>
-
-                                <button {{ ($post->status == 5) ? 'disabled' : '' }} style="width: 150px"  name="action" value="improve"  class="btn btn-info my-2  mx-5">
-                                        <i class="fa fa-wrench mr-2" aria-hidden="true"></i>
-                                        Improve
-                                </button>
-
-                                <button {{ ($post->status == 5) ? 'disabled' : '' }} style="width: 150px" type="submit" name="action" value="reject"  class="btn btn-danger my-2  mx-5">
-                                        <i class="fas fa-ban mr-2"></i>
-                                        Reject
-                                </button>
+                            <span class="btn btn-warning">Your Task still not Started</span>
                             @endif
+
+
 
 
                             {{-- @if($task->status == 2)
@@ -273,11 +273,11 @@
     @if (!empty($post) && $post->status == 5)
     <script>
         CKEDITOR.replace( 'post_editor_data', {
-            language: 'en',
+            /* language: 'en',
             uiColor: '#9AB8F3',
             uiColor: '#9AB8F3',
             filebrowserUploadUrl: "{{ route('admin') }}/upload?_token="{{request()->token}},
-            filebrowserUploadMethod: 'form',
+            filebrowserUploadMethod: 'form', */
         });
     </script>
    {{--  <script>

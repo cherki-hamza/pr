@@ -127,7 +127,7 @@ class UserController extends Controller
     public function update_email(Request $request){
 
         if(!$request->new_email){
-            return redirect()->back()->with('toast_error', 'The Email its required');
+            return redirect()->back()->with('error', 'The Email its required');
         }
         //$request->validate(['email' => 'required'],['email'=> 'the email is required']);
          $email = $request->new_email;
@@ -141,14 +141,14 @@ class UserController extends Controller
          $profile->update([
             "email"=> $user->email,
          ]);
-         return redirect()->back()->with('toast_success', 'Email Updated Successfully!');
+         return redirect()->back()->with('success', 'Email Updated Successfully!');
     }
 
     // method for update password
     public function update_mobile(Request $request){
 
         if(!$request->new_mobile){
-            return redirect()->back()->with('toast_error', 'The Phone Number its required');
+            return redirect()->back()->with('error', 'The Phone Number its required');
         }
 
         $new_mobile = $request->new_mobile;
@@ -162,7 +162,7 @@ class UserController extends Controller
         $profile->update([
            "mobile"=> $user->mobile,
         ]);
-        return redirect()->back()->with('toast_success', 'Mobile Updated Successfully!');
+        return redirect()->back()->with('success', 'Mobile Updated Successfully!');
 
     }
 
@@ -170,11 +170,15 @@ class UserController extends Controller
     public function update_password(Request $request){
 
         if(!$request->current_password){
-            return redirect()->back()->with('toast_error', 'The Current Password its required');
+            return redirect()->back()->with('error', 'The Current Password its required');
         }
 
         if(!$request->new_password){
-            return redirect()->back()->with('toast_error', 'The New Password its required');
+            return redirect()->back()->with('error', 'The New Password its required');
+        }
+
+        if($request->new_password != $request->confirm_password){
+            return redirect()->back()->with('error', 'The New Password and the confirm password shold be same');
         }
 
         /* $this->validate($request, [
@@ -198,6 +202,6 @@ class UserController extends Controller
         $user =  User::find($auth->id);
         $user->password =  Hash::make($request->new_password);
         $user->save();
-        return back()->with('toast_success', "Password Changed Successfully");
+        return back()->with('success', "Password Changed Successfully");
     }
 }

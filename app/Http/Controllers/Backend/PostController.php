@@ -137,8 +137,8 @@ class PostController extends Controller
     // method for client see the post
     public function show_client_post(Request $request){
         $title = 'See The Post';
-        $task = Task::where('user_id' , auth()->id())->where('project_id',request()->project_id)->firstOrFail();
-        $post = Post::where('task_id',$request->task_id)->firstOrFail();
+        $task = Task::where('user_id' , auth()->id())->where('project_id',request()->project_id)->first();
+        $post = Post::where('task_id',$request->task_id)->first();
         //return $task->task_target_url;
         return view('admin.client.client_post' , compact('title','task','post'));
     }

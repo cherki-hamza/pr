@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('site_time')->nullable();
             $table->string('site_region_location')->nullable();
             $table->string('spam_score')->nullable();
+            $table->string('word_limite')->nullable();
             $table->timestamps();
         });
     }

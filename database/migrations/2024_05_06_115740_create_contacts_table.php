@@ -20,6 +20,10 @@ return new class extends Migration
             $table->string('mobile');
             $table->string('subject');
             $table->text('message');
+            $table->string('country_name')->nullable();
+            $table->string('country_code')->nullable();
+            $table->string('area_code')->nullable();
+            $table->string('country_flag')->nullable();
             $table->string('ip_address')->nullable();
             $table->timestamps();
         });

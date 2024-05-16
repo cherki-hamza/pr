@@ -40,7 +40,7 @@
         <div class="card-body">
 
             <div class="table-responsive" style="border-radius:5px">
-                <table style="font-size: 20px" class="table table-sm table-dashboard table-bordered table-striped fs--1 p-0">
+                <table style="font-size: 20px" class="table table-sm table-dashboard table-bordered table-striped fs--1 p-0 datatable">
                     <thead class="bg-200 bg-info">
                     <tr class="text-center">
                         <th class="d-table-cell">Order ID</th>
@@ -53,7 +53,7 @@
                     <tbody>
 
                         @foreach ($transactions as $transaction)
-                           <tr class="text-center">
+                           <tr class="text-center {{ ($transaction->status == 0) ? 'bg-danger': '' }}">
 
                             <td class="row d-table-cell"> {{  $transaction->id }}</td>
 

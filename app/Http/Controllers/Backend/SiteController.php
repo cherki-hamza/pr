@@ -9,25 +9,75 @@ use App\Models\Site;
 class SiteController extends Controller
 {
 
-    // all publishers for client
+    // client all publishers for client
     public function site_index(Request $request){
-
-        if (!empty(request('search'))) {
-            //return $request->search;
-            $sites = Site::where('site_name', 'like', '%' . request('search') . '%')
-                          ->OrWhere('site_region_location' , 'like', '%' . request('search') . '%')
-                          ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->paginate(12);
-        } else {
-            //$sites = Site::all();
-            $sites = Site::paginate(12);
-        }
 
         $title = "publishers";
         $project_id = $request->project_id;
         //$sites = Site::all();
         $sites_count = Site::count();
-        return view('admin.publishers.publishers',compact('project_id','sites','sites_count'));
+
+        $categories = Site::whereNotIn('site_category',['-','OFF'])->distinct()
+                        ->get(['site_category']);
+
+
+        if($request->search_url){ // filter by url
+
+            $sites = Site::where('site_url', 'like', '%' . request('search_url') . '%')->paginate(12);
+            return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+
+        }elseif($request->categories){ // filter by category
+
+            $sites = Site::where('site_category', 'like', '%' . request('categories') . '%')->paginate(12);
+
+            return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+
+        }elseif ($request->site_monthly_traffic) {  // filter by monthly traffic
+
+            if( $request->site_monthly_traffic == 'LowToHigh'){
+                $sites = Site::OrderBy('site_monthly_traffic', 'Asc')->paginate(12);
+                return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+            }else{
+                $sites = Site::OrderBy('site_monthly_traffic', 'Desc')->paginate(12);
+                return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+            }
+
+         }elseif($request->site_domain_rating){ // filter by DR
+
+            if( $request->site_domain_rating == 'LowToHigh'){
+                $sites = Site::OrderBy('site_domain_rating', 'ASC')->paginate(12);
+            return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));;
+            }else{
+                $sites = Site::OrderBy('site_domain_rating', 'ASC')->paginate(12);
+            return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+            }
+
+        }elseif($request->site_domain_authority){ // filter by DA
+
+            if( $request->site_domain_authority == 'LowToHigh'){
+                $sites = Site::OrderBy('site_domain_authority', 'ASC')->paginate(12);
+            return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));;
+            }else{
+                $sites = Site::OrderBy('site_domain_authority', 'ASC')->paginate(12);
+            return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+            }
+
+        }elseif (!empty(request('search'))) {  // search method
+            //return $request->search;
+            $sites = Site::where('site_name', 'like', '%' . request('search') . '%')
+                          ->OrWhere('site_region_location' , 'like', '%' . request('search') . '%')
+                          ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->paginate(12);
+             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+        } else {
+            //$sites = Site::all();
+            $sites = Site::paginate(20);
+            return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+        }
+
+
+
     }
+
     // the publishers index page
     public function index(Request $request){
 
@@ -35,6 +85,8 @@ class SiteController extends Controller
         $project_id = $request->project_id;
         $sites = Site::all();
         $sites_count = Site::count();
+
+
         return view('admin.publishers.publishers',compact('project_id','sites','sites_count'));
     }
 
@@ -170,5 +222,25 @@ class SiteController extends Controller
 
     }
 
+    // private methodes
+    private function stringToNumeric($str) {
+         // Check if it's in - format
+        if (strpos($str, '-') !== false) {
+            $num = 0;
+        }
+        // Check if it's in million format
+        if (strpos($str, 'M') !== false) {
+            $num = floatval(str_replace('M', '', $str)) * 1000000;
+        }
+        // Check if it's in thousand format
+        elseif (strpos($str, 'k') !== false) {
+            $num = floatval(str_replace('k', '', $str)) * 1000;
+        }
+        // If it's a regular number
+        else {
+            $num = floatval($str);
+        }
+        return $num;
+    }
 
 }

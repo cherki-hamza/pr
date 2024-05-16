@@ -39,6 +39,7 @@ class BillingController extends Controller
             'postal_code' => 'required',
         ]);
 
+
         Billing::create([
             'user_id' => auth()->user()->id,
             'email'=> auth()->user()->email,
@@ -75,11 +76,17 @@ class BillingController extends Controller
     {
        $billing =  Billing::where('id', $id)->first();
        $billing->update([
-        'user_id' => auth()->user()->id,
-        'name'=> $request->name,
-        'email'=> $request->email,
-        'mobile'=> $request->mobile,
-        'address'=> $request->address,
+            'user_id' => auth()->user()->id,
+            'email'=> auth()->user()->email,
+            'name'=> $request->name,
+            'company_name'=> $request->company_name,
+            'country'=> $request->country,
+            'state'=> $request->state,
+            'address'=> $request->address,
+            'city'=> $request->city,
+            'postal_code'=> $request->postal_code,
+            'billing_confirmation'=> ($request->billing_confirmation == 'on') ? 1 : 0,
+            'vat_number'=> $request->vat_number,
        ]);
        return back()->with('success','Billing Informations Updated successfuly');
     }

@@ -21,10 +21,10 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('orders/store_ccp/project/{project_id}/site/{site_id}' , [OrderController::class,'store_ccp'])->name('store_ccp');
 
     // show all publishers site for every project by id : /myprojects/1
-    Route::get('myprojects/{project_id}' , [SiteController::class,'site_index'])->name('site_index');
+    Route::get('myprojects/{project_id}/publishers' , [SiteController::class,'site_index'])->name('site_index');
 
     // route for search publisher by any keword
-    Route::post('myprojects/{project_id}/{search?}' , [SiteController::class,'site_index'])->name('site_index');
+    Route::post('myprojects/{project_id}/publishers/{search?}' , [SiteController::class,'site_index'])->name('search');
 
     // Get tasks by project for client
     Route::get('/tasks/user/{user_id}/project/{project_id}/client',[TaskController::class,'client_task_by_user_by_project'])->name('client_task_by_user_by_project');

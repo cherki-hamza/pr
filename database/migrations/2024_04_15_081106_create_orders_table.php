@@ -19,7 +19,8 @@ return new class extends Migration
             $table->integer('project_id');
             $table->integer('site_id');
             $table->integer('price');
-            $table->integer('status')->default(1);
+            $table->integer('order_package')->nullable();
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

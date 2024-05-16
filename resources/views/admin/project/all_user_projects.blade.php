@@ -71,40 +71,40 @@
 
                                                         {{-- start content writer --}}
                                                         <li readonly class="d-flex">
-                                                            <div class="p-2"><i class="fa fa-clipboard-list mr-2"></i>Content Writing & Placement </div>
+                                                            <div class="p-2"><i class="fa fa-clipboard-list mr-2"></i>Content Writing</div>
 
                                                             <div class="ml-auto p-2">
 
-                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 0]) }}">
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 0 , 'type' => 'c_p']) }}">
                                                                     <span class="badge badge-secondary p-2" title="number of tasks not started">
-                                                                        {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_not_started->count() }}
+                                                                        {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_not_started('c_p')->count() }}
                                                                     </span>
                                                                 </a>
 
-                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 1]) }}">
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 1 , 'type' => 'c_p']) }}">
                                                                     <span class="badge badge-info p-2" title="number of tasks in progress">
-                                                                      {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_in_progress->count() }}
+                                                                      {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_in_progress('c_p')->count() }}
                                                                     </span>
                                                                 </a>
-                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 2]) }}">
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 2 , 'type' => 'c_p']) }}">
                                                                    <span class="badge badge-warning p-2"title="number of tasks witing approval">
-                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_pending_approval->count() }}
+                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_pending_approval('c_p')->count() }}
                                                                    </span>
                                                                 </a>
 
-                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 3]) }}">
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 4 , 'type' => 'c_p']) }}">
                                                                     <span class="badge badge-primary p-2" title="number of tasks in approvement">
-                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_improvement->count() }}
+                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_improvement('c_p')->count() }}
                                                                    </span>
                                                                 </a>
-                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 5]) }}">
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 5 , 'type' => 'c_p']) }}">
                                                                     <span class="badge badge-success p-2" title="number of tasks completed">
-                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_completed->count() }}
+                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_completed('c_p')->count() }}
                                                                     </span>
                                                                 </a>
-                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 6]) }}">
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 6 , 'type' => 'c_p']) }}">
                                                                     <span class="badge badge-danger p-2" title="number of tasks rejected">
-                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_rejected->count() }}
+                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_rejected('c_p')->count() }}
                                                                     </span>
                                                                 </a>
                                                             </div>
@@ -113,26 +113,49 @@
                                                         {{-- end content writer --}}
 
                                                         {{-- start Guest posting --}}
-                                                        {{-- <li class="d-flex">
-                                                            <div class="p-2"><i class="fa fa-link mr-2"></i>Guest posting</div>
+                                                        <li readonly class="d-flex">
+                                                            <div class="p-2">
+                                                                <svg style="width: 18px" class="svg-inline--fa fa-edit fa-w-18" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="edit" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"></path>
+                                                                </svg>
+                                                            </i>Content Writing & Placement </div>
 
                                                             <div class="ml-auto p-2">
-                                                                <a href="#">
-                                                                    <span class="badge badge-primary p-2" title="number of tasks not started">0</span>
+
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 0 , 'type' => 'c_c_p']) }}">
+                                                                    <span class="badge badge-secondary p-2" title="number of tasks not started">
+                                                                        {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_not_started('c_c_p')->count() }}
+                                                                    </span>
                                                                 </a>
-                                                                <a href="#"><span class="badge badge-secondary p-2" title="number of tasks in progress">0</span>
-                                                                    </a>
-                                                                <span class="badge badge-info p-2"title="number of tasks witing approval">0</span>
+
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 1 , 'type' => 'c_c_p']) }}">
+                                                                    <span class="badge badge-info p-2" title="number of tasks in progress">
+                                                                      {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_in_progress->count() }}
+                                                                    </span>
                                                                 </a>
-                                                                <a href="#"><span class="badge badge-warning p-2" title="number of tasks in approvement">0</span>
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 2 , 'type' => 'c_c_p']) }}">
+                                                                   <span class="badge badge-warning p-2"title="number of tasks witing approval">
+                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_pending_approval('c_c_p')->count() }}
+                                                                   </span>
                                                                 </a>
-                                                                <a href="#"><span class="badge badge-success p-2" title="number of tasks completed">0</span>
+
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 4 , 'type' => 'c_c_p']) }}">
+                                                                    <span class="badge badge-primary p-2" title="number of tasks in approvement">
+                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_improvement('c_c_p')->count() }}
+                                                                   </span>
                                                                 </a>
-                                                                <a href="#"><span class="badge badge-danger p-2" title="number of tasks rejected">0</span>
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 5 , 'type' => 'c_c_p']) }}">
+                                                                    <span class="badge badge-success p-2" title="number of tasks completed">
+                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_completed('c_c_p')->count() }}
+                                                                    </span>
+                                                                </a>
+                                                                <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 6 , 'type' => 'c_c_p']) }}">
+                                                                    <span class="badge badge-danger p-2" title="number of tasks rejected">
+                                                                     {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_rejected('c_c_p')->count() }}
+                                                                    </span>
                                                                 </a>
                                                             </div>
 
-                                                        </li> --}}
+                                                        </li>
                                                         {{-- end Guest posting --}}
 
 

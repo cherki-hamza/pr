@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Balance;
+use App\Models\ClientStatus;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\PublisherStatus;
 use App\Models\Site;
 use App\Models\Task;
 use App\Models\User;
@@ -23,7 +25,8 @@ class OrderController extends Controller
         // get the price of order
         $site = Site::where('id',$request->site_id)->first();
         $title = 'Orders';
-        $price  = $site->site_price;
+        $price_c_c  = $site->site_price;
+        $price_c_c_p  = $site->site_price2;
         $site_url = $site->site_url;
         $site_time = $site->site_time;
 
@@ -35,15 +38,21 @@ class OrderController extends Controller
 
 
         // befor client order or buy task we need to check if hase enough
-        $balance =  Payment::where('user_id', auth()->id() )->sum('amount');
-        $client_orders = Order::where('user_id', auth()->id() )->sum('price');
+        /* $balance =  Payment::where('user_id', auth()->id() )->sum('amount');
+        $client_orders = Order::where('user_id', auth()->id() )->sum('price'); */
 
-        if( ($balance- $client_orders) <= $price){
+        // get all count of auth user payments amounts
+        $auth_user_payments = Payment::where('user_id', auth()->id())->sum('amount');   // 20000
+        // get all count of tasks price  with status done
+        $task_site_prices = Task::where('user_id' , auth()->id())/* ->where('task_status',1) */->sum('task_price'); //  15100
+        $balance = ((int)$auth_user_payments - $task_site_prices);  // 20000  - 15100 == 4900 and  include reserved
+
+        if($balance <= $price_c_c){
             $name = auth()->user()->name;
-            Session::flash('message', "Hello There $name, Your Balance is Not Enough, Please add Fond !");
+            //Session::flash('message', "Hello There $name, Your Balance is Not Enough, Please add Fond !");
             return redirect()->route('add_funds')->with('danger', 'Your Balance Not Enough, Please add Fond !');
         }else{
-            return view('admin.order.order_index', compact('title','price','site_url','site_time','date','from','to'));
+            return view('admin.order.order_index2', compact('title','price_c_c', 'price_c_c_p' ,'site_url','site_time','date','from','to'));
         }
 
 
@@ -106,9 +115,9 @@ class OrderController extends Controller
         ]);
 
         // create the task
-        Task::create([
+        $task = Task::create([
             'user_id' => auth()->user()->id,
-            'project_id' => $request->project_id,
+            'project_id' => $project_id,
             'site_id' => $request->site_id,
             'order_id' => $order->id,
             'task_editor_data' => $request->task_editor_data,
@@ -116,14 +125,36 @@ class OrderController extends Controller
             'task_target_url' => $request->task_target_url,
             'task_anchor_text' => $request->task_anchor_text,
             'task_special_requirement' => $request->task_special_requirement,
+            'task_price'        => $site_price
         ]);
+
+        // create the client status
+        ClientStatus::create([
+            'user_id'              => auth()->id(),
+            'task_id'              => $task->id,
+            'order_id'             => $order->id,
+            'site_id'              => $site_id,
+            'client_status'        =>  0,
+            'client_final_status'  =>  0
+        ]);
+
+
+        // create the publisher status
+       /*  PublisherStatus::create([
+            'user_id'                 => auth()->id(),
+            'task_id'                 => $task->id,
+            'order_id'                => $order->id,
+            'site_id'                 => $site_id,
+            'publisher_status'        =>  0,
+            'publisher_final_status'  =>  0
+        ]); */
 
 
         // store the balance result for every user
         // 1) get the Total payments by auth user
         $auth_user_payments = Payment::where('user_id', auth()->id())->sum('amount');
         // 2) get the Total Tska Payed
-        $task_site_prices = Task::where('user_id' , auth()->id())->site->sum('site_price');
+        $task_site_prices = Task::where('user_id' , auth()->id())->sum('task_price');
         // count the balance balance = (Total_Payments - Total_Tasks);
         $balance = ($auth_user_payments - $task_site_prices);
 
@@ -141,7 +172,9 @@ class OrderController extends Controller
     public function store_ccp(Request $request)
     {
 
+
         $site_id = $request->site_id;
+        $package = $request->package;
         $site_price =   Site::where('id',$site_id)->first()->site_price;
         $project_id = $request->project_id;
 
@@ -160,13 +193,14 @@ class OrderController extends Controller
             'user_id' => auth()->user()->id,
             'project_id' => $project_id,
             'site_id' => $site_id,
-            'price'   => $site_price
+            'price'   => ($site_price + $package),
+            'order_package'      => $package
         ]);
 
         // create the task
-        Task::create([
+        $task = Task::create([
             'user_id' => auth()->user()->id,
-            'project_id' => $request->project_id,
+            'project_id' => $project_id,
             'site_id' => $request->site_id,
             'order_id' => $order->id,
             'task_editor_data' => $request->task_editor_data,
@@ -174,7 +208,44 @@ class OrderController extends Controller
             'task_target_url' => $request->task_target_url,
             'task_anchor_text' => $request->task_anchor_text,
             'task_special_requirement' => $request->task_special_requirement,
-            'task_price'        => $site_price
+            'task_price'        => ($site_price + $package),
+            'task_package'      => $package
+        ]);
+
+        // create the client status
+        ClientStatus::create([
+            'user_id'              => auth()->id(),
+            'task_id'              => $task->id,
+            'order_id'             => $order->id,
+            'site_id'              => $site_id,
+            'client_status'        =>  0,
+            'client_final_status'  =>  0
+        ]);
+
+
+        // create the publisher status
+        /* PublisherStatus::create([
+            'user_id'                 => auth()->id(),
+            'task_id'                 => $task->id,
+            'order_id'                => $order->id,
+            'site_id'                 => $site_id,
+            'publisher_status'        =>  0,
+            'publisher_final_status'  =>  0
+        ]); */
+
+
+        // store the balance result for every user
+        // 1) get the Total payments by auth user
+        $auth_user_payments = Payment::where('user_id', auth()->id())->sum('amount');
+        // 2) get the Total Tska Payed
+        $task_site_prices = Task::where('user_id' , auth()->id())->sum('task_price');
+        // count the balance balance = (Total_Payments - Total_Tasks);
+        $balance = ($auth_user_payments - $task_site_prices);
+
+        Balance::updateOrCreate([
+            'user_id' => auth()->id()
+        ], [
+            'balance' => $balance
         ]);
 
 

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Note;
 use App\Models\Post;
 use App\Models\Project;
+use App\Models\PublisherStatus;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -20,7 +22,7 @@ class TaskController extends Controller
 
         $project_tasks = Project::where('id',$request->project_id)->
                         with(['tasks' => function($query) use ($request) {
-                                $query->where('user_id', $request->user_id)->where('status' , $request->status);
+                                $query->where('user_id', $request->user_id)->where('status' , $request->status)->where('task_type',$request->type);
                         }])->get();
 
         return view('admin.task.super_admin_task_by_user_by_project', compact('project_tasks','project_name','user'));
@@ -30,14 +32,14 @@ class TaskController extends Controller
      public function client_task_by_user_by_project(Request $request){
 
         // get the project for every client
-        $project = Project::where('id',$request->project_id)->firstOrFail();
+        $project = Project::where('id',$request->project_id)->first();
         // get the name of project
         $project_name = $project->project_name;
         $user = $project->user->name;
 
         $project_tasks = Project::where('id',$request->project_id)->
                         with(['tasks' => function($query) use ($request) {
-                                $query->where('user_id', $request->user_id)->where('status' , $request->status);
+                                $query->where('user_id', $request->user_id)->where('status' , $request->status)->where('task_type',$request->type);
                         }])->get();
 
         return view('admin.task.client_task_by_user_by_project', compact('project_tasks','project_name','user'));
@@ -113,11 +115,23 @@ class TaskController extends Controller
 
             $task->update([
                 'status'      => Task::COMPLETED,
-                'task_status' => 1
+                'task_status' => Task::COMPLETED
             ]);
             $post->update([
                 'status' => Task::COMPLETED,
-                'post_note'   => $request->post_note,
+                //'post_note'   => $request->post_note,
+            ]);
+
+            $task->order->update([
+                'status'  => Task::COMPLETED,
+             ]);
+
+
+            $note = Note::create([
+                'user_id' => auth()->id(),
+                'post_id' => $post->id,
+                'task_id' => $task->id,
+                'post_note' => $request->post_note,
             ]);
 
             return redirect()->back()->with('success' , 'The post is Approved AND Completed , So Your Post is ready To Be Published');
@@ -132,10 +146,22 @@ class TaskController extends Controller
 
             $task->update([
                 'status'     => Task::IMPROVEMENT,
+                'task_status'  => Task::IMPROVEMENT,
             ]);
             $post->update([
                 'status' => Task::IMPROVEMENT,
-                'post_note'  => $request->post_note
+                //'post_note'  => $request->post_note
+            ]);
+
+            $task->order->update([
+                'status'  => Task::IMPROVEMENT,
+             ]);
+
+            $note = Note::create([
+                'user_id' => auth()->id(),
+                'post_id' => $post->id,
+                'task_id' => $task->id,
+                'post_note' => $request->post_note,
             ]);
 
             return redirect()->back()->with('info' , 'The post is in Improvement Proccessing');
@@ -149,11 +175,23 @@ class TaskController extends Controller
             $post = Post::where('task_id',$task_id)->firstOrFail();
 
             $task->update([
-                'status'     => Task::REJECTED,
+                'status'      => Task::REJECTED,
+                'task_status' => Task::REJECTED,
             ]);
             $post->update([
                 'status' => Task::REJECTED,
-                'post_note'  => $request->post_note
+                //'post_note'  => $request->post_note
+            ]);
+
+            $task->order->update([
+                'status'  => Task::REJECTED,
+             ]);
+
+            $note = Note::create([
+                'user_id' => auth()->id(),
+                'post_id' => $post->id,
+                'task_id' => $task->id,
+                'post_note' => $request->post_note,
             ]);
 
             return redirect()->back()->with('danger' , 'The post is Rejected');
@@ -165,7 +203,7 @@ class TaskController extends Controller
 
 
 
-    // method for not started
+    // method for get tasks not started
     public function not_started(Request $request,$project_id)
     {
         $title = 'Task Not Started';
@@ -174,7 +212,7 @@ class TaskController extends Controller
         return view('admin.order.not_started',compact('title','tasks','tasks_count'));
     }
 
-    // method for In Pprogress
+    // method for get tasks In Pprogress
     public function in_progress(Request $request,$project_id=null)
     {
         //
@@ -185,7 +223,7 @@ class TaskController extends Controller
         return view('admin.order.in_progress',compact('title','tasks','tasks_count'));
     }
 
-     // method for Pending Approval
+     // method for get tasks Pending Approval
      public function pending_approval(Request $request,$project_id)
      {
          //
@@ -196,7 +234,7 @@ class TaskController extends Controller
      }
 
 
-      // method for improvement
+      // method for get tasks improvement
       public function improvement(Request $request,$project_id)
       {
           //
@@ -206,7 +244,7 @@ class TaskController extends Controller
           return view('admin.order.improvement',compact('title','tasks','tasks_count'));
       }
 
-      // method for completed
+      // method for get tasks completed
       public function completed(Request $request,$project_id)
       {
           //
@@ -216,7 +254,7 @@ class TaskController extends Controller
           return view('admin.order.completed',compact('title','tasks','tasks_count'));
       }
 
-      // method for rejected
+      // method for get tasks rejected
       public function rejected(Request $request,$project_id)
       {
           //
@@ -225,5 +263,82 @@ class TaskController extends Controller
           $tasks_count = count($tasks);
           return view('admin.order.rejected',compact('title','tasks','tasks_count'));
       }
+
+      // method for super admin aprove the c_p
+      public function super_admin_approve(Request $request){
+
+        $task = Task::where('id',$request->task_id)->first();
+        $task->update([
+            'status'       => 5,
+            'task_status'  => 5,
+         ]);
+
+         $task->order->update([
+            'status'  => 5,
+         ]);
+
+       /*  PublisherStatus::create([
+            'user_id'                 => $task->user_id,
+            'task_id'                 => $task->id,
+            'order_id'                => $task->order_id,
+            'site_id'                 => $task->site_id,
+            'publisher_status'        =>  0,
+            'publisher_final_status'  =>  0
+        ]); */
+
+        /* $post = Post::where('id',$request->post_id)->first();
+         $post->update([
+            'status'  => 5,
+         ]); */
+
+        return redirect()->back()->with('success' , 'The Task For Content Placement is Approved');
+
+      }
+
+      // method for super admin reject the c_p
+      public function super_admin_reject(Request $request){
+        // get the task
+        $task = Task::where('id',$request->task_id)->first();
+        // update the task status to the rejected status
+        $task->update([
+            'status'       => 6,
+            'task_status'  => 6,
+         ]);
+        //get the related order of task and update the status to the rejected status
+        $task->order->update([
+            'status'  => 6,
+         ]);
+
+         // change the client status to the rejected status 6
+         /* $task->client_status->update([
+            'client_status' => 6, // 0: Not_Started , 1: in_progress, 2: PENDING APPROVAL, 3: Approved, 4 Need Approve , 5: completed, 6: rejected
+         ]); */
+
+
+
+        return redirect()->back()->with('danger' , 'The Task For Content Placement is Rejected');
+
+      }
+
+
+      // method for see all super admin new tasks
+      public function all_new_tasks(Request $request){
+
+        // get all new tasks
+        $tasks = Task::where('status',Task::NOT_STARDET)->get();
+
+
+        return view('admin.task.super_admin_all_new_tasks' , compact('tasks'));
+      }
+
+      /* // method for the publisher for approve
+      public function publisher_approve(){
+
+      }
+
+      // method for the publisher for reject
+      public function publisher_reject(){
+
+      } */
 
 }

@@ -1,9 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('style')
-    <style>
-
-    </style>
+    <link rel="stylesheet" href="//cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
 @endsection
 
 @section('content')
@@ -30,70 +28,46 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+
+                {{-- start searsh --}}
+                    @include('admin.inc.client.client_searsh_publisher')
+                {{-- end searsh --}}
+
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Found: <span class="text-danger">{{$sites_count}} </span> Websites - {{$project_id}} | {{ print_r(request()->all()) }}
+                    </h3>
+
+                    {{-- start search --}}
+                    {{-- <form  action="{{ route('site_index' , ['project_id' => request()->project_id , 'search' => request()->search ]) }}" method="POST">
+                        @csrf
+                    <div style="float: right" class="form-group row">
+
+                        <input type="text" style="width: 280px;" class="form-control mx-2" autocomplete="on" value="{{ request()->search ?? '' }}" required name="search" placeholder="Enter Search Keword">
+                        <button type="submit" class="btn btn-primary btn-sm loading-trigger mr-3">
+                            <svg style="width: 25px" class="svg-inline--fa fa-search fa-w-16 mr-2"  focusable="false" data-prefix="fas" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
+                        </svg>Search</button>
+                    </div>
+                   </form> --}}
+                    {{-- end search --}}
+
+                </div>
+
+
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    Found: <span class="text-danger">{{$sites_count}} </span> Websites - {{$project_id}}
-                                </h3>
 
-                                {{-- start search --}}
-                                <form  action="{{ route('site_index' , ['project_id' => request()->project_id , 'search' => request()->search ]) }}" method="POST">
-                                    @csrf
-                                <div style="float: right" class="form-group row">
-
-                                    <input type="text" style="width: 280px;" class="form-control mx-2" autocomplete="on" value="{{ request()->search ?? '' }}" required name="search" placeholder="Enter Search Keword">
-                                    <button type="submit" class="btn btn-primary btn-sm loading-trigger mr-3">
-                                        <svg style="width: 25px" class="svg-inline--fa fa-search fa-w-16 mr-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
-                                    </svg>Search</button>
-                                </div>
-                               </form>
-                                {{-- end search --}}
-
-                            </div>
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="row">
                                    {{--  <h3>publishers..</h3> --}} {{--  datatable --}}
                                     <div class="table-responsive col-md-12">
-                                        <table class="table table-bordered table-hover">
-                                            <thead class="bg-300">
+                                        <table id="table_publisher" class="table table-bordered table-hover">
 
-                                                <tr>
-                                                    <th style="width: 250px;">
-                                                        Websites
-                                                    </th>
-
-                                                    <th style="width: 254px;">
-                                                        Websites Name
-                                                    </th>
-
-                                                    <th>
-                                                        Categories
-                                                    </th>
-
-                                                    <th>
-                                                        Monthly Traffic
-                                                    </th>
-
-                                                    <th>
-                                                        Ahrefs DR
-                                                    </th>
-
-                                                    <th>
-                                                         Moz DA
-                                                    </th>
-
-                                                    <th style="width: 150px;">
-                                                        REGION / LOCATION
-                                                    </th>
-
-                                                    <th class="sort" style="width:60px">
-                                                        Actions
-                                                    </th>
-                                                </tr>
-                                            </thead>
+                                            {{-- start thead --}}
+                                               @include('admin.inc.client.client_thead')
+                                             {{-- end thead --}}
 
                                             <tbody>
 
@@ -114,7 +88,7 @@
 
                                                 </td>
 
-                                                <td>{{ $site->site_name }}</td>
+                                               {{--  <td>{{ $site->site_name }}</td> --}}
 
                                                 <td><span class="badge badge-primary">{{ $site->handle_category() }}</span></td>
 
@@ -146,12 +120,13 @@
                                                <td class="">
                                                   <div class="btn-group btn-group-sm btn-block">
                                                     @if(!empty($site->site_price))
-                                                      <a href="{{route('order_index', ['project_id'=> request()->project_id , 'site_id' => $site->id ])}}" style="width: 100px;" class="btn btn-success">{{ ($site->site_price) ? "$$site->site_price" : '$0'}}</a>
+                                                      <a href="{{route('order_index', ['project_id'=> request()->project_id , 'site_id' => $site->id ])}}" style="width: 50%;" class="btn btn-success">Buy Again</a>
+                                                       <a href="{{route('order_index', ['project_id'=> request()->project_id, 'site_id' => $site->id ])}}" style="width: 50%;"
+                                                         class="btn btn-primary"> {{($site->site_price) ? "$$site->site_price" : '$0'}}</a>
                                                     @else
                                                       <a href="#" style="width: 100px;" class="btn btn-danger">The Price Not Yet</a>
                                                     @endif
-                                                    {{-- <a href="{{route('order_index', ['project_id'=> request()->project_id && 1 , 'site_id' => $site->id ])}}" style="width: 100px;"
-                                                         class="btn btn-primary">$ {{$site->site_price}}</a> Buy Again --}}
+
                                                   </div>
 
                                                   <div class="btn-group">
@@ -194,9 +169,11 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        {{-- start pagination --}}
                                         <div style="float: right" class="">
-                                          {{$sites->links()}}
+                                          {{ $sites->appends(Request::except('page'))->links() }}
                                         </div>
+                                        {{-- end pagination --}}
                                     </div>
                                 </div>
                             </div>
@@ -215,4 +192,55 @@
 
 @section('js')
 
+<script>
+    document.getElementById('resetButton').addEventListener('click', function(event) {
+         event.preventDefault(); // Prevent the default button behaviorlet da = document.getElementByClassName('da').value;
+         let da = document.getElementById('da').value = 1;
+         let da_to =  document.getElementById('da_to').value = 100;
+         let dr =  document.getElementById('dr').value = 1;
+         let dr_to = document.getElementById('dr_to').value = 100;
+
+         let price = document.getElementById('price').value = 1;
+         let price_to =  document.getElementById('price_to').value = 100000;
+
+
+         let category = document.getElementById('category').value = 'all';
+
+         let linkType = document.getElementById('linkType').value = 'all';
+
+         let monthlyTraffic =  document.getElementById('monthlyTraffic').value = 'all';
+          monthlyTraffic.innerHTML   = 'all';
+
+
+
+
+         let max_links_allow =  document.getElementById('max_links_allow').value = 1;
+
+         let spamScore = document.getElementById('spamScore').value = 'all';
+
+
+
+         let websiteLanguage = document.getElementById('websiteLanguage').value = 'all';
+
+
+
+         let sponsored = document.getElementById('sponsored').value = 'all';
+
+
+
+
+
+
+
+         let service_type = document.getElementById('service_type').value = 'all';
+
+         let worked_ith_or_not = document.getElementById('worked_ith_or_not').value = 'all';
+});
+
+</script>
+
+{{-- <script src="//cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+<script>
+    let datatable = new DataTable('#table_publisher');
+</script> --}}
 @endsection

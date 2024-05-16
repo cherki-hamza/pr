@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\Payment\PaypalController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ProjectController;
+use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SiteController;
 use App\Http\Controllers\Backend\TaskController;
 use App\Http\Controllers\ContactController;
@@ -61,9 +62,23 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     Route::post('task/{task_id?}/{post_id}/open_task/user/{user_id?}/project/{project_id?}/task_approve_or_rejected',[TaskController::class,'task_approve_or_rejected'])->name('task_approve_or_rejected');
 
+
+    // show all newtasks for super admin
+    // super admin reject the task
+    Route::get('task/all_new_tasks',[TaskController::class,'all_new_tasks'])->name('all_new_tasks');
+    // super admin approve the task
+    Route::get('task/{task_id}/super_admin_approve',[TaskController::class,'super_admin_approve'])->name('super_admin_approve');
+    // super admin reject the task
+    Route::get('task/{task_id}/super_admin_reject',[TaskController::class,'super_admin_reject'])->name('super_admin_reject');
     // ********************************************************************************************************************************************************************************
 
+    // route for get all contacts
+    Route::get('contacts/messages',[ContactController::class,'contacts'])->name('contacts');
     // route for Contact page
     Route::resource('contacts' , ContactController::class);
+
+
+    // admin settings
+    Route::get('settings',[SettingController::class,'settings'])->name('settings');
 
 });

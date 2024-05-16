@@ -169,5 +169,24 @@ class User extends Authenticatable
         return $this->hasMany(Task::class)->where('status',Task::REJECTED);
     }
 
+    // method for check if is super admin
+    public function super(){
+        return ($this->role == 'superadmin')? true : false;
+    }
+
+    // method for check if is client
+    public function client(){
+        return ($this->role == 'client')? true : false;
+    }
+
+    // method for check if is admin
+    public function admin(){
+        return ($this->role == 'admin')? true : false;
+    }
+
+    // method for check if is publisher
+    public function publisher(){
+        return ($this->role == 'publisher')? true : false;
+    }
 
 }

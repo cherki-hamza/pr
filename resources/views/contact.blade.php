@@ -48,6 +48,25 @@
     <link href="https://icopify.co/assets/css/theme.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('public/template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+
+
+    <style>
+        input {
+  width: 100px;
+  padding: 10px;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+}
+input::placeholder {
+  color: #BBB;
+}
+
+.iti{
+   width: 800px;
+}
+    </style>
+
 </head>
 
 <body>
@@ -118,6 +137,11 @@
         <section class="py-2 my-3 overflow-hidden" id="banner">
              <div class="container">
                 <div class="row">
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     <section class="container mt-5">
                         <!--Contact heading-->
                         <div class="row">
@@ -139,9 +163,9 @@
                                     <div style="font-size: 20px" class="card-body p-3">
 
                                         <div class="form-group">
-                                        <label> Your name </label>
+                                        <label> Your name</label>
                                         <div class="input-group">
-                                            <input type="text" name="name" class="form-control  @error('name') is-invalid  @enderror" id="name" placeholder="Your name">
+                                            <input type="text" name="name" class="form-control  @error('name') is-invalid  @enderror" value="{{old('name')}}" id="name" placeholder="Your name">
                                         </div>
                                         @error('name')
                                           <p class="text-danger">{{ $message }}</p>
@@ -150,7 +174,7 @@
                                         <div class="form-group">
                                             <label>Your email</label>
                                             <div class="input-group mb-2 mb-sm-0">
-                                                <input type="email" name="email" class="form-control @error('email') is-invalid  @enderror" id="email" placeholder="Your Email">
+                                                <input type="email" name="email" class="form-control @error('email') is-invalid  @enderror"value="{{old('email')}}" id="email" placeholder="Your Email">
                                             </div>
                                             @error('email')
                                                <p class="text-danger">{{ $message }}</p>
@@ -159,7 +183,7 @@
                                         <div class="form-group">
                                             <label>Your Phone Number <span class="text-danger"> (with country code)</span></label>
                                             <div class="input-group mb-2 mb-sm-0">
-                                            <input type="number" name="mobile" class="form-control @error('mobile') is-invalid @enderror" id="mobile" value="+971" placeholder="Your mobile">
+                                            <input type="phone" name="mobile" class="form-control @error('mobile') is-invalid @enderror"value="{{old('mobile')}}" id="phone" value="+971" placeholder="Your mobile">
                                             </div>
                                             @error('mobile')
                                               <p class="text-danger">{{ $message }}</p>
@@ -168,24 +192,28 @@
                                         <div class="form-group">
                                             <label>Subject</label>
                                             <div class="input-group mb-2 mb-sm-0">
-                                                <input type="text" class="form-control @error('subject') is-invalid @enderror" name="subject" placeholder="Your Subject">
+                                                <input type="text" class="form-control @error('subject') is-invalid @enderror"value="{{old('subject')}}" name="subject" placeholder="Your Subject">
                                             </div>
                                             @error('subject')
                                               <p class="text-danger">{{ $message }}</p>
                                             @enderror
-                                            
+
                                         </div>
                                         <div class="form-group">
                                             <label>Message</label>
                                             <div class="input-group mb-2 mb-sm-0">
-                                                <textarea name="message" id="message" class="form-control @error('message') is-invalid @enderror" cols="30" rows="10" placeholder="Your Message"></textarea>
+                                                <textarea name="message" id="message" class="form-control @error('message') is-invalid @enderror" cols="30" rows="10" placeholder="Your Message">{{ old('message') }}</textarea>
                                             </div>
                                             @error('message')
                                                 <p class="text-danger">{{ $message }}</p>
                                             @enderror
-                                            
+
                                         </div>
                                         <div class="text-center"><br><br>
+                                            <input type="hidden" value="United Arab Emirates" name="country_name" id="country_name">
+                                            <input type="hidden" value="+971" name="area_code" id="area_code">
+                                            <input type="hidden" value="ae" name="country_code" id="country_code">
+                                            <input type="hidden" value="https://flagicons.lipis.dev/flags/4x3/ae.svg" name="country_flag" id="country_flag">
                                             <input type="submit" name="submit" value="submit" class="btn btn-primary btn-block rounded-0 py-2">
                                         </div>
 
@@ -265,7 +293,7 @@
         <!-- <section> close ============================-->
         <!-- ============================================-->
 
-        
+
     </main>
     <!-- ===============================================-->
     <!--    End of Main Content-->
@@ -296,8 +324,56 @@
     <script src="https://icopify.co/assets/lib/plyr/plyr.polyfilled.min.js"></script>
     <script src="{{ asset('public/template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('public/template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-        
-        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script>
+
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            const input = document.querySelector("#phone");
+            const iti = window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry: "ae",
+            //utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/js/utils.js",
+            });
+
+            // store the instance variable so we can access it in the console e.g. window.iti.getNumber()
+            window.iti = iti;
+
+            //detect onchange for the text input
+            $("body").on('DOMSubtreeModified', ".iti__selected-dial-code", function() {
+                var area_code = $('.iti__selected-dial-code').text();
+                document.getElementById('area_code').value = area_code;
+
+
+
+                var countryData = iti.getSelectedCountryData();
+                // Extract the country code
+                var  countryCode = countryData.iso2;
+                var  country_name = countryData.name;
+
+                // Construct the URL for the flag image
+                // https://flagicons.lipis.dev/flags/4x3/af.svg
+                var flagUrl = "https://flagicons.lipis.dev/flags/4x3/" + countryCode +".svg";
+
+                document.getElementById('country_code').value = countryCode;
+                document.getElementById('country_flag').value = flagUrl;
+                document.getElementById('country_name').value = country_name;
+
+                /* console.log(countryCode);
+                console.log(flagUrl);
+                console.log(area_code); */
+
+                console.log(country_name);
+            });
+
+       });
+    </script>
+
+
+
+
 
 
 </body>

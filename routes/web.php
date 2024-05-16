@@ -17,7 +17,11 @@ use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\TaskController;
 use App\Models\Site;
+use Illuminate\Support\Facades\Http;
+use PhpParser\Node\Stmt\TryCatch;
 use SheetDB\SheetDB;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\File;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,7 +83,7 @@ Auth::routes([
 ]);
 
 
-Route::middleware(['auth'])->get('/home', [DashboardController::class, 'index'])->name('home');
+// Route::middleware(['auth'])->get('/admin', [DashboardController::class, 'index'])->name('admin');
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
 
