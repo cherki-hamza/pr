@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\CompletedTaskEmail;
+use App\Mail\InProgressTaskEmail;
+use App\Mail\RejectedTaskEmail;
 use App\Models\Note;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\PublisherStatus;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class TaskController extends Controller
 {
@@ -71,10 +75,15 @@ class TaskController extends Controller
         // approve button
         if($request->input('action') == 'approve'){
 
+
+
            $task = Task::where('user_id',$user_id)->where('id',$task_id)->firstOrFail();
            $post = Post::where('task_id',$task_id)->firstOrFail();
 
-            $task->update(['status' => Task::APPROVAL]);
+            $task->update([
+                'status' => Task::APPROVAL,
+                'task_post_placement_url' => $request->post_placement_url,
+            ]);
             $post->update(['status' => Task::APPROVAL]);
 
             return redirect()->back()->with('info' , 'The post is Approved');
@@ -110,20 +119,23 @@ class TaskController extends Controller
         // approve button
         if($request->input('action') == 'approve'){
 
+            return $request->all();
+
            $task = Task::where('user_id',$user_id)->where('id',$task_id)->firstOrFail();
            $post = Post::where('task_id',$task_id)->firstOrFail();
 
             $task->update([
-                'status'      => Task::COMPLETED,
-                'task_status' => Task::COMPLETED
+                'status'      => Task::PUBLISHER_APPROVAL,
+                'task_status' => Task::PUBLISHER_APPROVAL,
+                'task_post_placement_url' => $request->post_placement_url,
             ]);
             $post->update([
-                'status' => Task::COMPLETED,
+                'status' => Task::PUBLISHER_APPROVAL,
                 //'post_note'   => $request->post_note,
             ]);
 
             $task->order->update([
-                'status'  => Task::COMPLETED,
+                'status'  => Task::PUBLISHER_APPROVAL,
              ]);
 
 
@@ -138,7 +150,7 @@ class TaskController extends Controller
 
         }
 
-         // rejected button
+         // improve button
          if($request->input('action') == 'improve'){
 
             $task = Task::where('user_id',$user_id)->where('id',$task_id)->firstOrFail();
@@ -147,6 +159,7 @@ class TaskController extends Controller
             $task->update([
                 'status'     => Task::IMPROVEMENT,
                 'task_status'  => Task::IMPROVEMENT,
+                'task_post_placement_url' => $request->post_placement_url,
             ]);
             $post->update([
                 'status' => Task::IMPROVEMENT,
@@ -271,25 +284,14 @@ class TaskController extends Controller
         $task->update([
             'status'       => 5,
             'task_status'  => 5,
+            'task_post_placement_url' => $request->post_placement_url,
          ]);
 
          $task->order->update([
             'status'  => 5,
          ]);
 
-       /*  PublisherStatus::create([
-            'user_id'                 => $task->user_id,
-            'task_id'                 => $task->id,
-            'order_id'                => $task->order_id,
-            'site_id'                 => $task->site_id,
-            'publisher_status'        =>  0,
-            'publisher_final_status'  =>  0
-        ]); */
-
-        /* $post = Post::where('id',$request->post_id)->first();
-         $post->update([
-            'status'  => 5,
-         ]); */
+         Mail::to($task->user->email)->send(new CompletedTaskEmail($task));
 
         return redirect()->back()->with('success' , 'The Task For Content Placement is Approved');
 
@@ -308,6 +310,8 @@ class TaskController extends Controller
         $task->order->update([
             'status'  => 6,
          ]);
+
+         Mail::to($task->user->email)->send(new RejectedTaskEmail($task));
 
          // change the client status to the rejected status 6
          /* $task->client_status->update([

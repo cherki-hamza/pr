@@ -15,6 +15,7 @@ class Post extends Model
     const IN_PROGRESS = 1;
     const PENDING_APPROVAL = 2;
     const APPROVAL = 3;
+    const PUBLISHER_APPROVAL = 9;
     const IMPROVEMENT = 4;
     const COMPLETED = 5;
     const REJECTED = 6;

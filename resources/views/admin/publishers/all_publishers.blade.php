@@ -67,7 +67,7 @@
                                    {{--  <h3>publishers..</h3>  datatable --}}
                                     <div class="table-responsive col-md-12">
                                         <table class="table table-bordered table-hover">
-                                            
+
                                             @include('admin.inc.publisher.thead_recovery')
 
                                             <tbody>

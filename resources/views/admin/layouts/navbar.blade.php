@@ -57,10 +57,11 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right my-4 py-0" aria-labelledby="navbarDropdownUser">
                 <div class="bg-white rounded-soft py-2">
-
-                    <a class="dropdown-item has-icon loading-trigger" href="{{ route('settings') }}">
-                      <i class="fa fa-cog mr-2"></i>Settings
-                </a>
+                   @if (auth()->user()->role == 'super-admin')
+                    <a class="dropdown-item has-icon loading-trigger" href="{{ route('application_settings') }}">
+                        <i class="fa fa-cog mr-2"></i>Application Settings
+                     </a>
+                     @endif
 
                     <a class="dropdown-item has-icon loading-trigger" href="{{ route('profiles.index') }}"><svg style="width: 25px"
                             class="svg-inline--fa fa-user-cog fa-w-20 mr-2" aria-hidden="true" focusable="false"
@@ -71,6 +72,10 @@
                             </path>
                         </svg><!-- <i class="fas fa-user-cog mr-2"></i> Font Awesome fontawesome.com -->Profile
                     </a>
+
+                    <a class="dropdown-item has-icon loading-trigger" href="{{ route('settings') }}">
+                        <i class="fa fa-cog mr-2"></i>{{ (auth()->user()->role == 'super-admin')? 'Super-Admin' : 'User' }} Settings
+                     </a>
 
                     <a class="dropdown-item has-icon loading-trigger" href="{{ route('balance') }}"><svg style="width: 25px"
                             class="svg-inline--fa fa-wallet fa-w-16 mr-2" aria-hidden="true" focusable="false"
@@ -84,7 +89,7 @@
 
                     <div class="dropdown-divider"></div>
 
-
+                    @if (auth()->user()->role == 'super-admin')
                     <a class="dropdown-item has-icon" href="{{ route('contacts') }}">
                        <svg style="width: 25px"
                             class="svg-inline--fa fa-comment-dots fa-w-16 mr-2" aria-hidden="true" focusable="false"
@@ -94,7 +99,7 @@
                                 d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8 480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4 0 256-93.1 256-208S397.4 32 256 32zM128 272c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z">
                             </path>
                         </svg><!-- <i class="fas fa-comment-dots mr-2"></i> Font Awesome fontawesome.com -->Messages</a>
-
+                     @endif
 
 
                     <a style="width: 120px;height: 35px;" class="dropdown-item has-icon text-danger loading-triggerr" href="{{ route('logout') }}"

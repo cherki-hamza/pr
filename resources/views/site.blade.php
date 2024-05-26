@@ -60,7 +60,7 @@
     <main class="main" id="top">
         <nav class="navbar navbar-standard navbar-expand-lg fixed-top {{-- navbar-dark --}} navbar-theme {{-- shadow-bottom --}} text-dark {{-- bg-dark --}}"
             style="">
-            <div class="container"><a class="navbar-brand" href="#"><span class="text-white"><img
+            <div class="container"><a class="navbar-brand" href="{{ route('index') }}"><span class="text-white"><img
                           style="width: 130px;height: 120px;"  src="{{ asset('public/assets/images/logo.png') }}" alt="Pr ott"></span></a>
                 <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
                     data-target="#navbarStandard" aria-controls="navbarStandard" aria-expanded="false"

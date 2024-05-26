@@ -48,7 +48,7 @@ class ProfileController extends Controller
     {
 
          // get user profile and update the profile informations
-         $user = auth()->user()->id;
+         $user = auth()->user();
          $profile = Profile::findOrFail($id);
         //return public_path('assets\images\profiles');
 
@@ -75,6 +75,7 @@ class ProfileController extends Controller
             $profile->update([
                 'picture'=> '/assets/images/profiles/'.$file_name,
            ]);
+           
 
         }
 
@@ -98,6 +99,11 @@ class ProfileController extends Controller
             'company_name'=> $request->company_name,
             'company_website'=> $request->company_website,
         ]);
+
+
+        $user->update([
+            'name'=> $request->fullname,
+       ]);
 
 
         //toastr()->addSuccess('Profile Updated with success.');

@@ -17,11 +17,17 @@ use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\TaskController;
 use App\Models\Site;
+use App\Models\User;
+use App\Notifications\EmailNotification;
+use App\Notifications\SmsNotification;
 use Illuminate\Support\Facades\Http;
 use PhpParser\Node\Stmt\TryCatch;
 use SheetDB\SheetDB;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Notification;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,13 +41,140 @@ use Illuminate\Support\Facades\File;
 */
 
 Route::get('/', function () {
+
     $sites = Site::all();
     return view('site' , compact('sites'));
 })->name('index');
 
+
+Route::get('/sms', function () {
+
+     $user = User::first();
+
+     $basic  = new \Vonage\Client\Credentials\Basic(env('NEXMO_KEY'), env('NEXMO_SECRET'));
+     $client = new \Vonage\Client($basic);
+
+     // Set the CA bundle path for Guzzle with a relative path
+            $guzzleClient = new \GuzzleHttp\Client([
+                'verify' => storage_path('cacert.pem'),
+            ]);
+            $client->setHttpClient($guzzleClient);
+
+
+     /* echo '<pre>';
+     print_r($client);
+     exit(); */
+
+     $response = $client->sms()->send(
+        new \Vonage\SMS\Message\SMS('971551087029', 'PR Content Dubai', 'Hello from Pr Content Creation')
+    );
+
+    $message = $response->current();
+
+    if ($message->getStatus() == 0) {
+        echo "The message was sent successfully\n";
+    } else {
+        echo "The message failed with status: " . $message->getStatus() . "\n";
+    }
+
+     //$user->notify(new SmsNotification);
+
+     //Notification::send($user , new SmsNotification($user));
+
+    // return 'sms success';
+
+})->name('sms');
+
+
+Route::get('/hamza', function () {
+    $users = User::whereNot('role','super-admin')->get();
+    foreach($users as $user){
+        Notification::send($user , new EmailNotification($user));
+
+
+    }
+
+    /* $messages = [
+        ['name' => 'WelcomeMessage', 'message' => 'Welcome to our website!'],
+        ['name' => 'AccountCreated', 'message' => 'Your account has been created successfully.'],
+        ['name' => 'EmailVerification', 'message' => 'Please check your email to verify your account.'],
+        ['name' => 'PasswordUpdated', 'message' => 'Your password has been updated.'],
+        ['name' => 'LoginSuccessful', 'message' => 'Login successful!'],
+        ['name' => 'LogoutSuccessful', 'message' => 'Logout successful!'],
+        ['name' => 'ProfileUpdated', 'message' => 'Your profile has been updated.'],
+        ['name' => 'SettingsSaved', 'message' => 'Your settings have been saved.'],
+        ['name' => 'NewNotification', 'message' => 'You have a new notification.'],
+        ['name' => 'SubscriptionActivated', 'message' => 'Your subscription has been activated.'],
+        ['name' => 'SubscriptionCanceled', 'message' => 'Your subscription has been canceled.'],
+        ['name' => 'EventRegistered', 'message' => 'You have successfully registered for the event.'],
+        ['name' => 'PaymentProcessed', 'message' => 'Your payment was processed successfully.'],
+        ['name' => 'OrderShipped', 'message' => 'Your order has been shipped.'],
+        ['name' => 'OrderDelivered', 'message' => 'Your order has been delivered.'],
+        ['name' => 'NewMessage', 'message' => 'You have a new message.'],
+        ['name' => 'RequestSubmitted', 'message' => 'Your request has been submitted.'],
+        ['name' => 'AppointmentConfirmed', 'message' => 'Your appointment has been confirmed.'],
+        ['name' => 'TicketClosed', 'message' => 'Your ticket has been closed.'],
+        ['name' => 'FeedbackThankYou', 'message' => 'Thank you for your feedback!']
+    ]; */
+
+       /* $messages = [];
+        for ($i = 1; $i <= 200; $i++) {
+            $messages[] = [
+                'name' => 'Message' . $i,
+                'message' => 'This is message number ' . $i . '.'
+            ];
+        }
+
+        foreach($users as $user){
+
+            foreach($messages as $message){
+            Notification::send($user , new EmailNotification($user,$message));
+            }
+
+        } */
+
+    // Define the Artisan command
+    $command = 'php ' . base_path('artisan') . ' queue:work --stop-when-empty > /dev/null 2>&1 &';
+
+    // Execute the command in the background
+    exec($command);
+
+    return redirect(route('index'));
+
+    // Return a response immediately
+    /* return response()->json([
+        'message' => 'Queue work command started in the background',
+    ]); */
+
+    /* Artisan::call('queue:work', [
+        '--stop-when-empty' => true,
+    ]);
+
+    // Optionally, you can capture the output
+    $output = Artisan::output();
+
+     // Split the output into lines
+     $lines = explode(PHP_EOL, $output);
+
+    // Return a response or view
+    return response()->json([
+        'message' => 'Queue work command executed',
+        'output' => $lines,
+    ]); */
+
+    //return '<h1 style="color:red">task done</h1>';
+})->name('hamza');
+
+
 Route::get('publishers/publisher_data' , [SiteController::class , 'publisher_data'])->name('publisher_data');
 
 Route::get('/dev', function (Request $request) {
+
+    $response = Http::get('https://ipinfo.io/86.98.23.13?token=4fa8145b7d9ec3');
+
+    $result = $response->json();
+
+    print_r($result);
 
     /* $sheetdb = new SheetDB('btvs8e6ku3z5m');
 
@@ -182,6 +315,13 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/favorite_site/{site_id}',[SiteController::class,'favorite'])->name('favorite');
     // show all favorite publishers by user
     Route::get('publishers/{project_id}/favorite_publishers',[SiteController::class,'favorite_publishers'])->name('favorite_publishers');
+
+    // route for see the blacklist publishers
+    Route::get('publishers/{project_id}/blacklist_publishers',[SiteController::class,'blacklist_publishers'])->name('blacklist_publishers');
+    // route for add to blacklist
+    Route::post('publisher/site/{site_id}/project/{project_id}/add_blacklist_publishers',[SiteController::class,'add_blacklist_publishers'])->name('add_blacklist_publishers');
+    // route for remove to blacklist
+    Route::delete('publisher/site/{site_id}/project/{project_id}/remove_blacklist_publishers',[SiteController::class,'remove_blacklist_publishers'])->name('remove_blacklist_publishers');
 
 
 

@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use ChristianKuri\LaravelFavorite\Traits\Favoriteability;
+use Illuminate\Notifications\Notification;
 
 class User extends Authenticatable
 {
@@ -187,6 +188,14 @@ class User extends Authenticatable
     // method for check if is publisher
     public function publisher(){
         return ($this->role == 'publisher')? true : false;
+    }
+
+        /**
+     * Route notifications for the Vonage channel.
+     */
+    public function routeNotificationForVonage(Notification $notification): string
+    {
+        return $this->mobile;
     }
 
 }

@@ -8,7 +8,7 @@ class SettingHelper
 {
     public static function getValue(string $key)
     {
-        return Setting::where(['key' => $key])->first()->value;
+        return Setting::where(['key' => $key])->first()->value ?? '';
     }
 
     public static function getName(string $key)

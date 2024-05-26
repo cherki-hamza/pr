@@ -170,7 +170,7 @@
                                    <td class="row">
                                       <div class="btn-group btn-group-sm btn-block">
                                         @if(!empty($site->site_price))
-                                          <a href="{{ route('all_publishers') }}"  style="background-color: #2c7be5;color:white" class="btn">{{ ($site->site_price) ? "$$site->site_price" : '$0'}}</a>
+                                          <a href="#"  style="background-color: #2c7be5;color:white" class="btn">{{ ($site->site_price) ? "$$site->site_price" : '$0'}}</a>
                                         @else
                                           <a href="#"  class="btn btn-danger">The Price Not Yet</a>
                                         @endif
@@ -181,34 +181,9 @@
                                       <div class="btn-group">
                                         <div class="d-flex justify-content-between">
 
-                                            <div class="card my-2 mx-2">
-                                                {{-- <form action="{{route('favorite')}}" method="POST">
-                                                    @csrf --}}
-                                                    <input type="hidden" name="site_id" value="{{$site->id}}">
-                                                   {{--  <button type="submit" class="btn btn-white"><i style="color: #f5803e" class="fa fa-heart"></i></button> --}}
-                                                    <a href="{{-- {{route('favorite',  ['site_id'=>$site->id])}} --}}" class="btn btn-white"><i style="color: {{ ($site->favoritesCount == 1) ? 'red' : '#f5803e' }}" class="fa fa-heart"></i></a>
-                                                    {{-- <button type="submit"  class="btn btn-white"/><i style="color: #f5803e" class="fa fa-heart"></i> --}}
-                                               {{-- </form> --}}
-                                            </div>
-
-
-                                            <div style="float: center" class="card my-2 mx-2 ml-4 mr-4">
-                                                <form action="#" method="post">
-                                                    @csrf
-                                                <a href="#" class="btn btn-white"><i style="color: #f5803e " class="fa fa-ban"></i></a>
-                                                {{-- <form action="https://icopify.co/blacklists" id="blacklist-f-1460" class="blacklist-form" method="post">
-                                                    <input type="hidden" name="_token" value="Nb1bqw31WFqv95ceCwt5PyJAOTSJnVPvyr7Y6AhC">                                                        <input type="hidden" name="website_id" value="1460">
-                                                        <button type="submit" class="btn btn-default text-sm btn-sm btn-block mt-2 blacklist-button" title="Add To Your BlackList"><svg class="svg-inline--fa fa-ban fa-w-16 text-google-plus ml-1 mr-1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ban" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119.034 8 8 119.033 8 256s111.034 248 248 248 248-111.034 248-248S392.967 8 256 8zm130.108 117.892c65.448 65.448 70 165.481 20.677 235.637L150.47 105.216c70.204-49.356 170.226-44.735 235.638 20.676zM125.892 386.108c-65.448-65.448-70-165.481-20.677-235.637L361.53 406.784c-70.203 49.356-170.226 44.736-235.638-20.676z"></path></svg><!-- <i class="fas fa-ban text-google-plus ml-1 mr-1"></i> Font Awesome fontawesome.com --></button>
-                                                </form> --}}
-                                            </div>
-                                            <div style="float: right" class="card my-2 mx-2 mr-2">
-                                                <form action="#" method="post">
-                                                    @csrf
-                                                <a href="#" class="btn btn-white"><i style="color: #f5803e " class="fa fa-flag"></i></a>
-                                                {{-- <a href="" role="button" class="btn btn-default text-sm btn-sm btn-block mt-2 blacklist-button" title="Report This Website" data-toggle="modal" data-target="#reportWebsite1460">
-                                                    <svg class="svg-inline--fa fa-flag fa-w-16 text-google-plus ml-1 mr-1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="flag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M349.565 98.783C295.978 98.783 251.721 64 184.348 64c-24.955 0-47.309 4.384-68.045 12.013a55.947 55.947 0 0 0 3.586-23.562C118.117 24.015 94.806 1.206 66.338.048 34.345-1.254 8 24.296 8 56c0 19.026 9.497 35.825 24 45.945V488c0 13.255 10.745 24 24 24h16c13.255 0 24-10.745 24-24v-94.4c28.311-12.064 63.582-22.122 114.435-22.122 53.588 0 97.844 34.783 165.217 34.783 48.169 0 86.667-16.294 122.505-40.858C506.84 359.452 512 349.571 512 339.045v-243.1c0-23.393-24.269-38.87-45.485-29.016-34.338 15.948-76.454 31.854-116.95 31.854z"></path></svg><!-- <i class="fas fa-flag text-google-plus ml-1 mr-1"></i> Font Awesome fontawesome.com -->
-                                                </a> --}}
-                                            </div>
+                                            <a href="#" target="_blank" class="btn btn-outline-google-plus btn-block btn-sm mt-2" role="button" title="View Details">
+                                                View Details
+                                            </a>
 
                                         </div>
                                       </div>

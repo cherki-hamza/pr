@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\CreateTaskEmail;
 use App\Models\Balance;
 use App\Models\ClientStatus;
 use App\Models\Order;
@@ -14,6 +15,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -158,11 +160,15 @@ class OrderController extends Controller
         // count the balance balance = (Total_Payments - Total_Tasks);
         $balance = ($auth_user_payments - $task_site_prices);
 
+        // update the balance
         Balance::updateOrCreate([
             'user_id' => auth()->id()
         ], [
             'balance' => $balance
         ]);
+
+        // send email for task as content placement is created
+        Mail::to($task->user->email)->send(new CreateTaskEmail($task));
 
 
         return redirect()->route('projects.index')->with('success', 'Content Placement Task Order Successfully!');
@@ -242,11 +248,16 @@ class OrderController extends Controller
         // count the balance balance = (Total_Payments - Total_Tasks);
         $balance = ($auth_user_payments - $task_site_prices);
 
+        // update balance
         Balance::updateOrCreate([
             'user_id' => auth()->id()
         ], [
             'balance' => $balance
         ]);
+
+
+        // send email for task as content placement is created
+        Mail::to($task->user->email)->send(new CreateTaskEmail($task));
 
 
         return redirect()->route('projects.index')->with('success', 'Content Creation and Placement Task Order Successfully!');

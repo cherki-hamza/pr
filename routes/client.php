@@ -22,6 +22,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     // show all publishers site for every project by id : /myprojects/1
     Route::get('myprojects/{project_id}/publishers' , [SiteController::class,'site_index'])->name('site_index');
+    // samd day delivery
+    Route::get('myprojects/{project_id}/publishers/same_day_delivery' , [SiteController::class,'site_index'])->name('same_day_delivery');
 
     // route for search publisher by any keword
     Route::post('myprojects/{project_id}/publishers/{search?}' , [SiteController::class,'site_index'])->name('search');

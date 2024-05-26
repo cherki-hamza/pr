@@ -135,7 +135,7 @@
                                     @if ($post->status == 4)
                                     <div class="my-2 px-5">
                                         <label class="text-primary" for="post_placement_url">Note From Client : <span class="text-primary"> {{ $task->user->name }} </span> For Update The Post:</label>
-                                        <textarea readonly name="note" class="form-control" cols="30" rows="5">{{ $post->post_note }}</textarea>
+                                        <textarea readonly name="note" class="form-control" cols="30" rows="5">@php $the_notes = '';$index = 1;foreach ($post->notes as $note) {$the_notes = "$index ) :  $note->post_note <br/>";echo str_replace("<br/>","\n\n",$the_notes);$index++;} @endphp</textarea>
                                     </div>
                                     @endif
                                     @endif
@@ -148,7 +148,7 @@
                                     <div class="my-2 px-5">
                                         <label class="text-primary" for="post_editor_data">Post Content :	</label>
                                         <textarea  id="post_editor_data"   class="my-3" name="post_editor_data">{!! ($post) ? $post->post_body : '' !!}</textarea>
-                                      </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -204,6 +204,15 @@
                                                         Send The Post To Client for Get The Approval
                                                     </button>
 
+                                                    @elseif($post->status == 9)
+                                                    <button style="font-size: 18px"  type="submit" name="action" value="publisher_approval"  class="btn btn-success mx-5">
+                                                        <i class="fas fa-check mr-2"></i>
+                                                         Publisher Approve The Post & Send Email To client : {{ $task->user->name }}
+                                                    </button>
+
+                                                    <button type="submit" name="action" value="publisher_reject"  class="btn btn-danger  mx-5"><i class="fas fa-ban mr-2"></i>
+                                                        Publisher Reject The Post & Send Email To client : {{ $task->user->name }}
+                                                   </button>
                                                     @else
                                                            <span class="btn btn-success">This Task Already Done</span>
 
@@ -252,7 +261,7 @@
                                     </div> --}}
                                     <div class="my-2 px-5">
                                         <label class="text-primary" for="post_placement_url">Post Placement URL:</label>
-                                        <input  style="color: red;" value="{{ ( !empty($task->task_anchor_text)) ? 'https://'.$task->task_target_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_target_url }}" type="text" class="form-control" name="post_placement_url" id="post_placement_url">
+                                        <input  style="color: red;" value="{{ ( !empty($task->site->site_url)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_target_url }}" type="text" class="form-control" name="post_placement_url" id="post_placement_url">
                                     </div>
 
                                     <div class="my-2 px-5">
@@ -271,6 +280,11 @@
 
                                @elseif($task->status == 5)
                                  <span class="btn btn-success">This Task is AlReady Approved</span>
+                               @elseif($task->status == 0)
+                                 <button style="font-size: 18px"  type="submit" name="action" value="in_progress"  class="btn btn-success mx-5">
+                                    <i class="fas fa-check mr-2"></i>
+                                    Start The Task for the client  : {{ $task->user->name }} & Send Email Message With Status :In Progress
+                                </button>
                                @else
                                <a href="{{route('super_admin_approve' , ['task_id' => $task->id ])}}"  class="btn btn-info  mx-5">
                                 <i class="fas fa-save mr-2"></i>Approve

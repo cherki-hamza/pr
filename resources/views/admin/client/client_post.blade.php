@@ -1,6 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('style')
+
 @endsection
 
 @section('content')
@@ -138,7 +139,7 @@
 
                                     @endif --}}
 
-                                    @if (!empty($task) || $task->type == 'c_p')
+                                    @if (!empty($task) && $task->type == 'c_p')
 
                                     @if($task->status == 5)
                                     <div class="my-2 px-5">
@@ -148,7 +149,7 @@
                                     @endif
 
                                       <div class="my-2 px-5">
-                                          <label class="text-primary" for="post_editor_data">Post Content :	</label>
+                                          <label class="text-primary" for="post_editor_data">Post Content  :	</label>
                                           <textarea  id="post_editor_data"   class="my-3" name="post_editor_data">{!! ($task) ? $task->task_editor_data : '' !!}</textarea>
                                         </div>
 
@@ -156,27 +157,37 @@
 
 
                                     <hr style="border: #3c5a99 solid 2px;">
-                                    <label>Your Post Content :</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                        <label style="font-size: 20px">Content to be published  :</label>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            <span style="font-weight: 900;font-size: 22px" class="text-primary">Post URL Published : </span>
+                                            <span style="font-weight: 700;font-size: 22px" class="text-danger"> <a class="text-danger" target="_blink" href="#">{{ (empty($task->post_placement_url)) ? $task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->post_placement_url   }}</a></span>
+
+                                        </div>
+                                    </div>
+
                                     {{-- <textarea readonly="true" id="summernote" class="my-3" name="post_editor_data">{!! $post->post_body ?? '' !!}</textarea> --}}
 
-                                    <textarea readonly class="form-control"  id="post_editor_data" class="my-3" name="post_editor_data">{!! $post->post_body ?? '' !!}</textarea>
+                                    <textarea readonly class="form-control"  id="post_editor_data" class="my-3" name="post_editor_data">{!! $task->task_editor_data ?? '' !!}</textarea>
                                     <br>
 
 
                                     <hr style="border: #3c5a99 solid 2px;">
 
-                                    @if(!empty($post) && $post->status == 2)
-                                      <label for="">Write Your Notes: <span class="text-danger">(This note is not Important you can leave empty)</span></label>
-                                      <textarea class="form-control" name="post_note" cols="30" rows="3" placeholder="Write your Notes"></textarea>
-                                    @endif
+                                        @if(!empty($task) && $task->status == 2)
+                                        <label for="">Write Your Notes: <span class="text-danger">(This note is not Important you can leave empty)</span></label>
+                                        <textarea class="form-control" name="post_note" cols="30" rows="3" placeholder="Write your Notes"></textarea>
+                                        @endif
 
-                                    @if(!empty($post) && $post->status == 4)
-                                    <label>Your Note :</label>
+                                        @if(!empty($task) && $task->status == 4)
+                                        <label>Your Note :</label>
 
-                                    {{-- @php echo str_replace("<br/>","\n\n",$the_notes); @endphp --}}
-                                    <textarea readonly class="form-control text-info"  name="post_note" cols="30" rows="5">@php $the_notes = '';$index = 1;foreach ($post->notes as $note) {$the_notes = "$index ) :  $note->post_note <br/>";echo str_replace("<br/>","\n\n",$the_notes);$index++;} @endphp</textarea>
+                                        {{-- @php echo str_replace("<br/>","\n\n",$the_notes); @endphp --}}
+                                        <textarea readonly class="form-control text-info"  name="post_note" cols="30" rows="5">@php $the_notes = '';$index = 1;foreach ($post->notes as $note) {$the_notes = "$index ) :  $note->post_note <br/>";echo str_replace("<br/>","\n\n",$the_notes);$index++;} @endphp</textarea>
 
-                                    @endif
+                                        @endif
 
                                     @endif
 
@@ -195,7 +206,9 @@
                             @if ($task->status == 6)
                              <span class="btn btn-danger">This Task is Rejected</span>
                             @elseif($task->status == 5)
-                                <span class="btn btn-success">This Task is AlReady Approved</span>
+                                <span class="btn btn-success">This Task Completed And AlReady Approved From Publisher</span>
+                            @elseif($task->status == 9)
+                                 <span class="btn btn-warning">Wait For The Publisher : <span class="text-danger">{{ $task->site->site_name }}</span> Approve Your Post</span>
                             @else
                             <span class="btn btn-warning">Your Task still not Started</span>
                             @endif
@@ -259,6 +272,137 @@
                 </div>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
+
+            {{-- start chat --}}
+
+            {{-- <div style="z-index: 9999999" class="floating-chat">
+                <i class="fa fa-comments" aria-hidden="true"></i>
+                <div class="chat">
+                    <div class="header">
+                        <span class="title">
+                            what's on your mind?
+                        </span>
+                        <button>
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+
+                    </div>
+                    <ul class="messages">
+                        <li class="other">asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas</li>
+                        <li class="other">Are we dogs??? 🐶</li>
+                        <li class="self">no... we're human</li>
+                        <li class="other">are you sure???</li>
+                        <li class="self">yes.... -___-</li>
+                        <li class="other">if we're not dogs.... we might be monkeys 🐵</li>
+                        <li class="self">i hate you</li>
+                        <li class="other">don't be so negative! here's a banana 🍌</li>
+                        <li class="self">......... -___-</li>
+                    </ul>
+                    <div class="footer">
+                        <div class="text-box" contenteditable="true" disabled="true"></div>
+                        <button id="sendMessage">send</button>
+                    </div>
+                </div>
+            </div> --}}
+
+            {{-- start chat icon --}}
+            {{-- <a style="position:fixed;top:139px;right:-.25rem;z-index:1029" role="button" class="btn has-icon bg-primary text-white shadow" data-toggle="modal" href="#settings-modal">
+                <svg class="svg-inline--fa fa-envelope-open-text fa-w-16 mr-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="envelope-open-text" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M176 216h160c8.84 0 16-7.16 16-16v-16c0-8.84-7.16-16-16-16H176c-8.84 0-16 7.16-16 16v16c0 8.84 7.16 16 16 16zm-16 80c0 8.84 7.16 16 16 16h160c8.84 0 16-7.16 16-16v-16c0-8.84-7.16-16-16-16H176c-8.84 0-16 7.16-16 16v16zm96 121.13c-16.42 0-32.84-5.06-46.86-15.19L0 250.86V464c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V250.86L302.86 401.94c-14.02 10.12-30.44 15.19-46.86 15.19zm237.61-254.18c-8.85-6.94-17.24-13.47-29.61-22.81V96c0-26.51-21.49-48-48-48h-77.55c-3.04-2.2-5.87-4.26-9.04-6.56C312.6 29.17 279.2-.35 256 0c-23.2-.35-56.59 29.17-73.41 41.44-3.17 2.3-6 4.36-9.04 6.56H96c-26.51 0-48 21.49-48 48v44.14c-12.37 9.33-20.76 15.87-29.61 22.81A47.995 47.995 0 0 0 0 200.72v10.65l96 69.35V96h320v184.72l96-69.35v-10.65c0-14.74-6.78-28.67-18.39-37.77z"></path>
+               </svg><!-- <i class="fas fa-envelope-open-text mr-2"></i> Font Awesome fontawesome.com -->
+                <span class="badge badge-light ml-auto badge-pill ml-3 mr-2">
+                    2
+                </span>
+                </a> --}}
+            {{-- end chat icon --}}
+            {{-- start chat content --}}
+
+
+           {{--  <div class="modal fade modal-fixed-right modal-theme overflow-hidden show" id="settings-modal" tabindex="-1" aria-labelledby="settings-modal-label" data-options="" style="padding-right: 17px;" aria-modal="true" role="dialog">
+                <div class="modal-dialog modal-dialog-vertical modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header modal-header-settings">
+                            <div class="z-index-1 py-1 flex-grow-1">
+                                <h5 class="text-white" id="settings-modal-label">
+                                    <svg class="svg-inline--fa fa-envelope-open-text fa-w-16 mr-2 fs-0" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="envelope-open-text" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M176 216h160c8.84 0 16-7.16 16-16v-16c0-8.84-7.16-16-16-16H176c-8.84 0-16 7.16-16 16v16c0 8.84 7.16 16 16 16zm-16 80c0 8.84 7.16 16 16 16h160c8.84 0 16-7.16 16-16v-16c0-8.84-7.16-16-16-16H176c-8.84 0-16 7.16-16 16v16zm96 121.13c-16.42 0-32.84-5.06-46.86-15.19L0 250.86V464c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V250.86L302.86 401.94c-14.02 10.12-30.44 15.19-46.86 15.19zm237.61-254.18c-8.85-6.94-17.24-13.47-29.61-22.81V96c0-26.51-21.49-48-48-48h-77.55c-3.04-2.2-5.87-4.26-9.04-6.56C312.6 29.17 279.2-.35 256 0c-23.2-.35-56.59 29.17-73.41 41.44-3.17 2.3-6 4.36-9.04 6.56H96c-26.51 0-48 21.49-48 48v44.14c-12.37 9.33-20.76 15.87-29.61 22.81A47.995 47.995 0 0 0 0 200.72v10.65l96 69.35V96h320v184.72l96-69.35v-10.65c0-14.74-6.78-28.67-18.39-37.77z"></path></svg><!-- <span class="fas fa-envelope-open-text mr-2 fs-0"></span> Font Awesome fontawesome.com -->
+                                    Message
+                                </h5>
+                                <p class="mb-0 fs--1 text-white opacity-75">This message box is for this <strong class="font-weight-bold">Task ID: 40989</strong></p>
+                            </div>
+                            <button class="close z-index-1" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">×</span></button>
+                        </div>
+
+                        <!-- Message-->
+
+                        <div class="modal-body bg-gray-300  vh-100 ">
+
+                                    <div class="fs--1 alert alert-primary shadow" role="alert">
+                            <div class="mb-n2">
+                                <a href="/performers/user-performer?publisherId=12637&amp;project=2042" target="_blank" class="text-facebook text-decoration-none">
+                                    <svg class="svg-inline--fa fa-user-circle fa-w-16 fa-lg mr-1 text-facebook" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"></path></svg><!-- <i class="fas fa-user-circle fa-lg mr-1 text-facebook"></i> Font Awesome fontawesome.com -->
+                                    <span class="mb-1">
+                                        <strong>
+                                        MaryamIqbal
+                                    </strong>
+                                    </span>
+                                </a>
+                            </div>
+                            <hr>
+                            <p class=" mt-n2" style="white-space: pre-line; word-wrap: break-word; overflow-wrap: break-word;">Kindly change the site and nd place the order again on different&nbsp;site</p>
+                            <span class="notification-time"><span class="mr-1" role="img" aria-label="Emoji">💬</span>2 months ago</span>
+
+                        </div>
+                                        <div class="fs--1 alert alert-success shadow" role="alert">
+                            <div class="mb-n2">
+                                <svg class="svg-inline--fa fa-user-circle fa-w-16 fa-lg mr-1 text-facebook" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"></path></svg><!-- <span class="fas fa-user-circle fa-lg mr-1 text-facebook"></span> Font Awesome fontawesome.com -->
+                                <span class="mb-1 text-facebook"><strong>Me</strong></span>
+                            </div>
+                            <hr>
+                            <p class="text-facebook mt-n2" style="white-space: pre-line; word-wrap: break-word; overflow-wrap: break-word;">ok</p>
+                            <span class="notification-time"><span class="mr-1" role="img" aria-label="Emoji">💬</span>1 second ago</span>
+
+                        </div>
+
+
+
+
+
+                        </div>
+
+
+                        <!-- End Message-->
+
+
+                        <div class="border border-2 p-2 bg-soft-secondary">
+                            <!-- Chat main footer -->
+                            <form action="https://icopify.co/messages" method="POST" class="chat-form" onsubmit="this.querySelectorAll('[type=submit]').forEach(b => b.disabled = true)">
+                                <input type="hidden" name="_token" value="U3sIlfV7XPWeShoxkQAdBa9Q0DvAdpfM8hfsgsnX">                    <div class="form-group row no-gutters">
+                                    <input hidden="" name="post_id" value="40989">
+                                    <input hidden="" name="thread_id" value="P-40989">
+                                    <input hidden="" name="sender_username" value="ott">
+                                    <input hidden="" name="receiver_username" value="MaryamIqbal">
+                                    <input hidden="" name="sender_id" value="19260">
+                                    <input hidden="" name="receiver_id" value="12637">
+                                    <div class="col">
+                            <textarea name="message" class="form-control  border border-secondary mt-2 fs--1" placeholder="Write your message..." rows="5"></textarea>
+
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                                                                                <div>
+                                                <button class="btn btn-sm btn-primary" type="submit"><svg class="svg-inline--fa fa-envelope fa-w-16 mr-2" aria-hidden="true" focusable="false" data-prefix="far" data-icon="envelope" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49-16.841 13.247-50.201 45.072-73.413 44.701-23.208.375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717.231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"></path></svg><!-- <i class="far fa-envelope mr-2"></i> Font Awesome fontawesome.com -->Send</button>
+                                            </div>
+                                                                                                                </div>
+                            </form>
+                            <!-- / Chat main footer -->
+                        </div>
+
+                    </div>
+
+                </div>
+            </div> --}}
+            {{-- end chat content --}}
+            {{-- end chat --}}
         </section>
         <!-- /.content -->
     </div>
@@ -269,6 +413,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="{{ asset('public/template/admin/plugins/jquery/jquery.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.21.1/build/docxtemplater.js"></script>
 
     @if (!empty($post) && $post->status == 5)
     <script>
@@ -280,6 +428,50 @@
             filebrowserUploadMethod: 'form', */
         });
     </script>
+
+@else
+<script>
+    CKEDITOR.replace( 'post_editor_data', {
+        toolbar: [
+                { name: 'styles', items: ['Format'] },
+                { name: 'fullscreen', items: ['Maximize'] },
+                { name: 'export', items: ['ExportPdf', 'ExportDocx'] }
+            ],
+        language: 'en',
+        uiColor: '#9AB8F3',
+        uiColor: '#9AB8F3',
+        filebrowserUploadUrl: "{{ route('admin') }}/upload?_token="{{request()->token}},
+        filebrowserUploadMethod: 'form',
+    });
+
+    CKEDITOR.plugins.add('exportdocx', {
+            icons: 'exportdocx',
+            init: function (editor) {
+                editor.addCommand('exportdocx', {
+                    exec: function (editor) {
+                        var content = editor.getData();
+                        var zip = new JSZip();
+                        var doc = new Docxtemplater().loadZip(zip);
+                        doc.setData({ content: content });
+                        doc.render();
+                        var out = doc.getZip().generate({
+                            type: "blob",
+                            mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        });
+                        saveAs(out, "document.docx");
+                    }
+                });
+                editor.ui.addButton('ExportDocx', {
+                    label: 'Export to DOCX',
+                    command: 'exportdocx',
+                    toolbar: 'export'
+                });
+            }
+        });
+</script>
+@endif
+
+
    {{--  <script>
         // This sample still does not showcase all CKEditor&nbsp;5 features (!)
         // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
@@ -447,16 +639,7 @@
             }
         }); */
     </script> --}}
-    @else
-    <script>
-        CKEDITOR.replace( 'post_editor_data', {
-            language: 'en',
-            uiColor: '#9AB8F3',
-            uiColor: '#9AB8F3',
-            filebrowserUploadUrl: "{{ route('admin') }}/upload?_token="{{request()->token}},
-            filebrowserUploadMethod: 'form',
-        });
-    </script>
+
     {{-- <script>
         // This sample still does not showcase all CKEditor&nbsp;5 features (!)
         // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
@@ -617,7 +800,6 @@
         });
 
     </script> --}}
-    @endif
 
 
     <script>
@@ -725,7 +907,7 @@
 </script>
 
 <!--Start of Tawk.to Script-->
-<script type="text/javascript">
+{{-- <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
@@ -735,10 +917,10 @@ s1.charset='UTF-8';
 s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
-</script>
+</script> --}}
 <!--End of Tawk.to Script-->
 
 <script>
-    /*  */
+
 </script>
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendContactEmail;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -25,7 +26,7 @@ class ContactController extends Controller
 
       $phone_code = $request->get('phone_code');
 
-        Contact::create([
+       $contact =  Contact::create([
             'name' => $request->name,
             'email' => $request->email,
             'mobile' => $phone_code. '' .$request->mobile,
@@ -36,6 +37,9 @@ class ContactController extends Controller
             'country_code' => $request->country_code,
             'country_flag' => $request->country_flag,
          ]);
+
+         Mail::to($contact->email)->send(new SendContactEmail($contact->name,$contact->email));
+
 
 
         /* Mail::send('email', [
@@ -52,7 +56,7 @@ class ContactController extends Controller
                 }); */
 
         if ($vaildation) {
-            return redirect()->back()->with('success', 'Your Message send Updated Successfully!');
+            return redirect()->back()->with('success', 'Your Message send with Success!');
         } else {
             return redirect()->back()->with('danger', 'Oops Please check the form data All Fields is required');
         }
@@ -63,6 +67,14 @@ class ContactController extends Controller
     // show all contacts messages
     public function contacts(){
         $contacts = Contact::all();
-        return view('admin.contact.contact' , compact('contacts'));
+
+        if (auth()->user()->role == 'super-admin'){
+            return view('admin.contact.contact' , compact('contacts'));
+        }elseif(auth()->user()->role == 'super-admin'){
+            return redirect()->back()->with('warning', 'Oops there is no page in this link');
+        }else{
+            return redirect()->back()->with('warning', 'Oops there is no page in this link');
+        }
+
     }
 }

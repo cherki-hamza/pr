@@ -78,6 +78,7 @@
                         </div>
                         <!-- End Change Password -->
 
+                        @if (auth()->user()->role == 'client')
                         <!-- Email Notification Setting -->
                         <div class="card mt-3">
                             <div class="card-header bg-primary">
@@ -85,11 +86,9 @@
                             </div>
                             <div class="card-body">
                                 <div>
-                                    <form method="POST" action=""
-                                        onsubmit="this.querySelectorAll('[type=submit]').forEach(b => b.disabled = true)">
-                                        <input type="hidden" name="_token"
-                                            value="U3sIlfV7XPWeShoxkQAdBa9Q0DvAdpfM8hfsgsnX"> <input type="hidden"
-                                            name="_method" value="PUT">
+                                    <form method="POST" action="#">
+                                        @csrf
+                                        {{-- @method('PUT') --}}
                                         <div class="form-group row gutters">
                                             <div class="col-xl-12 col-md-12">
                                                 <div class="custom-control custom-switch mb-1">
@@ -152,11 +151,12 @@
                                             </div>
 
                                         </div>
-                                        <button type="submit" class="btn bg-primary text-white">Save Changes</button>
+                                        <button onsubmit="return 0;" type="submit" class="btn bg-primary text-white">Save Changes</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
+                        @endif
 
 
 

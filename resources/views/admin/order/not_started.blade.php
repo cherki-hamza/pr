@@ -37,7 +37,7 @@
                                 <div class="btn-group nav">
 
                                     <a href="{{route('not_started' , ['project_id' =>request()->project_id])}}"
-                                        class="btn btn-sm btn-outline-dark d-none d-md-block nav-item nav-link nav-link-fade active">Not Started
+                                        class="btn btn-sm btn-outline-dark d-none d-md-block nav-item nav-link nav-link-fade active">Not Started 99
                                         <span style="font-size: 20px" class="badge badge-danger badge-pill ml-2">{{ \App\Models\Task::where('user_id',auth()->id())->where('status',0)->where('project_id',request()->project_id)->count() ?? '0' }}</span>
                                     </a>
                                     <a href="{{route('in_progress' , ['project_id' =>request()->project_id])}}"
@@ -102,9 +102,9 @@
                                                                             {{ ($task->status == 1) ? 'Open The Post' : 'Wiating Approval from Client' }}
                                                                         </a>
                                                                         @else
-                                                                        <a href="{{route('show_client_post' , ['project_id' => request()->project_id , 'task_id' => $task->id ])}}" class="btn  btn-primary mx-2" ><i class="fa fa-eye mr-2"></i>
-                                                                            See The Post
-                                                                        </a>
+                                                                            <a href="{{route('show_client_post' , ['project_id' => request()->project_id , 'task_id' => $task->id ])}}" class="btn  btn-primary mx-2" ><i class="fa fa-eye mr-2"></i>
+                                                                                Show Your Task Request
+                                                                            </a>
                                                                         @endif
 
 
@@ -173,7 +173,7 @@
     </script>
 
     <!--Start of Tawk.to Script-->
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
     var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
@@ -183,7 +183,7 @@
     s1.setAttribute('crossorigin','*');
     s0.parentNode.insertBefore(s1,s0);
     })();
-</script>
+</script> --}}
     <!--End of Tawk.to Script-->
 
 @endsection

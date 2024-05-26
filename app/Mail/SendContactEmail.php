@@ -18,7 +18,7 @@ class SendContactEmail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(private $name , private $email)
     {
         //
     }
@@ -43,7 +43,11 @@ class SendContactEmail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'mail.contact_mail_2',
+            with: [
+                'name' => $this->name,
+                'email' => $this->email
+            ],
         );
     }
 

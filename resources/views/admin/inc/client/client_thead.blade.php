@@ -33,7 +33,9 @@
 
         <th>
             <select {{-- onchange="this.form.submit()" --}} class="custom-select custom-select-sm" name="categories" onchange="location = this.value;">
-                <option value="publishers">All Websites</option>
+                {{-- <option value="publishers">All Websites</option> --}}
+                <option selected="" value="?categories=all" >Categories</option>
+                <option value="?categories=all">All Categories</option>
                 @foreach ($categories as $category)
                 <option value="?categories={{ $category->site_category }}">{{ $category->site_category }}</option>
                 @endforeach
@@ -75,69 +77,70 @@
         <th>
             <select class="custom-select custom-select-sm" name="websiteLanguage" onchange="location = this.value;">
                 <option selected="" disabled="">Languages</option>
-                <option value="https://icopify.co/project/2042/publishers">All Languages</option>
-                <option value="English">English
+                <option value="?websiteLanguage=all{{-- {{ route('site_index',request()->project_id) }} --}}">All Languages</option>
+                <option value="?websiteLanguage=English">English
                 </option>
-                <option value="Arabic">Arabic
+                <option value="?websiteLanguage=Arabic">Arabic
                 </option>
-                <option value="Bulgarian">Bulgarian
+                <option value="?websiteLanguage=Bulgarian">Bulgarian
                 </option>
-                <option value="Chinese">Chinese
+                <option value="?websiteLanguage=Chinese">Chinese
                 </option>
-                <option value="Dutch">Dutch</option>
-                <option value="French">French
+                <option value="?websiteLanguage=Dutch">Dutch</option>
+                <option value="?websiteLanguage=French">French
                 </option>
-                <option value="German">German
+                <option value="?websiteLanguage=German">German
                 </option>
-                <option value="Greek">Greek</option>
-                <option value="Hindi">Hindi</option>
-                <option value="Indonesian">Indonesian
+                <option value="?websiteLanguage=Greek">Greek</option>
+                <option value="?websiteLanguage=Hindi">Hindi</option>
+                <option value="?websiteLanguage=Indonesian">Indonesian
                 </option>
-                <option value="Italian">Italian
+                <option value="?websiteLanguage=Italian">Italian
                 </option>
-                <option value="Japanese">Japanese
+                <option value="?websiteLanguage=Japanese">Japanese
                 </option>
-                <option value="Korean">Korean
+                <option value="?websiteLanguage=Korean">Korean
                 </option>
-                <option value="Norwegian">Norwegian
+                <option value="?websiteLanguage=Norwegian">Norwegian
                 </option>
-                <option value="Polish">Polish
+                <option value="?websiteLanguage=Polish">Polish
                 </option>
-                <option value="Portuguese">Portuguese
+                <option value="?websiteLanguage=Portuguese">Portuguese
                 </option>
-                <option value="Romanian">Romanian
+                <option value="?websiteLanguage=Romanian">Romanian
                 </option>
-                <option value="Russian">Russian
+                <option value="?websiteLanguage=Russian">Russian
                 </option>
-                <option value="Spanish">Spanish
+                <option value="?websiteLanguage=Spanish">Spanish
                 </option>
-                <option value="Swedish">Swedish
+                <option value="?websiteLanguage=Swedish">Swedish
                 </option>
-                <option value="Turkish">Turkish
+                <option value="?websiteLanguage=Turkish">Turkish
                 </option>
-                <option value="Ukrainian">Ukrainian
+                <option value="?websiteLanguage=Ukrainian">Ukrainian
                 </option>
-                <option value="Latvian">Latvian</option>
-                <option value="Other">Other</option>
+                <option value="?websiteLanguage=Latvian">Latvian</option>
+                <option value="?websiteLanguage=Other">Other</option>
 
             </select>
         </th>
 
         <th class="sort" style="width:80px">
             <select class="custom-select custom-select-sm" name="website" onchange="location = this.value;">
-                <option value="publishers">All Websites</option>
+                <option selected="" value="?categories=all" >Categories</option>
                 <option value="?Price=LowToHigh">Price From Low To
                     High</option>
                 <option value="?Price=HighToLow">Price From High To
                     Low</option>
                 <option
-                    value="ExcludeWebsitesIHaveWorkedWith">
+                    value="?publisher=ExcludeWebsitesIHaveWorkedWith">
                     Exclude Sites I've worked with</option>
                 <option
-                    value="OnlyWebsitesIHaveWorkedWith">
+                    value="?publisher=OnlyWebsitesIHaveWorkedWith">
                     Only Sites I've worked with</option>
             </select>
         </th>
+
     </tr>
     </form>
 </thead>

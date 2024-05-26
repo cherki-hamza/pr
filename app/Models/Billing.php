@@ -11,7 +11,6 @@ class Billing extends Model
 
     protected $guarded = [];
 
-
     // relation between user aand billing
     public function user(){
         return $this->belongsTo(User::class);

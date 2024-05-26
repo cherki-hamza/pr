@@ -33,7 +33,7 @@
                             @can('create user')
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    Hello Im {{ auth()->user()->name }}
+                                    {{ auth()->user()->name }}
                                 </h3>
                             </div>
                             @endcan
@@ -115,6 +115,18 @@
                                                         </div>
                                                     </div>
                                                     <!-- end website -->
+
+                                                    {{-- start image --}}
+                                                    <div class="row col-sm-12 table table-bordered my-3">
+                                                        <div class="col-sm-5">
+                                                            <span for="fullname"
+                                                                class="col-form-label text-success">Logo:</label>
+                                                        </div>
+                                                        <div class="col-sm-5">
+                                                            <img style="width: 100px" src="{{ Auth::user()->GetPicture() }}" alt="">
+                                                        </div>
+                                                    </div>
+                                                    {{-- end image --}}
                                                 </div>
 
                                               <!-- /.description-block -->

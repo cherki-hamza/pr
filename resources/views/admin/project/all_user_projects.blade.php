@@ -129,7 +129,7 @@
 
                                                                 <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 1 , 'type' => 'c_c_p']) }}">
                                                                     <span class="badge badge-info p-2" title="number of tasks in progress">
-                                                                      {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_in_progress->count() }}
+                                                                      {{ \App\Models\Project::where('id',$project->id)->where('user_id', request()->user_id)->first()->tasks_in_progress('c_c_p')->count() }}
                                                                     </span>
                                                                 </a>
                                                                 <a href="{{ route('super_admin_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 2 , 'type' => 'c_c_p']) }}">

@@ -80,5 +80,14 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     // admin settings
     Route::get('settings',[SettingController::class,'settings'])->name('settings');
+    // application settings
+    Route::get('settings/application_settings',[SettingController::class,'application_settings'])->name('application_settings');
+
+
+    // update paypal
+    Route::put('settings/update_paypal/{user_id}',[DashboardController::class,'update_paypal'])->name('update_paypal');
+
+    // update logo
+    Route::put('settings/update_site_logo/{user_id}',[DashboardController::class,'update_site_logo'])->name('update_site_logo');
 
 });

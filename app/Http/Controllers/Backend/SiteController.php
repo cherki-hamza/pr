@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Blacklist;
 use App\Models\Site;
+use App\Models\Task;
 
 class SiteController extends Controller
 {
@@ -14,63 +16,234 @@ class SiteController extends Controller
 
         $title = "publishers";
         $project_id = $request->project_id;
-        //$sites = Site::all();
-        $sites_count = Site::count();
+        // start get site instence
+        $query = Site::query();
+        // start new instance from Site Model
+        if(request()->routeIs('same_day_delivery')){
+            $query->where('site_time' ,'1 Day');
+        }
 
-        $categories = Site::whereNotIn('site_category',['-','OFF'])->distinct()
+
+        $sites_count = $query->count();
+
+        $categories = $query->whereNotIn('site_category',['-','OFF'])->distinct()
                         ->get(['site_category']);
+
+        // get the ids of publishers i worked it and att array result
+        $ids_sites = Task::where('user_id' , auth()->id())->pluck('id');
+
+        // action for search options
+        if($request->input('search_action') == 's'){
+
+            // site_domain_authority condition
+            if($request->da || $request->da_to){
+                $query->whereBetween('site_domain_authority', [(int)$request->da, (int)$request->da_to]);
+            }
+
+            // site_domain_rating condition
+            if($request->dr || $request->dr_to){
+                $query->whereBetween('site_domain_rating', [(int)$request->dr, (int)$request->dr_to]);
+            }
+
+             // site_price condition
+             if($request->price || $request->price_to){
+                $query->whereBetween('site_price', [(int)$request->price, (int)$request->price_to]);
+            }
+
+            // category condition
+            if($request->category && $request->category != 'all'){
+
+                 $query->where('site_category', $request->category);
+             }
+
+             //  site language condition
+              if($request->websiteLanguage && $request->websiteLanguage != 'all'){
+                 $query->where('site_language', $request->websiteLanguage);
+             }
+
+             // linkType condition
+             if($request->linkType && $request->linkType != 'all'){
+
+                if($request->linkType == 'do_Follow'){
+                     $query->where('site_dofollow', 'Yes');
+                }
+
+                if($request->linkType == 'no_follow'){
+                     $query->where('site_dofollow', 'No');
+                }
+
+             } // end linkType
+
+             // sponsor
+            if($request->sponsored && $request->sponsored != 'all'){
+                if( $request->sponsored == 'Yes'){
+                    //return 'ExcludeWebsitesIHaveWorkedWith';
+                    $sites =  $query->where('site_sposored', 'Yes')->paginate(12);
+
+                  return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+                }
+
+                if( $request->sponsored == 'No'){
+                    // return 'OnlyWebsitesIHaveWorkedWith';
+                    $sites =  $query->where('site_sposored', 'No')->paginate(12);
+                    return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+                }
+
+
+            } // end sponsor
+
+
+             // spamScore
+             if($request->spamScore && $request->spamScore != 'all'){
+
+                $sites =  $query->where('spam_score', '>=' , (int)$request->spamScore)->paginate(12);
+                return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+
+            } // end spamScore
+
+            // site worked with it and not worked with it
+            if($request->worked){
+                return 'worked';
+                if( $request->worked == 'ExcludeWebsitesIHaveWorkedWith'){
+                    $sites =  $query->whereNotIn('id', $ids_sites)->paginate(12);
+
+                  return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+                }
+
+                if( $request->worked == 'OnlyWebsitesIHaveWorkedWith'){
+                    $sites =  $query->whereIn('id', $ids_sites)->paginate(12);
+                    return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+                }
+
+
+            } // end site worked with it and not worked with it
+
+
+
+             $sites = $query->paginate(20);
+
+            return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+        }
+
+        // start new instance from Site Model
+        // $query = Site::query();
+
+
+         // list ids of blacklist publishers sites
+         $idsToExclude = Blacklist::where('user_id',auth()->id())->pluck('id');
+
+         // remove the blacklist publishers site from the results
+         if(count($idsToExclude) > 0){
+            $query->whereNotIn('id', $idsToExclude);
+        }
 
 
         if($request->search_url){ // filter by url
 
-            $sites = Site::where('site_url', 'like', '%' . request('search_url') . '%')->paginate(12);
+            $sites = $query->where('site_url', 'like', '%' . request('search_url') . '%')->paginate(12);
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
 
         }elseif($request->categories){ // filter by category
 
-            $sites = Site::where('site_category', 'like', '%' . request('categories') . '%')->paginate(12);
+            if($request->categories == 'all'){
+                $sites = $query->paginate(12);
+                return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+            }
+
+            $sites = $query->where('site_category', 'like', '%' . request('categories') . '%')->paginate(12);
 
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
 
         }elseif ($request->site_monthly_traffic) {  // filter by monthly traffic
 
             if( $request->site_monthly_traffic == 'LowToHigh'){
-                $sites = Site::OrderBy('site_monthly_traffic', 'Asc')->paginate(12);
+                $sites = $query->OrderBy('site_monthly_traffic', 'ASC')->paginate(12);
                 return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
             }else{
-                $sites = Site::OrderBy('site_monthly_traffic', 'Desc')->paginate(12);
+                $sites = $query->OrderBy('site_monthly_traffic', 'DESC')->paginate(12);
                 return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
             }
 
          }elseif($request->site_domain_rating){ // filter by DR
 
             if( $request->site_domain_rating == 'LowToHigh'){
-                $sites = Site::OrderBy('site_domain_rating', 'ASC')->paginate(12);
+                $sites = $query->OrderBy('site_domain_rating', 'ASC')->paginate(12);
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));;
             }else{
-                $sites = Site::OrderBy('site_domain_rating', 'ASC')->paginate(12);
+                $sites = $query->OrderBy('site_domain_rating', 'DESC')->paginate(12);
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
             }
 
         }elseif($request->site_domain_authority){ // filter by DA
 
             if( $request->site_domain_authority == 'LowToHigh'){
-                $sites = Site::OrderBy('site_domain_authority', 'ASC')->paginate(12);
+                $sites = $query->OrderBy('site_domain_authority', 'ASC')->paginate(12);
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));;
             }else{
-                $sites = Site::OrderBy('site_domain_authority', 'ASC')->paginate(12);
+                $sites = $query->OrderBy('site_domain_authority', 'DESC')->paginate(12);
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
             }
 
         }elseif (!empty(request('search'))) {  // search method
             //return $request->search;
-            $sites = Site::where('site_name', 'like', '%' . request('search') . '%')
+            $sites = $query->where('site_name', 'like', '%' . request('search') . '%')
                           ->OrWhere('site_region_location' , 'like', '%' . request('search') . '%')
                           ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->paginate(12);
              return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
-        } else {
-            //$sites = Site::all();
-            $sites = Site::paginate(20);
+
+        }elseif($request->Price){
+
+            if( $request->Price == 'LowToHigh'){
+                $sites = $query->OrderBy('site_price', 'ASC')->paginate(12);
+            return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+            }
+
+            if( $request->Price == 'HighToLow'){
+                $sites = $query->OrderBy('site_price', 'DESC')->paginate(12);
+                return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+            }
+
+        }elseif($request->publisher){
+
+
+            if( $request->publisher == 'ExcludeWebsitesIHaveWorkedWith'){
+                //return 'ExcludeWebsitesIHaveWorkedWith';
+                $sites =  $query->whereNotIn('id', $ids_sites)->paginate(12);
+
+              return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+            }
+
+            if( $request->publisher == 'OnlyWebsitesIHaveWorkedWith'){
+                // return 'OnlyWebsitesIHaveWorkedWith';
+                $sites =  $query->whereIn('id', $ids_sites)->paginate(12);
+                return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+            }
+
+        }elseif($request->websiteLanguage){
+
+            if($request->websiteLanguage == 'all'){
+                $sites = $query->paginate(12);
+                return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+            }
+
+             $sites =  $query->where('site_language',  $request->websiteLanguage)->paginate(12);
+
+
+
+            return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+
+
+
+        }else {
+
+            /* if(count($idsToExclude) > 0){
+                $sites = $query->whereNotIn('id', $idsToExclude)->paginate(20);
+            }else{
+
+            } */
+
+            $sites = $query->paginate(20);
+
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
         }
 
@@ -241,6 +414,47 @@ class SiteController extends Controller
             $num = floatval($str);
         }
         return $num;
+    }
+
+
+    // method for show the blacklist publisher
+    public function blacklist_publishers(){
+
+         // start new instance from Site Model
+         $query = Site::query();
+
+         // list ids of blacklist publishers sites
+         $idsToExclude = Blacklist::where('user_id',auth()->id())->pluck('id');
+
+         $sites = $query->whereIn('id', $idsToExclude)->paginate(20);
+         return view('admin.publishers.blacklist_publishers' , compact('sites'));
+    }
+
+
+    // method for add the blacklist publisher
+    public function add_blacklist_publishers(Request $request){
+
+        Blacklist::create([
+              'user_id' => auth()->user()->id,
+              'project_id' =>  $request->project_id,
+              'site_id' => $request->site_id
+        ]);
+
+        return back()->with('success','Publisher Added To blacklist successfuly');
+    }
+
+    // method for restore the blacklist publisher
+    public function remove_blacklist_publishers(Request $request){
+
+         $site = Blacklist::where('user_id',auth()->id())->where('site_id' , $request->site_id)->first();
+         if($site){
+            $site->delete();
+            return back()->with('success','Publisher Restore from blacklist successfuly');
+         }else{
+            return back()->with('danger','Publisher site not found check with the super admin');
+         }
+
+
     }
 
 }
