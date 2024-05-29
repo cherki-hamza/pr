@@ -215,7 +215,9 @@
                                 <span class="btn btn-success">This Task Completed And AlReady Approved From Publisher</span>
                             @elseif($task->status == 9)
                                  <span class="btn btn-warning">Wait For The Publisher : <span class="text-danger">{{ $task->site->site_name }}</span> Approve Your Post</span>
-                            @else
+                            @elseif($task->status == 1)
+                            <span class="btn btn-info">Your Task Is In Progress</span>
+                                 @else
                             <span class="btn btn-warning">Your Task still not Started</span>
                             @endif
 
