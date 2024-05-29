@@ -109,6 +109,24 @@
 
          /* swicher  */
 
+        .btn-outline-purple{color:purple;border-color:purple}
+        .btn-outline-purple:hover{color:#fff;background-color:purple;border-color:purple}
+        .btn-outline-purple.focus,
+        .btn-outline-purple:focus{box-shadow:0 0 0 .2rem rgba(138, 43, 226)}
+        .btn-outline-purple.disabled,
+        .btn-outline-purple:disabled{color:purple;background-color:transparent}
+        .btn-outline-purple:not(:disabled):not(.disabled).active,
+        .btn-outline-purple:not(:disabled):not(.disabled):active,.show>
+        .btn-outline-purple.dropdown-toggle{color:purple;/* background-color:purple; */border-color:purple}
+        .btn-outline-purple:not(:disabled):not(.disabled).active:focus,
+        .btn-outline-purple:not(:disabled):not(.disabled):active:focus,.show>
+        .btn-outline-purple.dropdown-toggle:focus{box-shadow:0 0 0 .2rem rgb(153,50,204)}
+
+        .btn-outline-purple:hover{
+        color: #fff !important;
+        border-color: purple;
+        }
+
 
 
         </style>
@@ -167,6 +185,8 @@
         {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script> --}}
         <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
         @include('sweetalert::alert')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+
 
 
 

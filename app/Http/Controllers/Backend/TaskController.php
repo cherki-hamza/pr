@@ -119,7 +119,7 @@ class TaskController extends Controller
         // approve button
         if($request->input('action') == 'approve'){
 
-            return $request->all();
+            //return $request->all();
 
            $task = Task::where('user_id',$user_id)->where('id',$task_id)->firstOrFail();
            $post = Post::where('task_id',$task_id)->firstOrFail();
@@ -255,6 +255,17 @@ class TaskController extends Controller
           $tasks = Task::where('user_id',auth()->id())->where('status',Task::IMPROVEMENT)->where('project_id',$request->project_id)->get();
           $tasks_count = count($tasks);
           return view('admin.order.improvement',compact('title','tasks','tasks_count'));
+      }
+
+
+      // method for get tasks pr_publisher
+      public function pr_publisher(Request $request,$project_id)
+      {
+          //
+          $title = 'Task In Improvement';
+          $tasks = Task::where('user_id',auth()->id())->where('status',Task::PUBLISHER_APPROVAL)->where('project_id',$request->project_id)->get();
+          $tasks_count = count($tasks);
+          return view('admin.order.publisher_pr',compact('title','tasks','tasks_count'));
       }
 
       // method for get tasks completed

@@ -270,6 +270,7 @@ class SiteController extends Controller
             //return $request->search;
             $sites = Site::where('site_name', 'like', '%' . request('search') . '%')
                           ->OrWhere('site_region_location' , 'like', '%' . request('search') . '%')
+                          ->OrWhere('site_language' , 'like', '%' . request('search') . '%')
                           ->OrWhere('site_category' , 'like', '%' . request('search') . '%')
                           ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->paginate(12);
         } else {
@@ -281,7 +282,7 @@ class SiteController extends Controller
         $project_id = $request->project_id;
         //$sites = Site::all();
         $sites_count = Site::count();
-        return view('admin.publishers.all_publishers',compact('project_id','sites','sites_count'));
+        return view('admin.publishers.all_publishers', ['project_id' =>  $project_id , 'sites'  => $sites , 'sites_count' => $sites_count , 'searsh'=> request('search')]);
     }
 
     // method for create and add new publisher
@@ -332,7 +333,7 @@ class SiteController extends Controller
              'site_indexed' => $request->get('site_indexed'),
 
              'site_dofollow' => $request->get('site_dofollow'),
-             'site_images' => $request->get('site_images'),
+             'spam_score' => $request->get('spam_score'),
              'site_time' => $request->get('site_tat'),
         ]);
         return redirect()->back()->with('success', 'The Site Publisher Updated Successfully!');
@@ -385,7 +386,7 @@ class SiteController extends Controller
             'site_indexed' => $request->get('site_indexed'),
 
             'site_dofollow' => $request->get('site_dofollow'),
-            'site_images' => $request->get('site_images'),
+            'spam_score' => $request->get('spam_score'),
             'site_time' => $request->get('site_tat'),
 
         ]);

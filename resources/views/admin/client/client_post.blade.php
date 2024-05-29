@@ -1,7 +1,11 @@
 @extends('admin.layouts.master')
 
 @section('style')
-
+<style>
+    .tawk-branding{
+        display: none;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -418,14 +422,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.21.1/build/docxtemplater.js"></script>
 
-    @if (!empty($post) && $post->status == 5)
+    @if (!empty($task) && $task->status == 5)
     <script>
         CKEDITOR.replace( 'post_editor_data', {
-            /* language: 'en',
+            language: 'en',
             uiColor: '#9AB8F3',
             uiColor: '#9AB8F3',
             filebrowserUploadUrl: "{{ route('admin') }}/upload?_token="{{request()->token}},
-            filebrowserUploadMethod: 'form', */
+            filebrowserUploadMethod: 'form',
         });
     </script>
 
@@ -907,20 +911,24 @@
 </script>
 
 <!--Start of Tawk.to Script-->
-{{-- <script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/66227bb9a0c6737bd12e22aa/1hrrb6k37';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script> --}}
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+       var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/66227bb9a0c6737bd12e22aa/1hrrb6k37';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+    })();
+</script>
 <!--End of Tawk.to Script-->
 
 <script>
+    ​$('.tawk-branding').css('display'​​​​​​​​​​​​​​​​​​​​​​​​​​​,'block');​​​​​​
 
+     var element = document.getElementById('myElement');
+        element.style.color = 'red';
 </script>
+
 @endsection

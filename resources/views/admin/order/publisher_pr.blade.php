@@ -56,7 +56,7 @@
                                             class="badge badge-dark  badge-pill ml-2">{{ \App\Models\Task::where('user_id', auth()->id())->where('status', 2)->where('project_id', request()->project_id)->count() ?? '0' }}</span>
                                     </a>
                                     <a href="{{ route('improvement', ['project_id' => request()->project_id]) }}"
-                                        class="btn btn-sm btn-outline-primary d-none d-md-block nav-item nav-link nav-link-faded active">Improvement
+                                        class="btn btn-sm btn-outline-primary d-none d-md-block nav-item nav-link nav-link-faded">Improvement
                                         <span style="font-size: 20px"
                                             class="badge badge-dark badge-pill ml-2">{{ \App\Models\Task::where('user_id', auth()->id())->where('status', 3)->where('project_id', request()->project_id)->count() ?? '0' }}</span>
                                     </a>

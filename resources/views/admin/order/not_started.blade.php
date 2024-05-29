@@ -52,10 +52,18 @@
                                         class="btn btn-sm btn-outline-primary d-none d-md-block nav-item nav-link nav-link-faded">Improvement
                                         <span style="font-size: 20px" class="badge badge-dark badge-pill ml-2">{{ \App\Models\Task::where('user_id',auth()->id())->where('status',3)->where('project_id',request()->project_id)->count() ?? '0' }}</span>
                                     </a>
+
+                                    <a href="{{ route('pr_publisher', ['project_id' => request()->project_id]) }}"
+                                        class="btn btn-sm btn-outline-purple d-none d-md-block nav-item nav-link nav-link-faded active">Waiting Pr Approve
+                                        <span style="font-size: 20px"
+                                            class="badge badge-dark badge-pill ml-2">{{ \App\Models\Task::where('user_id', auth()->id())->where('status', 9)->where('project_id', request()->project_id)->count() ?? '0' }}</span>
+                                    </a>
+
                                     <a href="{{route('completed' , ['project_id' =>request()->project_id])}}"
                                         class="btn btn-sm btn-outline-success d-none d-md-block nav-item nav-link nav-link-faded">Completed
                                         <span style="font-size: 20px" class="badge badge-dark badge-pill ml-2">{{ \App\Models\Task::where('user_id',auth()->id())->where('status',5)->where('project_id',request()->project_id)->count() ?? '0' }}</span></a>
-                                    <a href="{{route('rejected' , ['project_id' =>request()->project_id])}}"
+
+                                        <a href="{{route('rejected' , ['project_id' =>request()->project_id])}}"
                                         class="btn btn-sm btn-outline-danger d-none d-xl-block nav-item nav-link nav-link-faded">Rejected
                                         <span style="font-size: 20px" class="badge badge-dark badge-pill ml-2">{{ \App\Models\Task::where('user_id',auth()->id())->where('status',6)->where('project_id',request()->project_id)->count() ?? '0' }}</span></a>
 

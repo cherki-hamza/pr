@@ -109,11 +109,8 @@
                                      <div class="form-group my-5">
                                         <div class="row">
                                             <div class="col-4 col-md-3">
-                                                <label>Site Images</label>
-                                                <select name="site_images" class="form-control">
-                                                    <option value="Y">Yes</option>
-                                                    <option value="N">No</option>
-                                                </select>
+                                                <label>Site Spam Score</label>
+                                                <input type="number" class="form-control" value="{{ $site->spam_score  ?? '' }}" name="spam_score">
                                             </div>
                                             <div class="col-4 col-md-3">
                                                 <label>Site Turnaround Time</label>

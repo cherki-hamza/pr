@@ -46,6 +46,7 @@
                                             <th class="bg-primary">In Progress</th>
                                             <th class="bg-warning">Waiting Approve from Client</th>
                                             <th class="bg-info">Need Improvement</th>
+                                            <th class="bg-info">Publisher&Pr</th>
                                             <th class="bg-success">Completed</th>
                                             <th class="bg-danger">Rejected</th>
                                             <th>See Projects</th>
@@ -67,7 +68,8 @@
                                                 <td><span style="font-size: 22px;" class="badge badge-secondary">{{ count($user->tasks_in_progress_projects) }}</span></td>
                                                 <td><span style="font-size: 22px;" class="badge badge-warning">{{ count($user->tasks_pending_approval_projects) }}</span></td>
                                                 <td><span style="font-size: 22px;" class="badge badge-info">{{ count($user->tasks_improvment_projects) }}</span></td>
-                                                <td><span style="font-size: 22px;" class="badge badge-success">{{ count($user->tasks_completed_projects) }}</span></td> 
+                                                <td><span style="font-size: 22px;" class="badge badge-info">{{ count($user->publisher_tasks_pending_approval_projects) }}</span></td>
+                                                <td><span style="font-size: 22px;" class="badge badge-success">{{ count($user->tasks_completed_projects) }}</span></td>
                                                 <td><span style="font-size: 22px;" class="badge badge-danger">{{ count($user->tasks_rejected_projects) }}</span></td>
                                                 <td class="text-center">
                                                      <div class="btn-group">

@@ -155,6 +155,11 @@ class User extends Authenticatable
         return $this->hasMany(Task::class)->where('status',Task::PENDING_APPROVAL);
     }
 
+    // tasks PENDING_APPROVAL
+    public function publisher_tasks_pending_approval_projects($site_id=null){
+        return $this->hasMany(Task::class)->where('status',Task::PUBLISHER_APPROVAL);
+    }
+
     // tasks IMPROVEMENT
     public function tasks_improvment_projects($site_id=null){
         return $this->hasMany(Task::class)->where('status',Task::IMPROVEMENT);

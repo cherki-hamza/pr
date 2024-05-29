@@ -68,7 +68,7 @@
 
                                                     <td class="text-center">
                                                         <div class="btn-group">
-                                                          <a href="{{ route('super_admin_open_task' , ['task_id' => $task->id , 'user_id' => $task->user->id , "project_id" => $project->id]) }}" class="btn btn-sm btn-success"><i class="fas fa-eye mr-2"></i>Open The Task</a>
+                                                          <a style="color:white;background-color:{{ ( request()->status == 9 ) ? 'blueviolet' : '' }}" href="{{ route('super_admin_open_task' , ['task_id' => $task->id , 'user_id' => $task->user->id , "project_id" => $project->id]) }}" class="btn btn-sm {{ ( request()->status != 9 ) ? 'btn-success' : '' }}"><i class="fas fa-eye mr-2"></i>Open The Task</a>
                                                         </div>
                                                     </td>
                                                 </tr>

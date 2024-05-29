@@ -180,6 +180,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         ChristianKuri\LaravelFavorite\FavoriteServiceProvider::class,
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
         // Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 
         /*

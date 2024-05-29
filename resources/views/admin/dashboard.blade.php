@@ -21,122 +21,115 @@
 
         <!-- Main content -->
         <section class="content">
-            <div class="container-fluid">
-                <!-- Small boxes (Stat box) -->
-                <div class="row d-flex justify-content-center">
+           <div class="card card-primary">
+               <div class="card-header">
+                  <h3>Statistiques</h3>
+               </div>
+               <h3 class="text-primary ml-3">Tasks Status:</h3>
+               <div class="card-body">
+                  <div class="row d-flex justify-content-center">
+                      <div class="col-md-12 my-4">
+                         {!! $chart->container() !!}
+                      </div><br><br><br><br>
+                      <div class="col-md-12 my-4">
 
-                    @can('read user')
-                    <div class="col-lg-4 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3>{{ count($user) }}</h3>
-                            <p>User</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <a href="{{ route('user.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    @endcan
-                   {{--  @else
-                     <div class="card">
-                        <h3 class="text-danger">hello there you are just a new client you dont have permission to access to the System, Please contact the OTT voip Administration for activate your account.</h1>
-                     </div>
-                     --}}
-                    <!-- ./col -->
+                        <h3 class="text-primary">New Tasks:</h3>
 
-                    @can('read role')
-                    <div class="col-lg-4 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3>{{ count($role) }}</h3>
-                            <p>Role</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-user-cog"></i>
-                        </div>
-                        <a href="{{ route('role.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    @endcan
-                    <!-- ./col -->
+                        <div class="card-body">
+                            <div class="card-body table-responsive">
+                                <table class="table table-bordered table-hover datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>Client FullName</th>
+                                            <th>Project Name</th>
+                                            <th>Project URL</th>
+                                            <th>Publisher URL</th>
+                                            <th>Date</th>
+                                            <th>Task Type</th>
+                                            <th>Task Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                          @foreach ($tasks as $task)
+                                            <tr>
+                                                <td>{{ $task->user->name }}</td>
+                                                <td>{{ $task->project->project_name }}</td>
+                                                <td><a href="https://{{ $task->project->project_url }}" target="_blink">https://{{ $task->project->project_url }}</a></td>
+                                                <td><a href="https://{{ $task->site->site_url }}" target="_blink">https://{{ $task->site->site_url }}</a></td>
+                                                <td>{{ $task->created_at->diffForHumans()  }}</td>
+                                                <td>{{ $task->task_type() }}</td>
+                                                <td>
+                                                    <span class="badge badge-{{ $task->show_status_style() }} p-2" title="number of tasks in approvement">
+                                                       {{ $task->show_status() }}
+                                                    </span>
+                                                </td>
 
-                    @can('read permission')
-                    <div class="col-lg-4 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-warning">
-                        <div class="inner">
-                            <h3>{{ count($permission) }}</h3>
+                                                <td class="text-center">
+                                                    <div class="btn-group">
+                                                      <a href="{{ route('super_admin_open_task' , ['task_id' => $task->id , 'user_id' => $task->user_id , "project_id" => $task->project->id]) }}" class="btn btn-sm btn-{{ $task->show_status_style() }}"><i class="fas fa-eye mr-2"></i>Open The Task</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-                            <p>Permission</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-unlock"></i>
-                        </div>
-                        <a href="{{ route('permission.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    @endcan
-                    <!-- ./col -->
-
-                    {{-- start project statistiques --}}
-                    <div class="col-lg-8 col-8">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3>{{ \App\Models\Project::where('user_id',auth()->id())->count() }}</h3>
-
-                            <p>Projects</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-clipboard-list mr-2"></i>
-                        </div>
-                        <a href="{{ route('projects.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    {{-- end projects statistiques --}}
-
-                </div>
-
-                @can('read user')
-                <div class="row">
-                    <div class="container col-md-6">
-                        <canvas id="myChart"></canvas>
-                      </div>
-                </div>
-                @endcan
-                <!-- /.row (main row) -->
-            </div><!-- /.container-fluid -->
+                  </div>
+               </div>
+           </div>
         </section>
         <!-- /.content -->
+        {!! $chart->script() !!}
     </div>
 @endsection
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-<script>
-    const ctx = document.getElementById('myChart');
 
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Users', 'Roles', 'Permessions'],
-        datasets: [{
-          label: '# of Votes',
-          data: [7, 3, 16],
-          borderWidth: 1
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/annotations.js"></script>
+
+{{--
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/gantt/modules/gantt.js"></script>
+<script src="https://code.highcharts.com/gantt/modules/exporting.js"></script> --}}
+
+<script>
+
+/* Highcharts.chart('my_chart', {
+    xAxis: {
+        categories: [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ]
+    },
+
+    title: {
+        text: 'Tasks By Month'
+    },
+
+    series: [{
+        data: [
+            { y: 29.9, id: 'min' }, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6,
+            148.5, { y: 216.4, id: 'max' }, 194.1, 95.6, 54.4
+        ]
+    }],
+
+    annotations: [{
+        labels: [{
+            point: 'max',
+            text: 'Max'
+        }, {
+            point: 'min',
+            text: 'Min',
+            backgroundColor: 'white'
         }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  </script>
+    }]
+}); */
+
+</script>
 @endsection

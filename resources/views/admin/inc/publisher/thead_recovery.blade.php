@@ -29,6 +29,7 @@
         <th style="width: 150px;">
             REGION / LOCATION
         </th>
+        <th>Language</th>
         <th>Price</th>
         <th>Action</th>
     </tr>

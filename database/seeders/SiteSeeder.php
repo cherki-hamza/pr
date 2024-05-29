@@ -20,15 +20,13 @@ class SiteSeeder extends Seeder
     {
 
         //**********************  1 ********************************//
-        // hpac 1 :  hzup0f5v2ttx8
-        $sheetdb = new SheetDB('oof2kdurjyzhx');
+        // hpac 1 :  7bym6acyj6s31
+        $sheetdb = new SheetDB('7bym6acyj6s31');
 
         $data = @json_decode(json_encode($sheetdb->get()), true);
 
 
         $sites = collect($data);
-
-        //return $sites[0]['site_name'];
 
         foreach($sites as $site){
             Site::create([
@@ -47,48 +45,48 @@ class SiteSeeder extends Seeder
                 'site_indexed' => $site['site_indexed'],
 
                 'site_dofollow' => $site['site_dofollow'],
-                'site_images' => $site['site_images'],
+                'site_images' => 'No',
                 'site_time' => $site['site_time'],
-                'spam_score' => $site['spam_score'] ?? 1,
-                'site_price2' => $site['site_price2'],
-                'word_limite' =>  $site['word_limite'],
+                'spam_score' => $site['spam_score'] ?? '-',
+                'word_limite' =>  0,
             ]);
         }
 
       //****************************************************************//
 
       //**********************  2  ********************************//
-        // hpac 2 :  tqrbuhd4u5rud
-       /*  $sheetdb2 = new SheetDB('tqrbuhd4u5rud');
+        // hpac 2 :  sh3oonrax6j0b
+        $sheetdb2 = new SheetDB('sh3oonrax6j0b');
 
         $data2 = @json_decode(json_encode($sheetdb2->get()), true);
 
 
         $sites2 = collect($data2);
 
-        //return $sites[0]['site_name'];
 
         foreach($sites2 as $site2){
             Site::create([
                 'user_id'   => 1,
-                'site_name' => $site2['site_name'],
-                'site_url' => $site2['site_url'],
-                'site_category' => $site2['site_category'],
-                'site_price' => $site2['site_price'],
-                'site_region_location' => $site2['site_region_location'],
-                'site_monthly_traffic' => $site2['site_monthly_traffic'],
+                'site_name' => $site['site_name'],
+                'site_url' => $site['site_url'],
+                'site_category' => $site['site_category'],
+                'site_price' => $site['site_price'],
+                'site_region_location' => $site['site_region_location'],
+                'site_monthly_traffic' => $site['site_monthly_traffic'],
+                'site_language' => $site['language'],
 
-                'site_domain_authority' => $site2['site_domain_authority'],
-                'site_domain_rating' => $site2['site_domain_rating'],
-                'site_sposored' => $site2['site_sposored'],
-                'site_indexed' => $site2['site_indexed'],
+                'site_domain_authority' => $site['site_domain_authority'],
+                'site_domain_rating' => $site['site_domain_rating'],
+                'site_sposored' => $site['site_sposored'],
+                'site_indexed' => $site['site_indexed'],
 
-                'site_dofollow' => $site2['site_dofollow'],
-                'site_images' => $site2['site_images'],
-                'site_time' => $site2['site_time'],
+                'site_dofollow' => $site['site_dofollow'],
+                'site_images' => 'No',
+                'site_time' => $site['site_time'],
                 'spam_score' => $site['spam_score'] ?? '-',
+                'word_limite' =>  0,
             ]);
-        } */
+        }
 
       //****************************************************************//
 

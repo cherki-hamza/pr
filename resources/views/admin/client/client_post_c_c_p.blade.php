@@ -3,6 +3,8 @@
 @section('style')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.0/html-docx.min.js"></script>
+
+
 @endsection
 
 @section('content')
@@ -85,8 +87,8 @@
                                             </tr>
                                             <tr>
                                                 <td class="bg-primary text-white">Post Placement URL</td>
-                                                <td class="table-success"><a href="#" target="_blank"
-                                                        class="font-weight-bold">{{ ($post) ? $post->post_title : '' }}</a>
+                                                <td class="table-success"><a target="__blink" href="{{ (!empty($task->site->site_url)) ? $task->post->post_title :  '' }}" target="_blank"
+                                                        class="font-weight-bold">{{ (!empty($task->site->site_url)) ? $task->post->post_title :  '' }}</a>
                                                 </td>
                                             </tr>
 
@@ -124,17 +126,17 @@
                                     @if (!empty($task->post))
                                         <hr style="border: #3c5a99 solid 2px;">
                                         <div class="row my-3">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <label>Your Post Content <span class="text-danger"> for Content Creation And Placement :</span></label>
                                             </div>
-                                            <div  class="col-md-6 text-right">
+                                            <div  class="col-md-8 text-right">
                                                 <div style="display: none;" id="content">
                                                     {!! $post->post_body ?? '' !!}
                                                 </div>
 
-                                                <span style="font-weight: 900;font-size: 22px" class="text-primary">Post URL Published : </span>
-                                                <span style="font-weight: 700;font-size: 22px" class="text-danger"> <a href="{{ (!empty($task->site->site_url)) ? $task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_target_url }}"></a> https://</span>
-
+                                                {{-- <span style="font-weight: 900;font-size: 22px" class="text-primary">Post URL Published : </span>
+                                                <span style="font-weight: 700;font-size: 22px" class="text-danger"> <a target="__blink" href="{{ (!empty($task->post->post_title)) ? $task->post->post_title :  '' }}">{{ (!empty($task->site->site_url)) ? $task->post->post_title :  '' }}</a> </span>
+ --}}
                                                 <a class="btn btn-primary word-export" onclick="return false;"><i class="fa fa-file-word mr-2 text-white"></i>Export as .doc </a>
 
                                                 <a class="btn btn-danger" onclick="return false;" id="cmd"><i class="fa fa-file-pdf mr-2 text-white"></i>Generate PDF</a>
@@ -264,6 +266,8 @@
             </div><!-- /.container-fluid -->
 
             {{-- start chat --}}
+             {{--  @include('admin.inc.chat.chat') --}}
+            {{-- end chat --}}
 
             {{-- <div style="z-index: 9999999" class="floating-chat">
                 <i class="fa fa-comments" aria-hidden="true"></i>
@@ -303,6 +307,9 @@
                     2
                 </span>
                 </a> --}}
+                 {{-- start chat --}}
+                 {{-- @include('admin.inc.chat.chat3') --}}
+                 {{-- end chat --}}
             {{-- end chat icon --}}
             {{-- start chat content --}}
 
@@ -352,11 +359,6 @@
                             <span class="notification-time"><span class="mr-1" role="img" aria-label="Emoji">💬</span>1 second ago</span>
 
                         </div>
-
-
-
-
-
                         </div>
 
 
@@ -404,30 +406,58 @@
     <script src="{{ asset('public/template/admin/plugins/jquery/jquery.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
-    @if (!empty($post) && $post->status == 5)
+    @if (!empty($task) && $task->status == 5)
     <script>
         CKEDITOR.replace( 'post_editor_data', {
-            /* language: 'en',
+            language: 'en',
             uiColor: '#9AB8F3',
             uiColor: '#9AB8F3',
             filebrowserUploadUrl: "{{ route('admin') }}/upload?_token="{{request()->token}},
-            filebrowserUploadMethod: 'form', */
+            filebrowserUploadMethod: 'form',
         });
     </script>
-     @else
-     <script>
-         CKEDITOR.replace( 'post_editor_data', {
-            toolbar: [
-                { name: 'fullscreen', items: ['Maximize'] }
+
+@else
+<script>
+    CKEDITOR.replace( 'post_editor_data', {
+        toolbar: [
+                { name: 'styles', items: ['Format'] },
+                { name: 'fullscreen', items: ['Maximize'] },
+                { name: 'export', items: ['ExportPdf', 'ExportDocx'] }
             ],
-             language: 'en',
-             uiColor: '#9AB8F3',
-             uiColor: '#9AB8F3',
-             filebrowserUploadUrl: "{{ route('admin') }}/upload?_token="{{request()->token}},
-             filebrowserUploadMethod: 'form',
-         });
-     </script>
-     @endif
+        language: 'en',
+        uiColor: '#9AB8F3',
+        uiColor: '#9AB8F3',
+        filebrowserUploadUrl: "{{ route('admin') }}/upload?_token="{{request()->token}},
+        filebrowserUploadMethod: 'form',
+    });
+
+    CKEDITOR.plugins.add('exportdocx', {
+            icons: 'exportdocx',
+            init: function (editor) {
+                editor.addCommand('exportdocx', {
+                    exec: function (editor) {
+                        var content = editor.getData();
+                        var zip = new JSZip();
+                        var doc = new Docxtemplater().loadZip(zip);
+                        doc.setData({ content: content });
+                        doc.render();
+                        var out = doc.getZip().generate({
+                            type: "blob",
+                            mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        });
+                        saveAs(out, "document.docx");
+                    }
+                });
+                editor.ui.addButton('ExportDocx', {
+                    label: 'Export to DOCX',
+                    command: 'exportdocx',
+                    toolbar: 'export'
+                });
+            }
+        });
+</script>
+@endif
    {{--  <script>
         // This sample still does not showcase all CKEditor&nbsp;5 features (!)
         // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
@@ -862,19 +892,7 @@
 
 </script>
 
-<!--Start of Tawk.to Script-->
-{{-- <script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/66227bb9a0c6737bd12e22aa/1hrrb6k37';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script> --}}
-<!--End of Tawk.to Script-->
+
 
 
 <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
@@ -906,5 +924,126 @@ $('#cmd').click(function () {
     });
  </script>
 
+ <script>
+    $('.pr_chat').scrollTop(1000000);
+ </script>
+
+ <script>
+    var element = $('.floating-chat');
+var myStorage = localStorage;
+
+if (!myStorage.getItem('chatID')) {
+    myStorage.setItem('chatID', createUUID());
+}
+
+setTimeout(function() {
+    element.addClass('enter');
+}, 1000);
+
+element.click(openElement);
+
+function openElement() {
+    var messages = element.find('.messages');
+    var textInput = element.find('.text-box');
+    element.find('>i').hide();
+    element.addClass('expand');
+    element.find('.chat').addClass('enter');
+    var strLength = textInput.val().length * 2;
+    textInput.keydown(onMetaAndEnter).prop("disabled", false).focus();
+    element.off('click', openElement);
+    element.find('.header button').click(closeElement);
+    element.find('#sendMessage').click(sendNewMessage);
+    messages.scrollTop(messages.prop("scrollHeight"));
+}
+
+function closeElement() {
+    element.find('.chat').removeClass('enter').hide();
+    element.find('>i').show();
+    element.removeClass('expand');
+    element.find('.header button').off('click', closeElement);
+    element.find('#sendMessage').off('click', sendNewMessage);
+    element.find('.text-box').off('keydown', onMetaAndEnter).prop("disabled", true).blur();
+    setTimeout(function() {
+        element.find('.chat').removeClass('enter').show()
+        element.click(openElement);
+    }, 500);
+}
+
+function createUUID() {
+    // http://www.ietf.org/rfc/rfc4122.txt
+    var s = [];
+    var hexDigits = "0123456789abcdef";
+    for (var i = 0; i < 36; i++) {
+        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+    s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+    s[8] = s[13] = s[18] = s[23] = "-";
+
+    var uuid = s.join("");
+    return uuid;
+}
+
+function sendNewMessage() {
+    var userInput = $('.text-box');
+    var newMessage = userInput.html().replace(/\<div\>|\<br.*?\>/ig, '\n').replace(/\<\/div\>/g, '').trim().replace(/\n/g, '<br>');
+
+    if (!newMessage) return;
+
+    var messagesContainer = $('.messages');
+
+    messagesContainer.append([
+        '<li class="self">',
+        newMessage,
+        '</li>'
+    ].join(''));
+
+    // clean out old message
+    userInput.html('');
+    // focus on input
+    userInput.focus();
+
+    messagesContainer.finish().animate({
+        scrollTop: messagesContainer.prop("scrollHeight")
+    }, 250);
+}
+
+function onMetaAndEnter(event) {
+    if ((event.metaKey || event.ctrlKey) && event.keyCode == 13) {
+        sendNewMessage();
+    }
+}
+ </script>
+
+ <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/66227bb9a0c6737bd12e22aa/1hrrb6k37';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+
+    <script>
+        var removeBranding = function() {
+    try {
+        var element = document.querySelector("iframe[title*=chat]:nth-child(2)").contentDocument.querySelector(`a[class*=tawk-branding]`)
+
+        if (element) {
+            element.remove()
+        }
+    } catch (e) {}
+    }
+
+    var tick = 100
+
+    setInterval(removeBranding, tick)
+
+    </script>
 
 @endsection

@@ -72,7 +72,7 @@
 
                                             <tbody>
 
-                                                @foreach ($sites as $site)
+                                                @forelse ($sites as $site)
                                                 <tr>
                                                   <td><i class="fa fa-link mr-1"></i>
                                                     <a href="{{ ($site->site_url) ?   "https://$site->site_url" : '#' }}" rel="nofollow" target="_blank" class="text-decoration-none font-weight-bold" data-html="true"
@@ -110,7 +110,9 @@
 
                                                 <td class="text-center align-middle"><span class="badge badge-primary mr-1">M</span>DA <strong class="font-weight-bold">{{$site->site_domain_authority}}</strong>
                                                     @if (!empty($site->spam_score) && $site->spam_score != '-' )
-                                                    <br>Spam Score <strong class="text-primary font-weight-bold">{{$site->spam_score}}%</strong>
+                                                         <br>Spam Score <strong class="text-primary font-weight-bold">{{$site->spam_score}}%</strong>
+                                                    @else
+                                                         <br>Spam Score <strong class="text-primary font-weight-bold">No</strong>
                                                     @endif
                                                 </td>
 
@@ -118,6 +120,23 @@
                                                     {{-- <img src="https://www.icopify.co/img/flags/us.jpg" alt="" class="shadow"> --}}
                                                     <br><span>{{ $site->handle_country()  }}</span>
                                                </td>
+
+                                               <td class="text-center align-middle">
+                                                @if ($site->site_language == 'Arabic')
+                                                 <img width="30px" src="https://flagicons.lipis.dev/flags/4x3/sa.svg" alt="" class="shadow">
+                                                @elseif($site->site_language == 'French')
+                                                <img width="30px" src="https://flagicons.lipis.dev/flags/4x3/fr.svg" alt="" class="shadow">
+
+                                                @elseif($site->site_language == 'Chinese')
+                                                <img width="30px" src="https://flagicons.lipis.dev/flags/4x3/cn.svg" alt="" class="shadow">
+                                                @elseif($site->site_language == 'Japanese')
+                                                <img width="30px" src="https://flagicons.lipis.dev/flags/4x3/jp.svg" alt="" class="shadow">
+                                                @else
+                                                <img width="30px" src="https://flagicons.lipis.dev/flags/4x3/us.svg" alt="" class="shadow">
+                                                @endif
+
+                                              <br><span>{{ $site->site_language  }}</span>
+                                          </td>
 
                                                <td class="text-center align-middle">
                                                   ${{ $site->site_price }}
@@ -129,7 +148,11 @@
 
 
                                                 </tr>
-                                                @endforeach
+                                                @empty
+                                                    <tr style="font-size: 20px" class="text-danger text-center">
+                                                        <td colspan="9">Oops no result for : <span class="text-primary"> {{ $searsh }} </span> keyword</td>
+                                                    </tr>
+                                                @endforelse
                                             </tbody>
                                         </table>
                                         <div style="float: right" class="">

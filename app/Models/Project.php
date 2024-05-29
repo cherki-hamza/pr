@@ -46,6 +46,11 @@ class Project extends Model
         return $this->hasMany(Task::class)->where('task_type',$type)->where('status',Task::IMPROVEMENT);
     }
 
+    // tasks waiting Publisher for Approve
+    public function tasks_publisher_approve($type=null){
+        return $this->hasMany(Task::class)->where('task_type',$type)->where('status',Task::PUBLISHER_APPROVAL);
+    }
+
     // tasks completed
     public function tasks_completed($type=null){
         return $this->hasMany(Task::class)->where('task_type',$type)->where('status',Task::COMPLETED);

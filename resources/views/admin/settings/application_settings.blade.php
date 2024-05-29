@@ -50,7 +50,7 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-12 my-4">
-                                                <label for="fullname" class="col-form-label text-success">Logo:</label>
+                                                <label for="fullname" class="col-form-label text-success">00Logo:</label>
                                             </div>
                                              <div class="row">
                                                 <div class="col-md-6 pl-5">
@@ -108,7 +108,7 @@
                                                     class="col-form-label text-success">PAYPAL CURRENCY:</label>
                                             </div>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" name="PAYPAL_CURRENCY" id="PAYPAL_CURRENCY" value="{{ \App\Helpers\SettingHelper::getValue('PAYPAL_CURRENCY') }}">
+                                                <input type="text" class="form-control" name="PAYPAL_CURRENCY" id="PAYPAL_CURRENCY" value="{{ (\App\Helpers\SettingHelper::getValue('PAYPAL_CURRENCY')) ?? 'USD' }}">
                                             </div>
                                         </div>
 

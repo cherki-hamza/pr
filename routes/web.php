@@ -47,7 +47,7 @@ Route::get('/', function () {
 })->name('index');
 
 
-Route::get('/sms', function () {
+/* Route::get('/sms', function () {
 
      $user = User::first();
 
@@ -61,9 +61,7 @@ Route::get('/sms', function () {
             $client->setHttpClient($guzzleClient);
 
 
-     /* echo '<pre>';
-     print_r($client);
-     exit(); */
+
 
      $response = $client->sms()->send(
         new \Vonage\SMS\Message\SMS('971551087029', 'PR Content Dubai', 'Hello from Pr Content Creation')
@@ -83,7 +81,7 @@ Route::get('/sms', function () {
 
     // return 'sms success';
 
-})->name('sms');
+})->name('sms'); */
 
 
 Route::get('/hamza', function () {
@@ -283,6 +281,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('project/{project_id?}/my_orders/in_progress' , [TaskController::class,'in_progress'])->name('in_progress');
     Route::get('project/{project_id?}/my_orders/pending_approval' , [TaskController::class,'pending_approval'])->name('pending_approval');
     Route::get('project/{project_id?}/my_orders/improvement' , [TaskController::class,'improvement'])->name('improvement');
+    Route::get('project/{project_id?}/my_orders/pr_publisher' , [TaskController::class,'pr_publisher'])->name('pr_publisher');
     Route::get('project/{project_id?}/my_orders/completed' , [TaskController::class,'completed'])->name('completed');
     Route::get('project/{project_id?}/my_orders/rejected' , [TaskController::class,'rejected'])->name('rejected');
 
