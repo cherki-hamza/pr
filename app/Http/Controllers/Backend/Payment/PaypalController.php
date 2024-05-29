@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Backend\Payment;
 
 use App\Http\Controllers\Controller;
+use App\Mail\PaymentToClientEmail;
+use App\Mail\PaymentToSuperAdminEmail;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Omnipay\Omnipay;
 
 class PaypalController extends Controller
@@ -63,17 +67,28 @@ class PaypalController extends Controller
 
                 //return $arr;
 
-                $payment = new Payment();
-                $payment->user_id = auth()->id();
-                $payment->payment_id = $arr['id'];
-                $payment->payer_id = $arr['payer']['payer_info']['payer_id'];
-                $payment->payer_email = $arr['payer']['payer_info']['email'];
-                $payment->amount = $arr['transactions'][0]['amount']['total'];
-                $payment->currency = env('PAYPAL_CURRENCY');
-                $payment->payment_status = $arr['state'];
-                $payment->payment_platform = 'paypal';
+                $payment = Payment::create([
+                    'user_id' => auth()->id(),
+                    'payment_id' => $arr['id'],
+                    'payer_id' => $arr['payer']['payer_info']['payer_id'],
+                    'payer_email' => $arr['payer']['payer_info']['email'],
+                    'amount' => $arr['transactions'][0]['amount']['total'],
+                    'currency' => env('PAYPAL_CURRENCY'),
+                    'payment_status' => $arr['state'],
+                    'payment_platform' => 'paypal',
 
-                $payment->save();
+                ]);
+
+
+                // send email to client with the payment value
+                Mail::to($payment->user->email)->send(new PaymentToClientEmail($payment));
+
+                // also send email to pr  super admin team with payment value
+                $users = User::where('role','super-admin')->get();
+                foreach($users as $user){
+                   Mail::to($user->email)->send(new PaymentToSuperAdminEmail($payment));
+                }
+
 
                 // return "Payment is Successfull. Your Transaction Id is : " . $arr['id'];
                 return redirect()->route('admin')->with('success', "Payment is Successfull. Your Transaction Id is : " . $arr['id']);

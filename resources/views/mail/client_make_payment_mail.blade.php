@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Simple Transactional Email</title>
+    <title>client make payment mail</title>
     <style>
       /* -------------------------------------
           GLOBAL RESETS
@@ -186,12 +186,12 @@
       }
 
       .btn-primary table td {
-        background-color: #f6ff00;
+        background-color: #8e8e93 !important;
       }
 
       .btn-primary a {
-        background-color: #f6ff00;
-        border-color: #f6ff00;
+        background-color: #8e8e93 !important;
+        border-color: #8e8e93 !important;
         color: #ffffff;
       }
 
@@ -346,8 +346,6 @@
 
   <body class="">
     <span class="preheader">
-        Hello From Pr Content Creation and placement Team.
-    </span>
     <table
       role="presentation"
       border="0"
@@ -372,22 +370,15 @@
                   >
                     <tr>
                       <td>
-                        <p>Hi {{$name}},</p>
+                        <p>Hi {{$name}}</p>
 
-                        <p>I hope this message finds you well. </p>
+                        <p>I hope this message finds you well . </p>
 
                         <p>
-                          Your buy a Post on {{$site}} , <br><br> Task Type :  {{$task_type}} , <br><br> Task Price is : ${{$price}}
-                        </p>
-                        <br>
-                        <p>
-                            Estimated time to deliver : {{$date}}
+                            You Add a fund   value : <span style="color: #007aff;"> ${{ $value }} </span> By payment Platform {{$payment_platform}} .
                         </p>
                         <br>
 
-                        <p>
-                            Task Status : In Progress
-                        </p>
                         <table
                           role="presentation"
                           border="0"
@@ -407,8 +398,8 @@
                                   <tbody>
                                     <tr>
                                       <td>
-                                        <a href="{{ route('not_started', ['project_id'=> $project_id]) }}" target="_blank"
-                                          >Go To Your Task</a
+                                        <a href="{{ route('index') }}" target="_blank"
+                                          >Go To PR Dashboard</a
                                         >
                                       </td>
                                     </tr>

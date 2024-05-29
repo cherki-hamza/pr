@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RegisterUserEmail;
 use App\Models\Profile;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -82,6 +84,9 @@ class RegisterController extends Controller
             'mobile' => $user->mobile,
             'picture' => $user->GetGravatar(),
         ]);
+
+        // send welcome email to the new register user
+        Mail::to($user->email)->send(new RegisterUserEmail($user));
 
         return $user;
     }

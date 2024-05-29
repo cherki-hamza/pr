@@ -17,6 +17,7 @@ class DashboardController extends Controller
     // method for show the dashboard
     public function index(Request $request){
 
+
         // get all new tasks
         if(auth()->user()->role == 'client'){
             $tasks = Task::where('user_id',auth()->id())->where('status',Task::NOT_STARDET)->get();
@@ -106,12 +107,25 @@ class DashboardController extends Controller
             $tasks_title = $tasks_client_names;
             $task_backgrounds = $client_background;
             $task_colors = $client_colors;
-            $tasks_data = [1,4,6,2,15,9];
+            $tasks_data = [
+                Task::TasksCount(Task::NOT_STARDET),
+                Task::TasksCount(Task::IN_PROGRESS),
+                Task::TasksCount(Task::PENDING_APPROVAL),
+                Task::TasksCount(Task::COMPLETED),
+                Task::TasksCount(Task::REJECTED)
+            ];
         }elseif(auth()->user()->role == 'super-admin'){
             $tasks_title = $tasks_super_admin_names;
             $task_backgrounds = $super_admin_background;
             $task_colors = $super_admin_colors;
-            $tasks_data = [1,4,6,2,3,15,9];
+            $tasks_data = [
+                Task::TasksCount(Task::NOT_STARDET),
+                Task::TasksCount(Task::IN_PROGRESS),
+                Task::TasksCount(Task::PENDING_APPROVAL),
+                Task::TasksCount(Task::PUBLISHER_APPROVAL),
+                Task::TasksCount(Task::COMPLETED),
+                Task::TasksCount(Task::REJECTED)
+            ];
         }else{
             $tasks_title = [];
         }

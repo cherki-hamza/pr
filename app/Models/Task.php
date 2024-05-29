@@ -110,6 +110,12 @@ class Task extends Model
     }
 
 
+    public static function TasksCount($taskStatus = null)
+    {
+        return Task::where('user_id',auth()->user()->id)->where('status',$taskStatus)->count();
+    }
+
+
 }
 
 

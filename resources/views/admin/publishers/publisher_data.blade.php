@@ -89,9 +89,9 @@
                                             Websites
                                         </th>
 
-                                        <th style="width: 200px;">
+                                        {{-- <th style="width: 200px;">
                                             Websites Name
-                                        </th>
+                                        </th> --}}
 
                                         <th style="width: 150px;">
                                             Categories
@@ -112,6 +112,8 @@
                                         <th style="width: 150px;">
                                             REGION / LOCATION
                                         </th>
+
+                                        <th>Language</th>
 
                                         <th class="sort" style="width:60px">
                                             Actions
@@ -138,7 +140,7 @@
 
                                     </td>
 
-                                    <td>{{ $site->site_name }}</td>
+                                    {{-- <td>{{ $site->site_name }}</td> --}}
 
                                     <td><span class="badge badge-primary">{{ $site->handle_category() }}</span></td>
 
@@ -167,12 +169,29 @@
                                        <br><span>{{ $site->handle_country()  }}</span>
                                    </td>
 
+                                   <td class="text-center align-middle">
+                                    @if ($site->site_language == 'Arabic')
+                                     <img width="30px" src="https://flagicons.lipis.dev/flags/4x3/sa.svg" alt="" class="shadow">
+                                    @elseif($site->site_language == 'French')
+                                    <img width="30px" src="https://flagicons.lipis.dev/flags/4x3/fr.svg" alt="" class="shadow">
+
+                                    @elseif($site->site_language == 'Chinese')
+                                    <img width="30px" src="https://flagicons.lipis.dev/flags/4x3/cn.svg" alt="" class="shadow">
+                                    @elseif($site->site_language == 'Japanese')
+                                    <img width="30px" src="https://flagicons.lipis.dev/flags/4x3/jp.svg" alt="" class="shadow">
+                                    @else
+                                    <img width="30px" src="https://flagicons.lipis.dev/flags/4x3/us.svg" alt="" class="shadow">
+                                    @endif
+
+                                  <br><span>{{ $site->site_language  }}</span>
+                              </td>
+
                                    <td class="row">
                                       <div class="btn-group btn-group-sm btn-block">
                                         @if(!empty($site->site_price))
-                                          <a href="#"  style="background-color: #2c7be5;color:white" class="btn">{{ ($site->site_price) ? "$$site->site_price" : '$0'}}</a>
+                                          <span  style="background-color: #2c7be5;color:white" class="btn">{{ ($site->site_price) ? "$$site->site_price" : '$0'}}</span>
                                         @else
-                                          <a href="#"  class="btn btn-danger">The Price Not Yet</a>
+                                          <span  class="btn btn-danger">The Price Not Yet</span>
                                         @endif
                                         {{-- <a href="{{route('order_index', ['project_id'=> request()->project_id && 1 , 'site_id' => $site->id ])}}" style="width: 100px;"
                                              class="btn btn-primary">$ {{$site->site_price}}</a> Buy Again --}}
@@ -181,9 +200,9 @@
                                       <div class="btn-group">
                                         <div class="d-flex justify-content-between">
 
-                                            <a href="#" target="_blank" class="btn btn-outline-google-plus btn-block btn-sm mt-2" role="button" title="View Details">
+                                            <span target="_blank" class="btn btn-outline-google-plus btn-block btn-sm mt-2" role="button" title="View Details">
                                                 View Details
-                                            </a>
+                                            </span>
 
                                         </div>
                                       </div>
@@ -212,11 +231,6 @@
                             <i class="fs--1">
                                 Last update: <strong class="font-weight-bold fs--1 text-facebook">{{ $latest_update ?? '' }}</strong>
                             </i>
-                        </span>
-                        <span class="ml-auto">
-                            <a href="https://www.icopify.co/publishers"
-                                class="btn bg-facebook text-white btn-sm fs--1" role="button" target="_blank"><i
-                                    class="fas fa-plus-circle fa-lg mr-2"></i>Add Your Website</a>
                         </span>
                     </div>
                 </div>
