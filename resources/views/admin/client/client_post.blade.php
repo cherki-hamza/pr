@@ -165,7 +165,7 @@
                                         <div class="col-md-6">
                                         <label style="font-size: 20px">Content to be published  :</label>
                                         </div>
-                                        @if ($$task->status == 5)
+                                        @if ($task->status == 5)
                                             <div class="col-md-6 text-right">
                                                 <span style="font-weight: 900;font-size: 22px" class="text-primary">Post URL Published : </span>
                                                 <span style="font-weight: 700;font-size: 22px" class="text-danger"> <a class="text-danger" target="_blink" href="#">{{ (empty($task->post_placement_url)) ? $task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->post_placement_url   }}</a></span>
