@@ -21,8 +21,8 @@ class UserSeeder extends Seeder
         // start create super admin user
         $superadmin = User::create([
             'name'      => 'Superadmin',
-            'email'     => 'cherki0hamza@gmail.com',
-            'password'  => bcrypt('123456789'),
+            'email'     => 'hamza@overthetop.ae',
+            'password'  => bcrypt('aA@00112233'),
             'role'      => 'super-admin'
         ]);
         $super_admin_profile = Profile::create([
@@ -36,9 +36,9 @@ class UserSeeder extends Seeder
 
         // start create client 1 user
         $client1 = User::create([
-            'name'      => 'Client',
-            'email'     => 'cherkihamzafullstack@gmail.com',
-            'password'  => bcrypt('123456789')
+            'name'      => 'jone',
+            'email'     => 'jone25076@gmail.com',
+            'password'  => bcrypt('aA@00112233')
         ]);
         $client_1_profile = Profile::create([
             'user_id' => $client1->id,
@@ -52,8 +52,8 @@ class UserSeeder extends Seeder
          // start create client 2 user
          $client2 = User::create([
             'name'      => 'Client2',
-            'email'     => 'jone25076@gmail.com',
-            'password'  => bcrypt('123456789')
+            'email'     => 'cherkihamzafullstack@gmail.com',
+            'password'  => bcrypt('aA@00112233')
         ]);
         $client_2__profile = Profile::create([
             'user_id' => $client2->id,
