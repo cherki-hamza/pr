@@ -87,8 +87,8 @@
                                             </tr>
                                             <tr>
                                                 <td class="bg-primary text-white">Post Placement URL</td>
-                                                <td class="table-success"><a target="__blink" href="{{ (!empty($task->site->site_url)) ? $task->post->post_title :  '' }}" target="_blank"
-                                                        class="font-weight-bold">{{ (!empty($task->site->site_url)) ? $task->post->post_title :  '' }}</a>
+                                                <td class="table-success"><a target="__blink" href="{{ (!empty($task->site->site_url)) ? $task->site->site_url :  '' }}" target="_blank"
+                                                        class="font-weight-bold">{{ (!empty($task->site->site_url)) ? $task->site->site_url :  '' }}</a>
                                                 </td>
                                             </tr>
 

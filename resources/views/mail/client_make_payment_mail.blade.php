@@ -372,11 +372,6 @@
                       <td>
                         <p>Hi {{$name}}</p>
 
-                        <p>I hope this message finds you well . </p>
-
-                        <p>
-                            You Add a fund   value : <span style="color: #007aff;"> ${{ $value }} </span> By payment Platform {{$payment_platform}} .
-                        </p>
                         <br>
 
                         <table
@@ -396,6 +391,16 @@
                                   cellspacing="0"
                                 >
                                   <tbody>
+                                    <tr>
+                                        <td>
+                                            <p>I hope this message finds you well . </p>
+
+                                            <p>
+                                                You Add a fund   value : <span style="color: #007aff;"> ${{ $value }} </span> By payment Platform {{$payment_platform}} .
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <br>
                                     <tr>
                                       <td>
                                         <a href="{{ route('index') }}" target="_blank"
