@@ -186,12 +186,12 @@
       }
 
       .btn-primary table td {
-        background-color: #ffbf00;
+        background-color: #00ddff;
       }
 
       .btn-primary a {
-        background-color: #ffbf00;
-        border-color: #ffbf00;
+        background-color: #00ddff;
+        border-color: #00ddff;
         color: #ffffff;
       }
 
