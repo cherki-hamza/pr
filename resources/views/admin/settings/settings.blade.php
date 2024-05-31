@@ -78,9 +78,9 @@
                         </div>
                         <!-- End Change Password -->
 
-                        @if (auth()->user()->role == 'client')
+                        {{-- @if (auth()->user()->role == 'client') --}}
                         <!-- Email Notification Setting -->
-                        <div class="card mt-3">
+                       {{--  <div class="card mt-3">
                             <div class="card-header bg-primary">
                                 <h5 class="text-white">Email Notification Setting </h5>
                             </div>
@@ -88,7 +88,7 @@
                                 <div>
                                     <form method="POST" action="#">
                                         @csrf
-                                        {{-- @method('PUT') --}}
+                                        @method('PUT')
                                         <div class="form-group row gutters">
                                             <div class="col-xl-12 col-md-12">
                                                 <div class="custom-control custom-switch mb-1">
@@ -156,7 +156,7 @@
                                 </div>
                             </div>
                         </div>
-                        @endif
+                        @endif --}}
 
 
 

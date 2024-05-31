@@ -46,6 +46,11 @@
 
     <link href="https://icopify.co/assets/css/theme.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('public/template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <style>
+        .navbar-inverse .navbar-toggle .icon-bar{
+            color: white !important;
+        }
+    </style>
 
 </head>
 

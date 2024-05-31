@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('mobile')->nullable();
             $table->string('google_id')->nullable();
             $table->enum('role',['super-admin','manager','client','publisher'])->default('client');
+            $table->enum('type',['user','publisher'])->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

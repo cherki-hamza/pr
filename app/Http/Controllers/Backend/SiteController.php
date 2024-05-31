@@ -7,12 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Blacklist;
 use App\Models\Site;
 use App\Models\Task;
+use Illuminate\Support\Facades\DB;
 
 class SiteController extends Controller
 {
 
     // client all publishers for client
     public function site_index(Request $request){
+
+
+        //return DB::select('SELECT * FROM sites WHERE site_monthly_traffic = ?', [140]);
 
         $title = "publishers";
         $project_id = $request->project_id;
@@ -157,30 +161,30 @@ class SiteController extends Controller
         }elseif ($request->site_monthly_traffic) {  // filter by monthly traffic
 
             if( $request->site_monthly_traffic == 'LowToHigh'){
-                $sites = $query->OrderBy('site_monthly_traffic', 'ASC')->paginate(12);
+                $sites = $query->orderBy('site_monthly_traffic', 'ASC')->paginate(12);
                 return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
             }else{
-                $sites = $query->OrderBy('site_monthly_traffic', 'DESC')->paginate(12);
+                $sites = $query->orderBy('site_monthly_traffic', 'DESC')->paginate(12);
                 return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
             }
 
          }elseif($request->site_domain_rating){ // filter by DR
 
             if( $request->site_domain_rating == 'LowToHigh'){
-                $sites = $query->OrderBy('site_domain_rating', 'ASC')->paginate(12);
+                $sites = $query->orderBy('site_domain_rating', 'ASC')->paginate(12);
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));;
             }else{
-                $sites = $query->OrderBy('site_domain_rating', 'DESC')->paginate(12);
+                $sites = $query->orderBy('site_domain_rating', 'DESC')->paginate(12);
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
             }
 
         }elseif($request->site_domain_authority){ // filter by DA
 
             if( $request->site_domain_authority == 'LowToHigh'){
-                $sites = $query->OrderBy('site_domain_authority', 'ASC')->paginate(12);
+                $sites = $query->orderBy('site_domain_authority', 'ASC')->paginate(12);
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));;
             }else{
-                $sites = $query->OrderBy('site_domain_authority', 'DESC')->paginate(12);
+                $sites = $query->orderBy('site_domain_authority', 'DESC')->paginate(12);
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
             }
 
@@ -194,12 +198,17 @@ class SiteController extends Controller
         }elseif($request->Price){
 
             if( $request->Price == 'LowToHigh'){
-                $sites = $query->OrderBy('site_price', 'ASC')->paginate(12);
+                $sites = $query->orderBy('site_price', 'ASC')->paginate(12);
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
             }
 
             if( $request->Price == 'HighToLow'){
-                $sites = $query->OrderBy('site_price', 'DESC')->paginate(12);
+                $sites = $query->orderBy('site_price', 'DESC')->paginate(12);
+                return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
+            }
+
+            if( $request->Price == 'all'){
+                $sites = $query->paginate(12);
                 return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
             }
 
@@ -396,27 +405,6 @@ class SiteController extends Controller
 
     }
 
-    // private methodes
-    private function stringToNumeric($str) {
-         // Check if it's in - format
-        if (strpos($str, '-') !== false) {
-            $num = 0;
-        }
-        // Check if it's in million format
-        if (strpos($str, 'M') !== false) {
-            $num = floatval(str_replace('M', '', $str)) * 1000000;
-        }
-        // Check if it's in thousand format
-        elseif (strpos($str, 'k') !== false) {
-            $num = floatval(str_replace('k', '', $str)) * 1000;
-        }
-        // If it's a regular number
-        else {
-            $num = floatval($str);
-        }
-        return $num;
-    }
-
 
     // method for show the blacklist publisher
     public function blacklist_publishers(){
@@ -454,6 +442,14 @@ class SiteController extends Controller
          }else{
             return back()->with('danger','Publisher site not found check with the super admin');
          }
+
+
+    }
+
+
+    public function dev(){
+
+
 
 
     }

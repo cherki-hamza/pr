@@ -150,6 +150,7 @@
             <!-- Main Sidebar Container -->
             @include('admin.layouts.sidebar')
 
+
             <!-- Content Wrapper. Contains page content -->
             @yield('content')
             <!-- /.content-wrapper -->

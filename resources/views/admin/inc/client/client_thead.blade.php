@@ -127,7 +127,8 @@
 
         <th class="sort" style="width:80px">
             <select class="custom-select custom-select-sm" name="website" onchange="location = this.value;">
-                <option selected="" value="?categories=all" >Categories</option>
+                <option selected="" value="" >Select Your shois</option>
+                <option value="?Price=all" >All Prices</option>
                 <option value="?Price=LowToHigh">Price From Low To
                     High</option>
                 <option value="?Price=HighToLow">Price From High To

@@ -49,6 +49,27 @@
                             @enderror
                         </div>
 
+
+                        {{-- <div class="mb-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="">Select Your Role</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-control" name="" id="">
+                                        <option selected value="client">User</option>
+                                        <option value="publisher">Publisher</option>
+                                    </select>
+                                </div>
+                            </div> --}}
+
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
                         <div class="input-group mb-3">
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
                             @error('password')
@@ -58,7 +79,7 @@
                             @enderror
                         </div>
 
-                        <div class="row mb-3">
+                        <div class="mb-3">
                                 <input id="password-confirm" type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation" placeholder="Password confirmation" required autocomplete="new-password">
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">

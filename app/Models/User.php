@@ -203,4 +203,20 @@ class User extends Authenticatable
         return $this->mobile;
     }
 
+    public function RoleIsSuperAdmin(){
+       return (auth()->user()->role == 'super-admin')? true : false;
+    }
+
+    public function RoleIsClient(){
+        return (auth()->user()->role == 'client')? true : false;
+    }
+
+    public function TypeIsPublisher(){
+        return (auth()->user()->type == 'publisher')? true : false;
+    }
+
+    public function TypeIsUser(){
+        return (auth()->user()->type == 'user')? true : false;
+    }
+
 }

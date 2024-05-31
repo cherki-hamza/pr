@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Helpers\Helper;
 use App\Models\Site;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,8 +21,8 @@ class SiteSeeder extends Seeder
     {
 
         //**********************  1 ********************************//
-        // hpac 1 :  7bym6acyj6s31
-        $sheetdb = new SheetDB('7bym6acyj6s31');
+        // hpac 1 :  6f8tblqkhj4rx
+        $sheetdb = new SheetDB('6f8tblqkhj4rx');
 
         $data = @json_decode(json_encode($sheetdb->get()), true);
 
@@ -29,6 +30,7 @@ class SiteSeeder extends Seeder
         $sites = collect($data);
 
         foreach($sites as $site){
+            $site_region_location = Helper::stringToNumeric($site['site_monthly_traffic']);
             Site::create([
                 'user_id'   => 1,
                 'site_name' => $site['site_name'],
@@ -36,7 +38,7 @@ class SiteSeeder extends Seeder
                 'site_category' => $site['site_category'],
                 'site_price' => $site['site_price'],
                 'site_region_location' => $site['site_region_location'],
-                'site_monthly_traffic' => $site['site_monthly_traffic'],
+                'site_monthly_traffic' => $site_region_location,
                 'site_language' => $site['language'],
 
                 'site_domain_authority' => $site['site_domain_authority'],
@@ -55,8 +57,8 @@ class SiteSeeder extends Seeder
       //****************************************************************//
 
       //**********************  2  ********************************//
-        // hpac 2 :  sh3oonrax6j0b
-        $sheetdb2 = new SheetDB('sh3oonrax6j0b');
+        // hpac 2 :  dm4nilawm5vy2
+        $sheetdb2 = new SheetDB('dm4nilawm5vy2');
 
         $data2 = @json_decode(json_encode($sheetdb2->get()), true);
 

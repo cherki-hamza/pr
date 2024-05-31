@@ -52,7 +52,7 @@ class LoginController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials, true)) {
-            return to_route('dashboard');
+            return to_route('admin');
         }
         throw ValidationException::withMessages([
             $this->username() => [trans('auth.failed')],

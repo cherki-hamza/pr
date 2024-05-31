@@ -36,10 +36,11 @@ class ViewServiceProvider extends ServiceProvider
                     }
 
                     if(!empty(auth()->user()->payments) /* && auth()->user()->role == 'client' */){
+
                         $auth_user_payments = Payment::where('user_id', auth()->id())->sum('amount');   // 20000
                         $task_site_prices = Task::where('user_id' , auth()->id())/* ->where('task_status',0) */->sum('task_price'); //  15100
                         $balance = ((int)$auth_user_payments - $task_site_prices);  // 20000  - 15100 == 4900 and  include reserved
-                        $reserved = Task::where('user_id' , auth()->id())->where('task_status',0)->sum('task_price');
+                        $reserved = Task::where('user_id' , auth()->id())->whereNot('task_status',5)->sum('task_price');
                         $view->with(['balance' => $balance , 'reserved' => $reserved ]);
 
                         /* echo '<pre>';

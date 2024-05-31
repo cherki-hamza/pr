@@ -148,8 +148,9 @@ class DashboardController extends Controller
             ]
         ]);
 
+          return view('admin.dashboard',  compact('chart' ,'title' , 'result','tasks'));
 
-        return view('admin.dashboard',  compact('chart' ,'title' , 'result','tasks'));
+
     }
 
 
@@ -217,4 +218,6 @@ class DashboardController extends Controller
 
 
     }
+
+
 }

@@ -13,7 +13,8 @@
     <ul class="navbar-nav ml-auto">
 
         <li class="nav-item">
-            <a href="{{ route('balance') }}"> <span class="btn btn-warning">
+            <a href="{{ route('balance') }}">
+                 <span class="btn btn-warning">
 
 
                     @if (auth()->user()->role == 'super-admin')
@@ -24,7 +25,8 @@
                         {{--  <span style="font-size: 20px;">Balance: ${{ \App\Models\Payment::where('user_id',auth()->user()->id)->sum('amount') }} </span> --}}
                     @endif
 
-                </span> </a>
+                </span>
+            </a>
         </li>
 
         {{-- <li class="nav-item ml-3 mr-5">
@@ -55,7 +57,7 @@
                         alt="{{ auth()->user()->name }}">
                 </div>
             </a>
-            <div class="dropdown-menu dropdown-menu-right my-4 py-0" aria-labelledby="navbarDropdownUser">
+            <div class="dropdown-menu dropdown-menu-right my-4 py-0" aria-labelledby="navbarDropdownUser" style="width: 193px;left: inherit;right: 39px;">
                 <div class="bg-white rounded-soft py-2">
                    @if (auth()->user()->role == 'super-admin')
                     <a class="dropdown-item has-icon loading-trigger" href="{{ route('application_settings') }}">
@@ -85,6 +87,18 @@
                                 d="M461.2 128H80c-8.84 0-16-7.16-16-16s7.16-16 16-16h384c8.84 0 16-7.16 16-16 0-26.51-21.49-48-48-48H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h397.2c28.02 0 50.8-21.53 50.8-48V176c0-26.47-22.78-48-50.8-48zM416 336c-17.67 0-32-14.33-32-32s14.33-32 32-32 32 14.33 32 32-14.33 32-32 32z">
                             </path>
                         </svg><!-- <i class="fas fa-wallet mr-2"></i> Font Awesome fontawesome.com -->Balance</a>
+
+                        {{-- @if (auth()->user()->role == 'client')
+                        <form action="{{ route('switch_to_publicher_or_client') }} " method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button class="dropdown-item has-icon shadow-none loading-trigger" style="outline: none !important; box-shadow: none;width:62px;">
+                                <i class="mr-2" data-fa-i2svg="">
+                                <svg style="10px" class="svg-inline--fa fa-toggle-on" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="toggle-on" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M384 64H192C86 64 0 150 0 256s86 192 192 192h192c106 0 192-86 192-192S490 64 384 64zm0 320c-70.8 0-128-57.3-128-128 0-70.8 57.3-128 128-128 70.8 0 128 57.3 128 128 0 70.8-57.3 128-128 128z"></path>
+                                </svg></i>Switch To Buyer
+                            </button>
+                        </form>
+                        @endif --}}
 
 
                     <div class="dropdown-divider"></div>

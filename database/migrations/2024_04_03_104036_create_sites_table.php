@@ -19,13 +19,13 @@ return new class extends Migration
             $table->string('site_name')->nullable();
             $table->string('site_url')->nullable();
             $table->string('site_category')->nullable();
-            $table->string('site_monthly_traffic')->nullable();
-            $table->string('site_domain_rating')->nullable();
-            $table->string('site_domain_authority')->nullable();
+            $table->integer('site_monthly_traffic')->nullable();
+            $table->integer('site_domain_rating')->nullable();
+            $table->integer('site_domain_authority')->nullable();
             $table->string('site_images')->nullable();
             $table->string('site_language')->nullable();
-            $table->string('site_price')->nullable();
-            $table->string('site_price2')->nullable();
+            $table->integer('site_price')->nullable();
+            $table->integer('site_price2')->nullable();
             $table->string('site_sposored')->nullable();
             $table->string('site_indexed')->nullable();
             $table->string('site_dofollow')->nullable();
