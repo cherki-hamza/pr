@@ -106,6 +106,7 @@
                             </div>
                         </div>
 
+                       @if($task->status != 1)
                         <div class="mt-3">
                             <div class="card ">
                                 <div class="card-header">
@@ -136,10 +137,11 @@
 
                                                 {{-- <span style="font-weight: 900;font-size: 22px" class="text-primary">Post URL Published : </span>
                                                 <span style="font-weight: 700;font-size: 22px" class="text-danger"> <a target="__blink" href="{{ (!empty($task->post->post_title)) ? $task->post->post_title :  '' }}">{{ (!empty($task->site->site_url)) ? $task->post->post_title :  '' }}</a> </span>
- --}}
+ --}}                                            @if ($post->status == 5)
                                                 <a class="btn btn-primary word-export" onclick="return false;"><i class="fa fa-file-word mr-2 text-white"></i>Export as .doc </a>
 
                                                 <a class="btn btn-danger" onclick="return false;" id="cmd"><i class="fa fa-file-pdf mr-2 text-white"></i>Generate PDF</a>
+                                                @endif
                                             </div>
                                         </div>
 
@@ -169,8 +171,9 @@
 
                                 </div>
 
-                            </div>
+                            </div> {{-- end of card --}}
                         </div>
+                        @endif
 
                         @if (!empty($task))
                         <div class="text-center">
@@ -194,6 +197,8 @@
                                     <i class="fa fa-wrench mr-2" aria-hidden="true"></i>
                                   Improve
                                </button>
+                               @elseif($task->status == 1)
+                               <span class="btn btn-info">Your Task it is in progress ..</span>
 
                                 {{-- <button style="width: 150px" type="submit" name="action" value="reject"  class="btn btn-danger my-2  mx-5"><i class="fas fa-ban mr-2"></i>
                                     Reject
@@ -208,51 +213,6 @@
 
 
 
-                            {{-- @if($task->status == 2)
-                            <button style="width: 150px" type="submit" name="action" value="approve"  class="btn btn-warning my-2  mx-5"><i class="fas fa-check mr-2"></i>
-                                Approve
-                           </button>
-
-                           @else
-                              <p class="alert alert-success">Your Post is Completed</p>
-                           @endif --}}
-
-                           {{-- @if($task->status == 6 && $task->status != 0 && $task->status != 1 && $task->status != 2 && $task->status != 3 && $task->status != 4 && $task->status != 5)
-                            <button disabled="true" type="submit" name="action" value="approve_allready"  class="btn btn-warning my-2  mx-5"><i class="fas fa-check mr-2"></i>
-                                You Allready Approve the Post
-                           </button>
-                           @endif
-
-                           @if($task->status != 4)
-                            <button style="width: 150px" type="submit" name="action" value="improve"  class="btn btn-info my-2  mx-5"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>
-                                Improve
-                           </button>
-                           @endif
-
-                           @if($task->status != 6)
-                            <button style="width: 150px" type="submit" name="action" value="reject"  class="btn btn-danger my-2  mx-5"><i class="fas fa-ban mr-2"></i>
-                                Reject
-                           </button>
-                           @endif--}}
-
-                           {{-- @else
-
-                            <p class="alert alert-warning"> Your Post Still Not Started, Wait the Pr Content Writer starting the post or contact the pr team .</p>
-
-                           @endif --}}
-
-
-
-
-                            {{-- @if($task->status =! 6 && $task->status == 3)
-                            <button  type="submit" name="action" value="reject"  class="btn btn-danger mx-5">
-                                <i class="fas fa-ban mr-2"></i>Rejected
-                            </button>
-                            @else
-                            <button  type="submit" name="action" value="reject"  class="btn btn-danger mx-5">
-                                <i class="fas fa-ban mr-2"></i>You Allready Rejected The Post
-                            </button>
-                            @endif --}}
 
                             <input type="hidden" name="site_id" value="{{$task->site->id}}">
 

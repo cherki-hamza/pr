@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->integer('project_id');
             $table->integer('site_id');
+            $table->integer('pr_user_id')->nullable();
             $table->integer('order_id');
             $table->integer('status')->default(0);
             $table->integer('task_status')->default(0);
@@ -29,6 +30,9 @@ return new class extends Migration
             $table->string('task_package')->nullable();
             $table->text('task_special_requirement')->nullable();
             $table->text('task_post_placement_url')->nullable();
+            $table->string('db')->default('client');
+            $table->integer('publisher_status')->default(0);
+            $table->integer('publisher_final_status')->default(0);
             $table->timestamps();
         });
     }

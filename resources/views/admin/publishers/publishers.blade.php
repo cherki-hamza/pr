@@ -136,7 +136,9 @@
                                                        <a href="{{route('order_index', ['project_id'=> request()->project_id, 'site_id' => $site->id ])}}" style="width: 50%;"
                                                          class="btn btn-primary"> {{($site->site_price) ? "$$site->site_price" : '$0'}}</a>
                                                     @else
-                                                      <a href="#" style="width: 100px;" class="btn btn-danger">The Price Not Yet</a>
+                                                      {{-- <a href="#" style="width: 100px;" class="btn btn-danger">The Price Not Yet</a> --}}
+                                                      <a href="{{route('order_index', ['project_id'=> request()->project_id , 'site_id' => $site->id ])}}" style="width: 50%;" class="btn btn-success"><img width="20px" height="20px" src="https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Content-Creation-web-and-software-development-smashingstocks-flat-smashing-stocks-2.png"/> ${{ $site->site_c_p_price }} </a>
+                                                      <a href="{{route('order_index', ['project_id'=> request()->project_id, 'site_id' => $site->id ])}}" style="width: 50%;" class="btn btn-primary"><img width="20px" height="20px" src="https://img.icons8.com/stickers/100/content.png" alt="content"/> ${{ $site->site_c_c_p_price }}</a>
                                                     @endif
 
                                                   </div>

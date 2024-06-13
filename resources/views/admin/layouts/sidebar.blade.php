@@ -22,12 +22,6 @@
                 </li>
                 {{-- start navbar for super admin --}}
                 @if (auth()->user()->role == 'super-admin')
-                    <li class="nav-item">
-                        <a href="{{ route('admin') }}" class="nav-link {{ request()->routeIs('admin') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
 
                     <li style="font-size: 20px" class="nav-header ml-2 text-danger">ACCESS</li>
                     <li class="nav-item">

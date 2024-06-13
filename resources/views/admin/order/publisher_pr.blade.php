@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <h3 class="text-center mt-3">Tasks Need Improvement</h3>
+                            <h3 class="text-center mt-3">Tasks Waiting PR Approve</h3>
 
 
 

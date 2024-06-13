@@ -138,9 +138,13 @@
                                               <br><span>{{ $site->site_language  }}</span>
                                           </td>
 
-                                               <td class="text-center align-middle">
-                                                  ${{ $site->site_price }}
-                                               </td>
+                                          <td style="width: 150px;font-size: 15px" class="text-center align-middle">
+                                            ${{  (empty($site->site_price))? $site->site_c_p_price : $site->site_price }}
+                                         </td>
+
+                                         <td style="width: 150px;font-size: 15px" class="text-center align-middle">
+                                           ${{ (empty($site->site_price))? $site->site_c_c_p_price : "$site->site_price + Package" }}
+                                        </td>
 
                                                <td class="text-center align-middle">
                                                   <a href="{{ route('edit_publishers' , ['site_id' => $site->id]) }}"><i class="fa fa-edit"></i>Edit</a>

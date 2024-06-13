@@ -47,6 +47,8 @@ Route::get('/', function () {
 })->name('index');
 
 
+
+
 /* Route::get('/sms', function () {
 
      $user = User::first();
@@ -88,8 +90,6 @@ Route::get('/hamza', function () {
     $users = User::whereNot('role','super-admin')->get();
     foreach($users as $user){
         Notification::send($user , new EmailNotification($user));
-
-
     }
 
     /* $messages = [

@@ -80,5 +80,20 @@ class Site extends Model
 
     }
 
+    // method for get all site tasks
+    /* public static function tasks($site_url = null){
+        return Task::where('site_id' , $site_url)->get() ?? [];
+    } */
+
+    // site hasMant tasks
+    public function tasks(){
+      return $this->hasMany(Task::class);
+    }
+
+    // site count
+    public function tasks_count(){
+        return $this->hasMany(Task::class)->count();
+      }
+
 
 }

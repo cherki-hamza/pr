@@ -30,7 +30,8 @@
             REGION / LOCATION
         </th>
         <th>Language</th>
-        <th>Price</th>
+        <th>Content Placement</th>
+        <th>Content Creation & Placement</th>
         <th>Action</th>
     </tr>
 </thead>

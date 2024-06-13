@@ -37,7 +37,7 @@
                                 <div class="btn-group nav">
 
                                     <a href="{{route('not_started' , ['project_id' =>request()->project_id])}}"
-                                        class="btn btn-sm btn-outline-dark d-none d-md-block nav-item nav-link nav-link-fade active">Not Started 99
+                                        class="btn btn-sm btn-outline-dark d-none d-md-block nav-item nav-link nav-link-fade active">Not Started
                                         <span style="font-size: 20px" class="badge badge-danger badge-pill ml-2">{{ \App\Models\Task::where('user_id',auth()->id())->where('status',0)->where('project_id',request()->project_id)->count() ?? '0' }}</span>
                                     </a>
                                     <a href="{{route('in_progress' , ['project_id' =>request()->project_id])}}"
@@ -132,7 +132,7 @@
                                         </div>
 
                                 </div>
-                            </div>
+                              </div>
 
                         </div>
                     </div>

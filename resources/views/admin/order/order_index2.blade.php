@@ -51,15 +51,25 @@
                                             <li class="nav-item col-md-6 p-0 text-center">
                                                 <a style="font-size: 22px;font-style: bold" class="nav-link active" id="custom-tabs-four-home-tab"
                                                     data-toggle="pill" href="#custom-tabs-four-home" role="tab"
-                                                    aria-controls="custom-tabs-four-home" aria-selected="true">Content Placement <strong class="text-success">$<span id="first_price">{{ $price_c_c }}</span></strong></a>
+                                                    aria-controls="custom-tabs-four-home" aria-selected="true"><img style="margin-right: 10px;" width="40px" height="30px" src="https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Content-Creation-web-and-software-development-smashingstocks-flat-smashing-stocks-2.png"/>Content Placement <strong class="text-success">$<span id="first_price">{{ (empty($price_c_c)) ? $site->site_c_p_price : $price_c_c  }}</span></strong></a>
                                             </li>
 
+                                            @if ((!empty($price_c_c)))
                                             <li class="nav-item col-md-6 p-0 text-center">
                                                 <a style="font-size: 22px;font-style: bold" class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill"
                                                     href="#custom-tabs-four-profile" role="tab"
                                                     aria-controls="custom-tabs-four-profile"
-                                                    aria-selected="false">Content Creation and Placement <strong class="text-success">$<span id="package">Select Package</span></strong></a>
+                                                    aria-selected="false"><img style="margin-right: 10px;" width="40px" height="30px" src="https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Content-Creation-web-and-software-development-smashingstocks-flat-smashing-stocks-2.png"/>Content Creation and Placement <strong class="text-success">$<span id="package">Select Package</span></strong></a>
                                             </li>
+                                            @else
+                                            <li class="nav-item col-md-6 p-0 text-center">
+                                                <a style="font-size: 22px;font-style: bold" class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill"
+                                                    href="#custom-tabs-four-profile" role="tab"
+                                                    aria-controls="custom-tabs-four-profile"
+                                                    aria-selected="false"><img style="margin-right: 10px;" width="40px" height="30px" src="https://img.icons8.com/stickers/100/content.png" alt="content"/>Content Creation and Placement <strong class="text-success">$<span id="package">{{ (!empty($site->site_c_c_p_price)) ? $site->site_c_c_p_price : ''  }}</span></strong></a>
+                                            </li>
+                                            @endif
+
 
                                         </ul>
                                     </div>
@@ -84,7 +94,7 @@
                                                         </span>
                                                     <span class="text-danger">don't add any images in your article</span>
 
-                                                    <input type="hidden" id="content_placment_price" value="{{ $price_c_c }}">
+                                                    <input type="hidden" id="content_placment_price" value="{{  (!empty($price_c_c))? $price_c_c : $site->site_c_p_price }}">
 
                                                     </label>
                                                     {{-- <div  id="summernote">Hello Summernote</div> --}}
@@ -128,12 +138,16 @@
                                                                 </span> Font Awesome fontawesome.com -->
                                                                 <textarea name="task_special_requirement" class="form-control  mt-2" rows="8"></textarea>
                                                             </label>
-                                                                                                </div>
+                                                         </div>
                                                     </div>
                                                     {{--  --}}
 
                                                     {{--  --}}
-                                                    <div class="text-right text-facebook h5"> <strong>${{ $price_c_c }}</strong></div>
+                                                    @if ((!empty($price_c_c)))
+                                                       <div class="text-right text-facebook h5"> <strong>$<span id="result">{{ $price_c_c }}</span></strong></div>
+                                                    @else
+                                                       <div class="text-right text-facebook h5"> <strong>$<span id="result">{{ (!empty($site->site_c_p_price)) ? $site->site_c_p_price : '' }}</span></strong></div>
+                                                    @endif
                                                     {{--  --}}
 
                                                     {{--  --}}
@@ -155,6 +169,7 @@
                                                     <form action="{{route('store_ccp',['project_id'=> request()->project_id , 'site_id' => request()->site_id ])}}" method="POST" enctype="multipart/form-data">
                                                         @csrf
 
+                                                        @if ((!empty($price_c_c)))
                                                         <div class="form-group row no-gutters my-2">
                                                             <div class="col">
                                                                 <label class="d-block "><strong>Packages </strong><span class="text-danger">* <strong class="text-success">(Select Your Package.)</strong></span>
@@ -173,6 +188,7 @@
                                                                 </label>
                                                             </div>
                                                         </div>
+                                                        @endif
 
                                                     {{--  --}}
                                                     <div class="form-group row no-gutters my-2">
@@ -216,7 +232,12 @@
                                                     {{--  --}}
 
                                                     {{--  --}}
-                                                    <div class="text-right text-facebook h5 mr-2    "> <strong>$<span id="result">Content Creation + Package</span></strong></div>
+                                                    @if ((!empty($price_c_c)))
+                                                       <div class="text-right text-facebook h5 mr-2"> <strong>$<span  id="result2">Content Creation + Package</span></strong></div>
+                                                    @else
+                                                       <div class="text-right text-facebook h5 mr-2"> <strong>$<span id="result">{{ (!empty($site->site_c_c_p_price)) ? $site->site_c_c_p_price : '' }}</span></strong></div>
+                                                    @endif
+
                                                     {{--  --}}
 
                                                     {{--  --}}
@@ -279,6 +300,7 @@
 
             $('#package').html(total);
             $('#result').html(total);
+            $('#result2').html(total);
 
         });
     });

@@ -22,6 +22,9 @@ class SiteController extends Controller
         $project_id = $request->project_id;
         // start get site instence
         $query = Site::query();
+        //  remove the not approved site
+        $query->whereNot('site_status','2');
+
         // start new instance from Site Model
         if(request()->routeIs('same_day_delivery')){
             $query->where('site_time' ,'1 Day');
@@ -265,8 +268,8 @@ class SiteController extends Controller
 
         $title = "publishers";
         $project_id = $request->project_id;
-        $sites = Site::all();
-        $sites_count = Site::count();
+        $sites = Site::whereNot('site_status','2')->get();
+        $sites_count = Site::whereNot('site_status','2')->count();
 
 
         return view('admin.publishers.publishers',compact('project_id','sites','sites_count'));
@@ -278,12 +281,13 @@ class SiteController extends Controller
         if (!empty(request('search'))) {
             //return $request->search;
             $sites = Site::where('site_name', 'like', '%' . request('search') . '%')
+                          ->whereNot('site_status','2')
                           ->OrWhere('site_region_location' , 'like', '%' . request('search') . '%')
                           ->OrWhere('site_language' , 'like', '%' . request('search') . '%')
                           ->OrWhere('site_category' , 'like', '%' . request('search') . '%')
                           ->OrWhere('site_url' , 'like', '%' . request('search') . '%')->paginate(12);
         } else {
-            $sites = Site::paginate(12);
+            $sites = Site::whereNot('site_status','2')->paginate(12);
         }
 
 
@@ -308,9 +312,9 @@ class SiteController extends Controller
 
     // method for eframe publisher data in datatabe in home site page
     public function publisher_data(){
-        $sites = Site::latest()->paginate(5);
-        $site_count = Site::count();
-        $latest_update = Site::latest()->first()->created_at->format('M d Y');
+        $sites = Site::whereNot('site_status','2')->latest()->paginate(5);
+        $site_count = Site::whereNot('site_status','2')->count();
+        $latest_update = Site::whereNot('site_status','2')->latest()->first()->created_at->format('M d Y');
         return view('admin.publishers.publisher_data',compact('sites','site_count','latest_update'));
     }
 
@@ -331,7 +335,7 @@ class SiteController extends Controller
 
         $site->update([
              'site_name' => $request->get('site_name'),
-             'site_url' => $request->get('site_url'),
+             'site_url' => preg_replace("(^https?://)", "", $request->get('site_url')),
              'site_category' => $request->get('site_cat'),
              'site_price' => $request->get('site_price'),
              'site_region_location' => $request->get('site_country'),
@@ -384,7 +388,7 @@ class SiteController extends Controller
         Site::create([
             'user_id'   => auth()->id(),
             'site_name' => $request->get('site_name'),
-            'site_url' => $request->get('site_url'),
+            'site_url' => preg_replace("(^https?://)", "", $request->get('site_url')) ,
             'site_category' => $request->get('site_cat'),
             'site_price' => $request->get('site_price'),
             'site_region_location' => $request->get('site_country'),
@@ -447,10 +451,11 @@ class SiteController extends Controller
     }
 
 
-    public function dev(){
+    public function sites_api(Request $request){
 
-
-
+      $site_id = Site::where('site_url' ,$request->site_url)->firstOrFail()->id;
+      $tasks = Task::where('site_id' , $site_id)->get() ?? [];
+      return response()->json(['tasks' => $tasks]);
 
     }
 
