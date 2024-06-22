@@ -3,7 +3,7 @@
 @section('style')
 <style>
     .tawk-branding{
-        display: none;
+        display: none !important;
     }
 </style>
 @endsection
@@ -14,9 +14,30 @@
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4"><span   style="font-size: 25px;" class="alert alert-primary">Task ID #{{ $task->id }}</span></div>
+                    <div class="col-sm-4">
+                        @if (!empty($task))
+                        <div  class="text-center">
+
+                            @if ($task->status == 6)
+                             <span style="font-size: 25px;" class="alert alert-danger">This Task is Rejected</span>
+                            @elseif($task->status == 5)
+                                <span style="font-size: 19px;" class="alert alert-success">This Task Completed And AlReady Approved From Publisher</span>
+                            @elseif($task->status == 9)
+                                 <span style="font-size: 25px;" class="alert alert-warning">Wait For The Publisher : <span class="text-danger">{{ $task->site->site_name }}</span> Approve Your Post</span>
+                            @elseif($task->status == 1)
+                            <span style="font-size: 25px;" class="alert alert-info">Your Task Is In Progress</span>
+                                 @else
+                            <span  style="font-size: 25px;" class="alert alert-warning">Your Task still not Started</span>
+                            @endif
+
+
+                            <input type="hidden" name="site_id" value="{{$task->site->id}}">
+
+                        </div>
+                        @endif
                     </div><!-- /.col -->
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
@@ -38,7 +59,7 @@
                         <div class="card">
                             <div class="card-header bg-primary">
                                 <div class="mt-n2 mb-n2 d-flex">
-                                    <h5 class="align-middle text-white"> Task ID #{{ $task->id }}</h5>
+                                    <h5 class="align-middle text-white"> Task :</h5>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -88,8 +109,8 @@
                                             </tr>
                                             <tr>
                                                 <td class="bg-primary text-white">Post Placement URL</td>
-                                                <td class="table-success"><a href="#" target="_blank"
-                                                        class="font-weight-bold">{{ ($post) ? $post->post_title : '' }}</a>
+                                                <td class="table-success"><a href="{{ ( empty($task->task_post_placement_url)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_post_placement_url }}" target="_blank"
+                                                        class="font-weight-bold">{{ ( empty($task->task_post_placement_url)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_post_placement_url }}</a>
                                                 </td>
                                             </tr>
 
@@ -162,13 +183,13 @@
 
                                     <hr style="border: #3c5a99 solid 2px;">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                         <label style="font-size: 20px">Content to be published  :</label>
                                         </div>
                                         @if ($task->status == 5)
-                                            <div class="col-md-6 text-right">
-                                                <span style="font-weight: 900;font-size: 22px" class="text-primary">Post URL Published : </span>
-                                                <span style="font-weight: 700;font-size: 22px" class="text-danger"> <a class="text-danger" target="_blink" href="#">{{ (empty($task->post_placement_url)) ? $task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->post_placement_url   }}</a></span>
+                                            <div class="col-md-8 text-right">
+                                                <span style="font-weight: 900;font-size: 22px" class="text-primary">Post Placement URL : </span>
+                                                <span style="font-weight: 700;font-size: 22px" class="text-danger"> <a class="text-danger" target="_blink" href="{{ ( empty($task->task_post_placement_url)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_post_placement_url }}">{{ ( empty($task->task_post_placement_url)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_post_placement_url }}</a></span>
 
                                             </div>
                                         @endif
@@ -206,74 +227,8 @@
                             </div>
                         </div>
 
-                        @if (!empty($task))
-                        <div class="text-center">
 
-                            @if ($task->status == 6)
-                             <span class="btn btn-danger">This Task is Rejected</span>
-                            @elseif($task->status == 5)
-                                <span class="btn btn-success">This Task Completed And AlReady Approved From Publisher</span>
-                            @elseif($task->status == 9)
-                                 <span class="btn btn-warning">Wait For The Publisher : <span class="text-danger">{{ $task->site->site_name }}</span> Approve Your Post</span>
-                            @elseif($task->status == 1)
-                            <span class="btn btn-info">Your Task Is In Progress</span>
-                                 @else
-                            <span class="btn btn-warning">Your Task still not Started</span>
-                            @endif
-
-
-
-
-                            {{-- @if($task->status == 2)
-                            <button style="width: 150px" type="submit" name="action" value="approve"  class="btn btn-warning my-2  mx-5"><i class="fas fa-check mr-2"></i>
-                                Approve
-                           </button>
-
-                           @else
-                              <p class="alert alert-success">Your Post is Completed</p>
-                           @endif --}}
-
-                           {{-- @if($task->status == 6 && $task->status != 0 && $task->status != 1 && $task->status != 2 && $task->status != 3 && $task->status != 4 && $task->status != 5)
-                            <button disabled="true" type="submit" name="action" value="approve_allready"  class="btn btn-warning my-2  mx-5"><i class="fas fa-check mr-2"></i>
-                                You Allready Approve the Post
-                           </button>
-                           @endif
-
-                           @if($task->status != 4)
-                            <button style="width: 150px" type="submit" name="action" value="improve"  class="btn btn-info my-2  mx-5"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>
-                                Improve
-                           </button>
-                           @endif
-
-                           @if($task->status != 6)
-                            <button style="width: 150px" type="submit" name="action" value="reject"  class="btn btn-danger my-2  mx-5"><i class="fas fa-ban mr-2"></i>
-                                Reject
-                           </button>
-                           @endif--}}
-
-                           {{-- @else
-
-                            <p class="alert alert-warning"> Your Post Still Not Started, Wait the Pr Content Writer starting the post or contact the pr team .</p>
-
-                           @endif --}}
-
-
-
-
-                            {{-- @if($task->status =! 6 && $task->status == 3)
-                            <button  type="submit" name="action" value="reject"  class="btn btn-danger mx-5">
-                                <i class="fas fa-ban mr-2"></i>Rejected
-                            </button>
-                            @else
-                            <button  type="submit" name="action" value="reject"  class="btn btn-danger mx-5">
-                                <i class="fas fa-ban mr-2"></i>You Allready Rejected The Post
-                            </button>
-                            @endif --}}
-
-                            <input type="hidden" name="site_id" value="{{$task->site->id}}">
-
-                        </div>
-                        @endif
+                        <input type="hidden" name="site_id" value="{{$task->site->id}}">
                         </form>
                     </div>
                     <!-- End Order Form -->
@@ -933,6 +888,9 @@
 
      var element = document.getElementById('myElement');
         element.style.color = 'red';
+
+
 </script>
+
 
 @endsection

@@ -65,6 +65,7 @@
                                                     </span>
                                                 </td>
 
+
                                                 <td class="text-center">
                                                     <div class="btn-group">
                                                         @if(auth()->user()->role == 'client')

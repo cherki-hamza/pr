@@ -41,9 +41,10 @@ class TaskController extends Controller
         $project_name = $project->project_name;
         $user = $project->user->name;
 
-        $project_tasks = Project::where('id',$request->project_id)->
-                        with(['tasks' => function($query) use ($request) {
-                                $query->where('user_id', $request->user_id)->where('status' , $request->status)->where('task_type',$request->type);
+        $project_tasks = Project::where('id',$request->project_id)
+                                ->with(['tasks' => function($query) use ($request) {
+                                $query->where('user_id', $request->user_id)
+                                      ->where('status' , $request->status)->where('task_type',$request->type);
                         }])->get();
 
         return view('admin.task.client_task_by_user_by_project', compact('project_tasks','project_name','user'));
@@ -53,7 +54,15 @@ class TaskController extends Controller
     public function super_admin_open_task(Request $request){
         $task = Task::where('id',$request->task_id)->first();
         $post = Post::where('task_id',$request->task_id)->first();
-      return view('admin.task.super_admin_open_task' , compact('task','post'));
+        if(!empty($task)){
+           // tempate for c_c_p task
+           if($task->task_type == 'c_c_p'){
+                return view('admin.task.super_admin_open_task_ccp' , compact('task','post'));
+           }else{
+                return view('admin.task.super_admin_open_task_cp' , compact('task','post'));
+           }
+        }
+
     }
 
     // method for open client tasks
@@ -281,7 +290,6 @@ class TaskController extends Controller
       // method for get tasks rejected
       public function rejected(Request $request,$project_id)
       {
-          //
           $title = 'Task rejected';
           $tasks = Task::where('user_id',auth()->id())->where('status',Task::REJECTED)->where('project_id',$request->project_id)->get();
           $tasks_count = count($tasks);

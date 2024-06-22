@@ -24,6 +24,7 @@ class SiteController extends Controller
         $query = Site::query();
         //  remove the not approved site
         $query->whereNot('site_status','2');
+       // $query->whereNot('publisher_status','2');
 
         // start new instance from Site Model
         if(request()->routeIs('same_day_delivery')){

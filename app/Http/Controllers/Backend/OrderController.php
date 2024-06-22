@@ -98,8 +98,10 @@ class OrderController extends Controller
         $site_id = $request->site_id;
         $site_price = Site::where('id',$site_id)->first()->site_price;
         $pr_site_id =   Site::where('id',$site_id)->first()->pr_user_id;
+        $db = 'content';
         if(empty($site_price)){
             $site_price = Site::where('id',$site_id)->first()->site_c_p_price;
+            $db = 'publisher';
         }
         $project_id = $request->project_id;
 
@@ -132,18 +134,21 @@ class OrderController extends Controller
             'task_target_url' => $request->task_target_url,
             'task_anchor_text' => $request->task_anchor_text,
             'task_special_requirement' => $request->task_special_requirement,
-            'task_price'        => $site_price
+            'task_price'        => $site_price,
+            //'publisher_status'  => 2,
+            'c_status'      => 1,
+            'db'                => $db
         ]);
 
         // create the client status
-        ClientStatus::create([
+        /* ClientStatus::create([
             'user_id'              => auth()->id(),
             'task_id'              => $task->id,
             'order_id'             => $order->id,
             'site_id'              => $site_id,
             'client_status'        =>  0,
             'client_final_status'  =>  0
-        ]);
+        ]); */
 
         // store the balance result for every user
         // 1) get the Total payments by auth user
@@ -176,8 +181,10 @@ class OrderController extends Controller
         $package = $request->package;
         $site_price =   Site::where('id',$site_id)->first()->site_price;
         $pr_site_id =   Site::where('id',$site_id)->first()->pr_user_id;
+        $db = 'content';
         if(empty($site_price)){
             $site_price = Site::where('id',$site_id)->first()->site_c_c_p_price;
+            $db = 'publisher';
         }
         $project_id = $request->project_id;
 
@@ -217,18 +224,21 @@ class OrderController extends Controller
             'task_anchor_text' => $request->task_anchor_text,
             'task_special_requirement' => $request->task_special_requirement,
             'task_price'        => ($site_price + $package),
-            'task_package'      => $package
+            'task_package'      => $package,
+            //'publisher_status'  => 2,
+            'c_status'      => 1,
+            'db'                => $db
         ]);
 
         // create the client status
-        ClientStatus::create([
+       /*  ClientStatus::create([
             'user_id'              => auth()->id(),
             'task_id'              => $task->id,
             'order_id'             => $order->id,
             'site_id'              => $site_id,
             'client_status'        =>  0,
             'client_final_status'  =>  0
-        ]);
+        ]); */
 
         // store the balance result for every user
         // 1) get the Total payments by auth user
@@ -276,18 +286,19 @@ class OrderController extends Controller
             'task_anchor_text' => $request->task_anchor_text,
             'task_special_requirement' => $request->task_special_requirement,
             'task_price'        => ($site_price),
-            'task_package'      => 0
+            'task_package'      => 0,
+            'c_status'      => 1,
         ]);
 
         // create the client status
-        ClientStatus::create([
+        /* ClientStatus::create([
             'user_id'              => auth()->id(),
             'task_id'              => $task->id,
             'order_id'             => $order->id,
             'site_id'              => $site_id,
             'client_status'        =>  0,
             'client_final_status'  =>  0
-        ]);
+        ]); */
 
         // store the balance result for every user
         // 1) get the Total payments by auth user
@@ -307,15 +318,9 @@ class OrderController extends Controller
           // send email for task as content placement is created
           Mail::to($task->user->email)->send(new CreateTaskEmail($task));
 
-
           return redirect()->route('admin')->with('success', 'Content Creation and Placement Task Order Successfully!');
 
-
         }
-
-
-
-
 
     }
 

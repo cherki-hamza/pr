@@ -53,7 +53,6 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
      Route::get('/all_user_projects/{user_id?}/projects',[ProjectController::class,'all_user_projects'])->name('all_user_projects');
 
 
-
     // super admin routes ***********************************************************************************************************************************************************
     // Get tasks by project for super admin
     Route::get('/tasks/user/{user_id}/project/{project_id}',[TaskController::class,'super_admin_task_by_user_by_project'])->name('super_admin_task_by_user_by_project');

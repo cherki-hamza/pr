@@ -33,7 +33,7 @@
                         <div class="card card-primary border-primary">
 
                             <div class="card-header">
-                                <span style="float: left">Buy Post on: <strong class="">https://www.google.com</strong> projectID {{request()->project_id}} + sitetID {{request()->site_id}}</span>
+                                <span style="float: left">Buy Post on: <strong class="">{{ (str_contains($site->site_url, 'https'))? $site->site_url : "https://$site->site_url" }}</strong></span>
                                 <span style="float: right" class="mb-n1 text-white"><i class="text-white mr-2" data-fa-i2svg="">
                                     <svg style="width: 15px" class="svg-inline--fa fa-calendar-alt fa-w-14" aria-hidden="true" focusable="false"
                                      data-prefix="far" data-icon="calendar-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"

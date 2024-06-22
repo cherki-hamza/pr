@@ -1,9 +1,25 @@
 @extends('admin.layouts.master')
 
 @section('style')
- <style>
+<style>
+    .loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 83%; /* Full height of the parent div */
+      position: absolute;
+      width: 100%;
+      top: 0x;
+      left: 0;
+      z-index: 1; /* Ensure it is above the content */
+      background-color: white;
+    }
 
- </style>
+    /* Initially hide the content */
+    .content{
+      display: none;
+    }
+   </style>
 @endsection
 
 @section('content')
@@ -26,6 +42,10 @@
         </div>
         <!-- /.content-header -->
 
+        <div class="loader">
+            <img src="{{ asset('public/assets/images/loading.gif') }}" alt="Loading...">
+         </div>
+
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -41,11 +61,10 @@
 
             <div class="table-responsive" style="border-radius:5px">
                 <table style="font-size: 20px" class="table table-sm table-dashboard table-bordered table-striped fs--1 p-0 datatable">
-                    <thead class="bg-200 bg-info">
+                    <thead class="bg-200 bg-primary">
                     <tr class="text-center">
                         <th class="d-table-cell">Order ID</th>
                         <th class="d-table-cell">Date</th>
-                        <th class="d-xl-table-cell d-none">Order From Publisher Site</th>
                         <th class="d-xl-table-cell d-none">Order From Publisher URL</th>
                         <th class="d-table-cell">Transaction Amount</th>
                     </tr>
@@ -59,7 +78,6 @@
 
                             <td class="row d-table-cell"> {{ $transaction->created_at->format('D-M-Y') }} | {{  $transaction->created_at->diffForHumans() }}</td>
 
-                             <td class="d-xl-table-cell d-none">{{ $transaction->site->site_name }}</td>
 
                              <td class="d-xl-table-cell d-none">{{ $transaction->site->site_url }}</td>
 
@@ -68,11 +86,11 @@
                            </tr>
                         @endforeach
                         <tr style="font-size: 20px;" class="text-center">
-                            <td  class="bg-info">
+                            <td  class="bg-success">
                                 <span class="ml-2 my-2">Total :</span>
                             </td>
-                            <td colspan="3"></td>
-                            <td class="bg-info">${{ $transactions->sum('price') }}</td>
+                            <td colspan="2"></td>
+                            <td class="bg-success">${{ $transactions->where('status',5)->sum('price') }}</td>
                         </tr>
 
                        </tbody>
@@ -248,6 +266,23 @@
 
     });
 </script>
+<script>
+    // Function to hide loader and show content
+    function showContent() {
+      document.querySelector('.loader').style.display = 'none';
+      document.querySelector('.content').style.display = 'block';
+    }
+
+    // Simulate content loading
+    window.addEventListener('load', () => {
+      setTimeout(showContent, 3000); // Change 3000 to the desired delay in milliseconds
+    });
+</script>
+
+@endsection
+
+
+
 
 @section('modal')
     {{-- Modal tambah --}}
