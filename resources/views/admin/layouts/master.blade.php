@@ -130,6 +130,9 @@
 
 
         </style>
+
+          @livewireStyles
+
     </head>
     <body class="hold-transition  sidebar-mini layout-fixed">
         @php
@@ -189,10 +192,18 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 
 
-
-
-
-
         @stack('script')
+
+        @livewireScripts
+        <script>
+
+            function scrollDown() {
+             document.getElementById('chat').scrollTop =  document.getElementById('chat').scrollHeight
+            }
+
+            setInterval(scrollDown, 1000);
+
+         </script>
+
     </body>
 </html>

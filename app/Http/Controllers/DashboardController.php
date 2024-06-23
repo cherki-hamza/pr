@@ -220,4 +220,10 @@ class DashboardController extends Controller
     }
 
 
+    // method for chat messages
+    public function chat_messages(){
+        return view('admin.chat.chat2_messages');
+    }
+
+
 }

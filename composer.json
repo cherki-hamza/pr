@@ -21,6 +21,7 @@
         "laravel/ui": "^3.4",
         "laravel/vonage-notification-channel": "^3.3",
         "league/omnipay": "^3",
+        "livewire/livewire": "2.10",
         "maatwebsite/excel": "^3.1",
         "nwidart/laravel-modules": "^9.0",
         "omnipay/paypal": "^3.0",

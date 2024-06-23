@@ -219,4 +219,7 @@ class User extends Authenticatable
         return (auth()->user()->type == 'user')? true : false;
     }
 
+    // user and chat message
+
+
 }

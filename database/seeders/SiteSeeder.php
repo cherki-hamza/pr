@@ -20,7 +20,7 @@ class SiteSeeder extends Seeder
     public function run()
     {
 
-        // local sites sedder test
+        /* // local sites sedder test
         $sites = [
             [
                 'user_id'   => 1,
@@ -70,7 +70,7 @@ class SiteSeeder extends Seeder
                 'site_url' => preg_replace("(^https?://)", "", $site['site_url']) ,
                 'site_category' => $site['site_category'],
                 'site_price' => $site['site_price'],
-                'site_region_location' => $site['site_region_location'],
+                 'site_region_location' => $site['site_region_location'],
                 'site_monthly_traffic' => $site['site_monthly_traffic'],
                 'site_language' => $site['site_language'],
 
@@ -85,11 +85,11 @@ class SiteSeeder extends Seeder
                 'spam_score' => $site['spam_score'] ?? '-',
                 'word_limite' =>  0,
             ]);
-        }
+        } */
 
         //**********************  1 ********************************//
         // hpac 1 :  6f8tblqkhj4rx
-       /*  $sheetdb = new SheetDB('6f8tblqkhj4rx');
+        $sheetdb = new SheetDB('6f8tblqkhj4rx');
 
         $data = @json_decode(json_encode($sheetdb->get()), true);
 
@@ -119,13 +119,13 @@ class SiteSeeder extends Seeder
                 'spam_score' => $site['spam_score'] ?? '-',
                 'word_limite' =>  0,
             ]);
-        } */
+        }
 
       //****************************************************************//
 
       //**********************  2  ********************************//
         // hpac 2 :  dm4nilawm5vy2
-       /*  $sheetdb2 = new SheetDB('dm4nilawm5vy2');
+        $sheetdb2 = new SheetDB('dm4nilawm5vy2');
 
         $data2 = @json_decode(json_encode($sheetdb2->get()), true);
 
@@ -155,14 +155,14 @@ class SiteSeeder extends Seeder
                 'spam_score' => $site['spam_score'] ?? '-',
                 'word_limite' =>  0,
             ]);
-        } */
+        }
 
       //****************************************************************//
 
 
         //**********************  3  ********************************//
         // hpac 3 :  84t4a75u6u25w
-       /*  $sheetdb3 = new SheetDB('84t4a75u6u25w');
+        $sheetdb3 = new SheetDB('84t4a75u6u25w');
 
         $data3 = @json_decode(json_encode($sheetdb3->get()), true);
 
@@ -191,7 +191,7 @@ class SiteSeeder extends Seeder
                 'site_time' => $site3['site_time'],
                 'spam_score' => $site['spam_score'] ?? '-',
             ]);
-        } */
+        }
 
       //****************************************************************//
 

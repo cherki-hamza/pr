@@ -85,7 +85,7 @@
 
                                                     {{-- start content writer --}}
                                                     <li class="d-flex">
-                                                        <div class="p-2"><i class="fa fa-clipboard-list mr-2"></i>Content Writing</div>
+                                                        <div class="p-2"><i class="fa fa-clipboard-list mr-2"></i>Content Placement</div>
 
                                                         <div class="ml-auto p-2">
                                                             <a href="{{ route('client_task_by_user_by_project' , ['user_id' => $project->user_id , 'project_id' => $project->id , 'status' => 0 , 'type' => 'c_p']) }}">

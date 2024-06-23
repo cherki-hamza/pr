@@ -16,6 +16,7 @@ use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\TaskController;
+use App\Models\Message;
 use App\Models\Site;
 use App\Models\User;
 use App\Notifications\EmailNotification;
@@ -292,5 +293,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::delete('publisher/site/{site_id}/project/{project_id}/remove_blacklist_publishers',[SiteController::class,'remove_blacklist_publishers'])->name('remove_blacklist_publishers');
 
 
+
+    Route::get('chat/messages',[DashboardController::class,'chat_messages'])->name('chat');
+    Route::get('chat/messages/delete_chat', function(){
+        Message::truncate();
+        return redirect()->back()->with('success' ,'Messages Deleted with success');
+    })->name('delete_chat');
 
 });
