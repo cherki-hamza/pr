@@ -87,9 +87,9 @@
                                                             target="_blank">{{ $task->task_target_url }}</a></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="bg-primary text-white">Post Placement URL</td>
+                                                    <td class="bg-primary text-white">Post Placement URL</td>  {{ ( empty($task->task_post_placement_url)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_post_placement_url }}
                                                     <td class="table-success"><a href="#" target="_blank"
-                                                            class="font-weight-bold">{{ $post->post_title ?? '' }}</a>
+                                                            class="font-weight-bold">{{ empty($post->post_title) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $post->post_title  }}</a>
                                                     </td>
                                                 </tr>
 
@@ -177,14 +177,14 @@
                                                         Send The Post To Client for Get The Approval
                                                     </button>
                                                  @elseif($post->status == 4)
-                                                    <button style="font-size: 18px" type="submit" name="action" value="client_approval"  class="btn btn-info mx-5">
-                                                        <i class="fas fa-spinner mr-2"></i>
-                                                        Improve the post and update it
+                                                    <button style="font-size: 18px" type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
+                                                        <i class="fas fa-check mr-2"></i>
+                                                        Improve the post and update it &  Send The Post To Client for Get The Approval
                                                     </button>
-                                                    <button style="font-size: 18px"  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
+                                                   {{--  <button style="font-size: 18px"  type="submit" name="action" value="client_approval"  class="btn btn-warning mx-5">
                                                         <i class="fas fa-check mr-2"></i>
                                                         Send The Post To Client for Get The Approval
-                                                    </button>
+                                                    </button> --}}
                                                     @elseif($post->status == 6)
 
                                                     <p aria-readonly="true" class="btn btn-danger btn-block my-3">The Client Reject the Post</p>
@@ -208,7 +208,7 @@
                                                         Publisher Reject The Post & Send Email To client : {{ $task->user->name }}
                                                    </button>
                                                     @else
-                                                           <span class="btn btn-success">This Task Already Done</span>
+                                                           <span class="btn btn-success">This Task Is Completed</span>
 
                                                            {{-- <button style="font-size: 18px" type="submit" name="action" value="client_approval"  class="btn btn-info mx-5">
                                                             <i class="fas fa-spinner mr-2"></i>

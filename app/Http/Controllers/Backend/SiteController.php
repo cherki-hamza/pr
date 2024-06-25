@@ -148,7 +148,7 @@ class SiteController extends Controller
 
         if($request->search_url){ // filter by url
 
-            $sites = $query->where('site_url', 'like', '%' . request('search_url') . '%')->paginate(12);
+            $sites = $query->where('site_url', 'like', '%' . str_replace(array('http://', 'https://'), '', request('search_url')) . '%')->paginate(12); //
             return view('admin.publishers.publishers',compact('project_id','sites','sites_count','categories'));
 
         }elseif($request->categories){ // filter by category

@@ -39,14 +39,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                @if (!empty($post))
-                                <form action="{{ route('update_post', ['project_id' => request()->project_id , 'task_id' => request()->task_id , 'post_id' => $post->id ]) }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('handel_cp_task', ['task_id' => request()->task_id ]) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
-                                @else
-                                <form action="{{ route('store_post', ['project_id' => request()->project_id , 'task_id' => request()->task_id ]) }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                @endif
-
 
                                     <div class="table-responsive">
                                         <table class="table table-sm table-bordered table-hover table-striped">
@@ -88,8 +82,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="bg-primary text-white">Post Placement URL</td>
-                                                    <td class="table-success"><a href="#" target="_blank"
-                                                            class="font-weight-bold">{{ $post->post_title ?? '' }}</a>
+                                                    <td class="table-success"><a href="{{ ( empty($task->task_post_placement_url)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_post_placement_url }}" target="_blank"
+                                                            class="font-weight-bold">{{ ( empty($task->task_post_placement_url)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_post_placement_url }}</a>
                                                     </td>
                                                 </tr>
 
@@ -129,7 +123,7 @@
 
                                     <div class="my-2 px-5">
                                         <label class="text-primary" for="post_placement_url">Post Placement URL:</label>
-                                        <input  style="color: red;" value="{{ ( !empty($task->site->site_url)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_target_url }}" type="text" class="form-control" name="post_placement_url" id="post_placement_url">
+                                        <input  style="color: red;" value="{{ ( empty($task->task_post_placement_url)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_post_placement_url }}" type="text" class="form-control" name="post_placement_url" id="post_placement_url">
                                     </div>
 
                                     <div class="my-2 px-5">
@@ -144,23 +138,33 @@
 
                             <div class="text-center">
                                @if ($task->status == 6)
-                                    <span class="btn btn-danger">This Task is Rejected</span>
+                                    <span class="alert alert-danger">This Task is Rejected</span>
 
                                @elseif($task->status == 5)
-                                 <span class="btn btn-success">This Task is AlReady Approved</span>
+                                 <span class="alert alert-success">This Task is Completed</span>
                                @elseif($task->status == 0)
                                  <button style="font-size: 18px"  type="submit" name="action" value="in_progress"  class="btn btn-success mx-5">
                                     <i class="fas fa-check mr-2"></i>
-                                    Start The Task for the client  : {{ $task->user->name }} & Send Email Message With Status :In Progress
+                                    Approve The Task for the client  : {{ $task->user->name }} & Send Email Message With Status :In Progress
                                 </button>
-                               @else
-                               <a href="{{route('super_admin_approve' , ['task_id' => $task->id ])}}"  class="btn btn-info  mx-5">
-                                <i class="fas fa-save mr-2"></i>Approve
-                                </a>
 
-                                <a href="{{route('super_admin_reject' , ['task_id' => $task->id ])}}" class="btn btn-danger  mx-5">
-                                    <i class="fas fa-ban mr-2"></i>Reject
-                                </a>
+                                {{-- <a href="{{route('super_admin_approve' , ['task_id' => $task->id ])}}"  class="btn btn-info  mx-5">
+                                    <i class="fas fa-save mr-2"></i>Approve
+                                 </a> --}}
+
+                                    <a href="{{route('super_admin_reject' , ['task_id' => $task->id ])}}" class="btn btn-danger  mx-5">
+                                        <i class="fas fa-ban mr-2"></i>Reject & Send Reject Email
+                                    </a>
+
+                                @elseif($task->status == 1)
+
+                                <button style="font-size: 18px"  type="submit" name="action" value="task_completed"  class="btn btn-success mx-5">
+                                    <i class="fas fa-paper-plane mr-2"></i>
+                                      Complete The Task & Send Email
+                                </button>
+
+                               @else
+
                                @endif
 
                                 <input type="hidden" name="site_id" value="{{$task->site->id}}">

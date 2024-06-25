@@ -96,4 +96,13 @@ class Site extends Model
       }
 
 
+       // site count by p_status = 1
+       public function tasks_count_by_site($site_id){
+        return $this->hasMany(Task::class)
+                   ->where('admin_status' , 1)
+                   ->where('pr_site_id' , $site_id)
+                   ->count();
+    }
+
+
 }

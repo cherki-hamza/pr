@@ -22,7 +22,7 @@
                             @if ($task->status == 6)
                              <span style="font-size: 25px;" class="alert alert-danger">This Task is Rejected</span>
                             @elseif($task->status == 5)
-                                <span style="font-size: 19px;" class="alert alert-success">This Task Completed And AlReady Approved From Publisher</span>
+                                <span style="font-size: 19px;" class="alert alert-success">This Task Is Completed</span>
                             @elseif($task->status == 9)
                                  <span style="font-size: 25px;" class="alert alert-warning">Wait For The Publisher : <span class="text-danger">{{ $task->site->site_name }}</span> Approve Your Post</span>
                             @elseif($task->status == 1)

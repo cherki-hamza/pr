@@ -21,7 +21,7 @@
                             @if ($task->status == 6)
                              <span style="font-size: 25px;" class="alert alert-danger">This Task is Rejected</span>
                             @elseif($task->status == 5)
-                                <span style="font-size: 19px;" class="alert alert-success">This Task Completed And AlReady Approved From Publisher</span>
+                                <span style="font-size: 19px;" class="alert alert-success">This Task Is Completed</span>
                             @elseif($task->status == 9)
                                  <span style="font-size: 20px;" class="alert alert-warning">Wait For The Publisher : <span class="text-danger">https://{{ $task->site->site_url }}</span> Approve Your Post</span>
                             @elseif($task->status == 1)
@@ -206,7 +206,7 @@
                             @if ($task->status == 6)
                              <span class="btn btn-danger">This Task is Rejected</span>
                                 @elseif($task->status == 5)
-                                    <span class="btn btn-success">This Task is AlReady Approved</span>
+                                    <span class="btn btn-success">This Task is Completed</span>
                                 @elseif($task->status == 0)
                                 <span class="btn btn-warning">Your Task still not Started</span>
                                 @elseif($task->status == 4)

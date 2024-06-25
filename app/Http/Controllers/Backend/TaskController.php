@@ -59,7 +59,7 @@ class TaskController extends Controller
            if($task->task_type == 'c_c_p'){
                 return view('admin.task.super_admin_open_task_ccp' , compact('task','post'));
            }else{
-                return view('admin.task.super_admin_open_task_cp' , compact('task','post'));
+                return view('admin.task.super_admin_open_task_cp' , compact('task'));
            }
         }
 
@@ -354,14 +354,53 @@ class TaskController extends Controller
         return view('admin.task.super_admin_all_new_tasks' , compact('tasks'));
       }
 
-      /* // method for the publisher for approve
-      public function publisher_approve(){
 
-      }
 
-      // method for the publisher for reject
-      public function publisher_reject(){
+    // method for handel cp task
+    public function handel_cp_task(Request $request){
+         // handle progress
+        if($request->input('action') == 'in_progress'){
+            $task = Task::where('id',$request->task_id)->first();
 
-      } */
+             $task->update([
+                 'status'      => Task::IN_PROGRESS,
+                 'task_status' => Task::IN_PROGRESS,
+                 'task_post_placement_url' => $request->post_placement_url,
+             ]);
+
+             $task->order->update([
+                 'status'  => Task::IN_PROGRESS,
+              ]);
+
+
+         Mail::to($task->user->email)->send(new InProgressTaskEmail($task));
+
+         return redirect()->back()->with('warning' , 'The Task Is Approved &  In Progress');
+
+        }
+
+        // handle progress
+        if($request->input('action') == 'task_completed'){
+            $task = Task::where('id',$request->task_id)->first();
+
+             $task->update([
+                 'status'      => Task::COMPLETED,
+                 'task_status' => Task::COMPLETED,
+                 'task_post_placement_url' => $request->post_placement_url,
+             ]);
+
+             $task->order->update([
+                 'status'  => Task::COMPLETED,
+              ]);
+
+
+         Mail::to($task->user->email)->send(new CompletedTaskEmail($task));
+
+         return redirect()->back()->with('succes' , 'The Task Is Completed & Send Email to Client');
+
+        }
+
+
+    }
 
 }

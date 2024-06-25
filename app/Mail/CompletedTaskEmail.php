@@ -45,13 +45,16 @@ class CompletedTaskEmail extends Mailable
         return new Content(
             view: 'mail.task_completed_mail',
             with: [
+                'id' => $this->task->id,
+                'type' => $this->task->task_type,
                 'name' => $this->task->user->name,
                 'email' => $this->task->user->email,
                 'task_type' => ($this->task->task_type == 'c_p')? 'Content Placment' : 'Content Creation And Placment',
                 'site'  => $this->task->site->site_url,
                 'price' => $this->task->order->price,
                 'project_id' => $this->task->project_id,
-                'date'   => $this->task->site->site_time
+                'date'   => $this->task->site->site_time,
+                'task_url' =>  $this->task->task_post_placement_url // ($this->task->task_type == 'c_p')?
             ],
         );
     }

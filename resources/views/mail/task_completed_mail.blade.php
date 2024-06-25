@@ -377,14 +377,15 @@
                           Your buy a Post on {{$site}} , <br><br> Task Type :  {{$task_type}} , <br><br> Task Price is : ${{$price}}
                         </p>
                         <br>
-                        <p>
-                            Estimated time to deliver : {{$date}}
-                        </p>
-                        <br>
 
                         <p>
                             Task Status :   Is Completed , And Its Approved from Publisher And Posted .
                         </p>
+                        <br>
+                        <p>
+                            Task Placement Url :   <a href="{{ $task_url }}" target="_blank" rel="noopener noreferrer">{{ $task_url }}</a> .
+                        </p>
+
                         <table
                           role="presentation"
                           border="0"

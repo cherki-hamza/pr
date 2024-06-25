@@ -69,6 +69,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('task/{task_id}/super_admin_approve',[TaskController::class,'super_admin_approve'])->name('super_admin_approve');
     // super admin reject the task
     Route::get('task/{task_id}/super_admin_reject',[TaskController::class,'super_admin_reject'])->name('super_admin_reject');
+
+    // super admin handle cp task
+    Route::any('platform/task/{task_id}/handel_cp_task' , [TaskController::class,'handel_cp_task'])->name('handel_cp_task');
     // ********************************************************************************************************************************************************************************
 
     // route for get all contacts
