@@ -256,6 +256,16 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('project/{project_id?}/my_orders/rejected' , [TaskController::class,'rejected'])->name('rejected');
 
 
+    // single task for mail
+    Route::get('task/{task_id}/task_mail_not_started' , [TaskController::class,'task_mail_not_started'])->name('task_mail_not_started');
+    Route::get('task/{task_id}/task_mail_in_progress' , [TaskController::class,'task_mail_in_progress'])->name('task_mail_in_progress');
+    Route::get('task/{task_id}/task_mail_pending_approval' , [TaskController::class,'task_mail_pending_approval'])->name('task_mail_pending_approval');
+    Route::get('task/{task_id}/task_mail_improvement' , [TaskController::class,'task_mail_improvement'])->name('task_mail_improvement');
+    //Route::get('task/{task_id}/task_mail_pr_publisher' , [TaskController::class,'task_mail_pr_publisher'])->name('task_mail_pr_publisher');
+    Route::get('task/{task_id}/task_mail_completed' , [TaskController::class,'task_mail_completed'])->name('task_mail_completed');
+    Route::get('task/{task_id}/task_mail_rejected' , [TaskController::class,'task_mail_rejected'])->name('task_mail_rejected');
+
+
     // Routes for show the  tasks
     Route::get('project/{project_id?}/task/{task_id?}/show_task' , [OrderController::class,'show_task'])->name('show_task');
 

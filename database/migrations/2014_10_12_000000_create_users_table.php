@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('google_id')->nullable();
             $table->enum('role',['super-admin','manager','client','publisher'])->default('client');
             $table->enum('type',['user','publisher'])->default('user');
+            $table->string('paypal_email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

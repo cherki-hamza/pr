@@ -404,7 +404,7 @@
                                   <tbody>
                                     <tr>
                                       <td>
-                                        <a href="{{ route('not_started', ['project_id'=> $project_id]) }}" target="_blank"
+                                        <a href="{{ route('task_mail_in_progress', ['project_id'=> $project_id]) }}" target="_blank"
                                           >Go To Your Task</a
                                         >
                                       </td>

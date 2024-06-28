@@ -95,6 +95,10 @@ class TaskController extends Controller
             ]);
             $post->update(['status' => Task::APPROVAL]);
 
+            // sen mail
+            Mail::to($task->user->email)->send(new CompletedTaskEmail($task));
+
+
             return redirect()->back()->with('info' , 'The post is Approved');
 
         }
@@ -107,6 +111,9 @@ class TaskController extends Controller
 
             $task->update(['status' => Task::REJECTED]);
             $post->update(['status' => Task::REJECTED]);
+
+            // send rejected mail
+            Mail::to($task->user->email)->send(new RejectedTaskEmail($task));
 
             return redirect()->back()->with('info' , 'The post is Rejected');
 
@@ -401,6 +408,61 @@ class TaskController extends Controller
         }
 
 
+    }
+
+
+    // task_mail_not_started
+    public function task_mail_not_started(Request $request){
+        $title = 'Task Not Started';
+
+        $task = Task::where('user_id',auth()->id())->where('id',$request->task_id)->first();
+
+        return view('admin.mail_task.mail_not_started',compact('title','task'));
+    }
+
+    // task_mail_in_progress
+    public function task_mail_in_progress(Request $request){
+        $title = 'Task In Pprogress';
+
+        $task = Task::where('user_id',auth()->id())->where('id',$request->task_id)->first();
+
+        return view('admin.mail_task.mail_in_progress',compact('title','task'));
+    }
+
+    // task_mail_pending_approval
+    public function task_mail_pending_approval(Request $request){
+        $title = 'Task Need Approval';
+
+        $task = Task::where('user_id',auth()->id())->where('id',$request->task_id)->first();
+
+        return view('admin.mail_task.mail_pending_approval',compact('title','task'));
+    }
+
+    // task_mail_improvement
+    public function task_mail_improvement(Request $request){
+        $title = 'Task Need Improvement';
+
+        $task = Task::where('user_id',auth()->id())->where('id',$request->task_id)->first();
+
+        return view('admin.mail_task.mail_improvement',compact('title','task'));
+    }
+
+    // task_mail_completed
+    public function task_mail_completed(Request $request){
+        $title = 'Task Completed';
+
+        $task = Task::where('user_id',auth()->id())->where('id',$request->task_id)->first();
+
+        return view('admin.mail_task.mail_completed',compact('title','task'));
+    }
+
+    // task_mail_rejected
+    public function task_mail_rejected(Request $request){
+        $title = 'Task Rejected';
+
+        $task = Task::where('user_id',auth()->id())->where('id',$request->task_id)->first();
+
+        return view('admin.mail_task.mail_rejected',compact('title','task'));
     }
 
 }

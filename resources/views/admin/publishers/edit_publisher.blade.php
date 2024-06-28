@@ -112,17 +112,21 @@
                                         {{--  --}}
                                      <div class="form-group my-5">
                                         <div class="row">
-                                            <div class="col-4 col-md-3">
+                                            <div class="col-4 col-md-2">
                                                 <label>Site Spam Score</label>
                                                 <input type="number" class="form-control" value="{{ $site->spam_score  ?? '' }}" name="spam_score">
                                             </div>
-                                            <div class="col-4 col-md-3">
+                                            <div class="col-4 col-md-2">
                                                 <label>Site Turnaround Time</label>
-                                                <input type="text" class="form-control" value="{{ $site->site_time ?? '' }}" name="site_tat" placeholder="Enter Site Turnaround Time">
+                                                <input type="text" class="form-control" value="{{ $site->site_time ?? '' }}" name="site_tat">
+                                            </div>
+                                            <div class="col-4 col-md-2">
+                                                <label>Word Limite</label>
+                                                <input type="text" class="form-control" name="word_limite" value="{{ $site->word_limite ?? '' }}">
                                             </div>
                                             <div class="col-4 col-md-3">
                                                 <label>Site Country/Region</label>
-                                                <input type="text" class="form-control" value="{{ $site->site_region_location ?? '' }}" name="site_country" placeholder="Enter Site Country/Region">
+                                                <input type="text" class="form-control" value="{{ $site->site_region_location ?? '' }}" name="site_country">
                                             </div>
                                             <div class="col-4 col-md-3">
                                                 <label>Site Price</label>

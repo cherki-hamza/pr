@@ -45,6 +45,7 @@ class InProgressTaskEmail extends Mailable
         return new Content(
             view: 'mail.task_in_progress_mail',
             with: [
+                'task_id' => $this->task->id,
                 'name' => $this->task->user->name,
                 'email' => $this->task->user->email,
                 'task_type' => ($this->task->task_type == 'c_p')? 'Content Placment' : 'Content Creation And Placment',

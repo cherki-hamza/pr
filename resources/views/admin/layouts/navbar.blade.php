@@ -14,18 +14,29 @@
 
         <li class="nav-item">
             <a href="{{ route('balance') }}">
-                 <span class="btn btn-warning">
+
 
 
                     @if (auth()->user()->role == 'super-admin')
+                    <span class="btn btn-warning">
                         <span style="font-size: 20px;">PR Content Balance: ${{ \App\Models\Payment::sum('amount') }}
                         </span>
-                    @else
-                        <span style="font-size: 20px;">Balance: ${{ $balance ?? 0 }} </span>
-                        {{--  <span style="font-size: 20px;">Balance: ${{ \App\Models\Payment::where('user_id',auth()->user()->id)->sum('amount') }} </span> --}}
-                    @endif
+                    </span>
 
-                </span>
+                    <span class="btn btn-info mx-3">
+                        <span style="font-size: 20px;">Balance Completed Tasks: ${{ \App\Models\Task::where('status',5)->sum('task_price') }}
+                        </span>
+                    </span>
+
+                    @else
+                    <span class="btn btn-warning">
+                        <span style="font-size: 20px;">Balance: ${{ $balance ?? 0 }} </span>
+                    </span>
+                        {{--  <span style="font-size: 20px;">Balance: ${{ \App\Models\Payment::where('user_id',auth()->user()->id)->sum('amount') }} </span> --}}
+
+                        @endif
+
+
             </a>
         </li>
 

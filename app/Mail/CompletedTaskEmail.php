@@ -45,6 +45,7 @@ class CompletedTaskEmail extends Mailable
         return new Content(
             view: 'mail.task_completed_mail',
             with: [
+                'task_id' => $this->task->id,
                 'id' => $this->task->id,
                 'type' => $this->task->task_type,
                 'name' => $this->task->user->name,

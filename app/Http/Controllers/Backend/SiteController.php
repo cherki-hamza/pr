@@ -346,6 +346,8 @@ class SiteController extends Controller
              'site_sposored' => $request->get('site_sponsored'),
              'site_indexed' => $request->get('site_indexed'),
 
+             'word_limite'  => $request->get('word_limite'),
+
              'site_dofollow' => $request->get('site_dofollow'),
              'spam_score' => $request->get('spam_score'),
              'site_time' => $request->get('site_tat'),
@@ -398,6 +400,8 @@ class SiteController extends Controller
             'site_domain_rating' => $request->get('site_dr'),
             'site_sposored' => $request->get('site_sponsored'),
             'site_indexed' => $request->get('site_indexed'),
+
+            'word_limite'  => $request->get('word_limite'),
 
             'site_dofollow' => $request->get('site_dofollow'),
             'spam_score' => $request->get('spam_score'),
