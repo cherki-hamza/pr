@@ -3,8 +3,8 @@
     <button id="chatToggleBtn" class="btn btn-primary" style="position: fixed; bottom: 80px; right: 40px; z-index: 1051;">Chat</button>
 
 <!-- Chat Container -->
-<div  wire:poll>
 
+<div  wire:poll>
 <div id="chatContainer">
     <div class="chat-header">
         Chat
@@ -25,10 +25,12 @@
                 </span>
                <hr style="border: 1px solid rgb(130, 121, 121)">
             </div>
+             <!-- Reciever Message-->
 
 
         @else
 
+           <!-- Sender Message-->
             <div class="message left">
                 <img style="width: 45px;border-radius: 100%;" src="{{ $message->user->GetPicture() }}" alt="anther">
                 <div class="message-content">
@@ -38,6 +40,7 @@
                     {{ $message->created_at->diffForHumans(null, false, false) }}
                 </span>
             </div>
+            <!-- Sender Message-->
 
         @endif
 

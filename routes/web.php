@@ -26,6 +26,7 @@ use PhpParser\Node\Stmt\TryCatch;
 use SheetDB\SheetDB;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
 
@@ -46,6 +47,27 @@ Route::get('/', function () {
     $sites = Site::all();
     return view('site' , compact('sites'));
 })->name('index');
+
+
+Route::get('/dev', function () {
+
+    return view('dev');
+
+})->name('dev');
+
+
+
+Route::get('/db_dev', function () {
+    $dbName = 'test_publisher';
+    try {
+        DB::statement("CREATE DATABASE $dbName");
+
+        return response()->json(['message' => 'Database created successfully.'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+
+})->name('db_dev');
 
 
 
@@ -175,7 +197,7 @@ Route::get('publishers/publisher_data' , [SiteController::class , 'publisher_dat
 
 })->name('dev'); */
 
-Route::get('/dev' , [SiteController::class , 'dev'])->name('dev');
+/* Route::get('/dev' , [SiteController::class , 'dev'])->name('dev'); */
 
 Auth::routes([
     /* 'register'  => false,

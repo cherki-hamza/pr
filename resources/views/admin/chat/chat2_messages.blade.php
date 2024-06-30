@@ -14,7 +14,7 @@
         height: 100%;
         width: 350px;
         background: #f8f9fa;
-        border-left: 1px solid #dee2e6;
+        border-left: 2px solid #6496c8;
         transition: right 0.3s;
         z-index: 1050; /* Ensure it is above other elements */
     }
