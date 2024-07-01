@@ -187,17 +187,18 @@
                               </td>
 
                                    <td class="row">
-                                      <div class="btn-group btn-group-sm btn-block">
+                                      <div class="btn-group btn-group-sm btn-block text-center mt-3">
                                         @if(!empty($site->site_price))
                                           <span  style="background-color: #2c7be5;color:white" class="btn">{{ ($site->site_price) ? "$$site->site_price" : '$0'}}</span>
                                         @else
-                                          <span  class="btn btn-danger">The Price Not Yet</span>
+                                        <a href="#" style="width: 50%;" class="btn btn-success"><img width="20px" height="20px" src="https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Content-Creation-web-and-software-development-smashingstocks-flat-smashing-stocks-2.png"/> ${{ $site->site_c_p_price }} </a>
+                                        <a href="#" style="width: 50%;" class="btn btn-primary"><img width="20px" height="20px" src="https://img.icons8.com/stickers/100/content.png" alt="content"/> ${{ $site->site_c_c_p_price }}</a>
                                         @endif
                                         {{-- <a href="{{route('order_index', ['project_id'=> request()->project_id && 1 , 'site_id' => $site->id ])}}" style="width: 100px;"
                                              class="btn btn-primary">$ {{$site->site_price}}</a> Buy Again --}}
                                       </div>
 
-                                      <div class="btn-group">
+                                      {{-- <div class="btn-group">
                                         <div class="d-flex justify-content-between">
 
                                             <span target="_blank" class="btn btn-outline-google-plus btn-block btn-sm mt-2" role="button" title="View Details">
@@ -205,7 +206,7 @@
                                             </span>
 
                                         </div>
-                                      </div>
+                                      </div> --}}
                                     </td>
 
                                     </tr>

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('publisher_payment_no_vat')->nullable();
             $table->integer('publisher_payment_paypal_vat')->nullable();
             $table->integer('publisher_payment')->nullable();
-            $table->json('tasks_ids')->nullable();
+            $table->integer('task_id')->nullable();
             $table->integer('status')->default(0);
             $table->timestamps();
         });

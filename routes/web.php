@@ -57,17 +57,26 @@ Route::get('/dev', function () {
 
 
 
-Route::get('/db_dev', function () {
+/* Route::get('/db_dev', function () {
+
     $dbName = 'test_publisher';
+
     try {
-        DB::statement("CREATE DATABASE $dbName");
+        $dbHost = env('DB_HOST');
+        $dbUsername = env('DB_USERNAME');
+        $dbPassword = env('DB_PASSWORD');
+
+        $pdo = new \PDO("mysql:host=$dbHost", $dbUsername, $dbPassword);
+        $pdo->exec("CREATE DATABASE `$dbName`");
 
         return response()->json(['message' => 'Database created successfully.'], 200);
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
 
-})->name('db_dev');
+
+
+})->name('db_dev'); */
 
 
 
