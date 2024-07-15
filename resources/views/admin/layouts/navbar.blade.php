@@ -15,9 +15,38 @@
         <li class="nav-item">
             <a href="{{ route('balance') }}">
 
+                 {{-- check the user if login  --}}
+                 @if (auth()->check())
 
 
                     @if (auth()->user()->role == 'super-admin')
+
+                   {{--  <audio allow="autoplay" controls loop="loop" id="myAudio"  src="{{ asset('public/assets/rington/livechat.mp3') }}">
+                    </audio> --}}
+
+                  {{--   <audio autoplay id="myAudio" controls loop="loop"  autoplay src="{{ asset('public/assets/rington/livechat.mp3') }}">
+                    </audio> --}}
+
+                    {{-- <audio id="myAudio" src="{{ asset('public/assets/rington/livechat.mp3') }}" preload="auto" style="display: none;"></audio> --}}
+
+                   {{--  <audio id="myAudio" controls  preload="auto" controls autoplay loop>
+                        <source src="{{ asset('public/assets/rington/livechat.mp3') }}" type="audio/mpeg">
+                    </audio> --}}
+
+                   {{--  <audio id="myAudio" class="audio" controls muted autoplay>
+                        <source src="{{ asset('public/assets/rington/livechat.mp3') }}" type="audio/mpeg" />
+                      </audio> --}}
+
+                    {{-- <span class="btn btn-warning">
+                        <span style="font-size: 20px;">PR Content Balance: ${{ \App\Models\Payment::sum('amount') }}
+                        </span>
+                    </span>
+
+                    <span class="btn btn-info mx-3">
+                        <span style="font-size: 20px;">Balance Completed Tasks: ${{ \App\Models\Task::where('status',5)->sum('task_price') }}
+                        </span>
+                    </span> --}}
+
                     <span class="btn btn-warning">
                         <span style="font-size: 20px;">PR Content Balance: ${{ \App\Models\Payment::sum('amount') }}
                         </span>
@@ -34,24 +63,290 @@
                     </span>
                         {{--  <span style="font-size: 20px;">Balance: ${{ \App\Models\Payment::where('user_id',auth()->user()->id)->sum('amount') }} </span> --}}
 
-                        @endif
+                    @endif
+
+                    @endif
 
 
             </a>
         </li>
 
-        {{-- <li class="nav-item ml-3 mr-5">
+
+        {{--  start notification --}}
+        {{--  <li class="nav-item ml-3 mr-5">
            <svg style="width: 25px" style="width: 30px;color:rgba(255, 255, 255, 0.7)" class="svg-inline--fa fa-bell fa-w-14 fs-2 mb-1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bell" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
                 <path fill="currentColor" d="M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z"></path>
             </svg>
             <span class="badge badge-danger" style="position:absolute;color: rgba(255, 255, 255, 0.7)">100</span>
-         </li> --}}
+         </li>
 
         <li class="nav-item">
             <a class="nav-link" id="btntheme" role="button">
                 <i id="icontheme" class="fas fa-sun"></i>
             </a>
-        </li>
+        </li> --}}
+         {{--  end notification --}}
+
+
+         @if (auth()->user()->role == 'super-admin')
+         {{-- notification --}}
+
+<style>
+a{
+  text-decoration: none;
+  color: black;
+}
+
+a:visited{
+  color: black;
+}
+
+.box::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+    border-radius: 5px
+}
+
+.box::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #F5F5F5;
+    border-radius: 5px
+}
+
+.box::-webkit-scrollbar-thumb
+{
+	background-color: black;
+	border: 2px solid black;
+    border-radius: 5px
+}
+
+
+.icons{
+  display: inline;
+  float: right
+}
+
+.notification-container {
+            position: relative;
+            display: inline-block;
+        }
+
+.notification{
+  padding-top: 10px;
+  position: relative;
+  display: inline-block;
+}
+
+.number{
+  height: 28px;
+  width:  26px;
+  background-color: #d63031;
+  border-radius: 20px;
+  color: white;
+  text-align: center;
+  position: absolute;
+  top: 0px;
+  left: 66px;
+  padding: 0px;
+  border-style: solid;
+  border-width: 2px;
+}
+
+.number:empty {
+   display: none;
+}
+
+.notBtn{
+  transition: 0.5s;
+  cursor: pointer
+}
+
+.fas{
+  /* font-size: 25pt;padding-bottom: 10px;margin-right: 40px;margin-left: 40px; */
+}
+
+.box{
+  width: 400px;
+  height: 0px;
+  border-radius: 10px;
+  transition: 0.5s;
+  position: absolute;
+  overflow-y: scroll;
+  padding: 0px;
+  left: -305px;
+  margin-top: 5px;
+  background-color: #F4F4F4;
+  -webkit-box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.1);
+  box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.1);
+  cursor: context-menu;
+}
+
+.fas:hover {
+  color: #d63031;
+}
+
+.notBtn:hover > .box{
+  height: auto
+}
+
+.content{
+  padding: 20px;
+  color: black;
+  vertical-align: middle;
+  text-align: left;
+}
+
+.gry{
+  background-color: #F4F4F4;
+}
+
+.top{
+  color: black;
+  padding: 10px
+}
+
+.display{
+  position: relative;
+  height: 240px; /* 240px */
+  display: block;
+}
+
+.cont{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: auto;
+  background-color: #F4F4F4;
+}
+
+.cont:empty{
+  display: none;
+}
+
+.stick{
+  text-align: center;
+  display: block;
+  font-size: 50pt;
+  padding-top: 70px;
+  padding-left: 80px
+}
+
+.stick:hover{
+  color: black;
+}
+
+.cent{
+  text-align: center;
+  display: block;
+}
+
+.sec{
+  padding: 25px 10px;
+  background-color: #F4F4F4;
+  transition: 0.5s;
+}
+
+.profCont{
+  padding-left: 15px;
+}
+
+.profile{
+  -webkit-clip-path: circle(50% at 50% 50%);
+  clip-path: circle(50% at 50% 50%);
+  width: 75px;
+  float: left;
+}
+
+.txt{
+  vertical-align: top;
+  font-size: 1.25rem;
+  padding: 5px 10px 0px 69px;
+}
+
+.sub{
+  font-size: 1rem;
+  color: grey;
+}
+
+.new{
+  border-style: none none solid none;
+  border-color: red;
+}
+
+.sec:hover{
+  background-color: #BFBFBF;
+}
+
+
+
+         </style>
+         {{-- notification --}}
+        <div class="task_notifications">
+            <div class = "icons">
+            <div class = "notification">
+              <a href = "#">
+              <div class = "notBtn" href = "#">
+                <!--Number supports double digets and automaticly hides itself when there is nothing between divs -->
+                <div class ="number">
+                   <span id="number"> {{ $notifications_count }} </span>
+                   {{-- <input onchange="handleAudioChange(event)" type="hidden" value="{{ $notifications_count }}" id="input_notification">
+                   <span class="hpac_message"> --}}
+
+                   </span>
+                </div>
+                <i style="font-size: 25pt;padding-bottom: 10px;margin-right: 40px;margin-left: 40px;" class="fas fa-bell"></i>
+                  <div style="margin-top: -2px;" class = "box">
+                    <div style="height:{{ (!empty($notifications) && count($notifications) > 0) ? '' : '120px'  }}" class = "display">
+                     {{--  <div class = "nothing">
+                        <i class="fas fa-child stick"></i>
+                        <div class = "cent">Looks Like your all caught up!</div>
+                      </div> --}}
+
+                      @if(!empty($notifications) && count($notifications) > 0)
+                      <div class = "cont">
+                        @foreach ($notifications as $notification)
+                            <div class = "sec new">
+                        @if( $notification->task_id == null)
+                            <a href = "{{ route('balance',['id'=>$notification->id]) }}">
+                        @else
+                        <a href="{{ route('super_admin_open_task' , ['task_id' => $notification->task_id , 'user_id' => $notification->task->user->id , "project_id" => $notification->task->project_id]) }}">
+                        @endif
+                            <div class = "profCont">
+                            <img style="width: 45px;height: 45px;border-radius: 100%" class = "profile" src = "{{ $notification->user->GetPicture() }}">
+                                </div>
+                            @if( $notification->task_id == null)
+                               <div class = "txt">{{ $notification->user->name }} Make Payment with amount : ${{ $notification->payement['amount'] ?? '' }}</div>
+                               <div class = "txt sub">{{ $notification->created_at->format('m/d/Y H:i') }} - {{ $notification->created_at->diffForHumans() }}</div>
+
+                            @else
+                               <div class = "txt">{{ $notification->user->name }} Create New Task , Task Type : {{ $notification->task->task_type() }} , Att Publisher : {{  $notification->task->site->site_url  }}</div>
+                               <div class = "txt sub">{{ $notification->created_at->format('m/d/Y H:i') }} - {{ $notification->created_at->diffForHumans() }}</div>
+                            @endif
+
+                            </a>
+                             </div>
+                        @endforeach
+                      </div>
+                       @else
+                        <div class = "cont text-center mt-5" id='notification_panel'>
+                          <span id="alert_not" class="alert no_notification alert-danger">There is No Notification</span>
+                        </div>
+
+                       @endif
+
+
+                    </div>
+                 </div>
+              </div>
+                </a>
+            </div>
+            </div>
+        </div>
+          {{-- notification --}}
+          @endif
 
 
 
@@ -64,16 +359,20 @@
                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <div class="avatar avatar-xl">
                     <img style="width: 35px" class="rounded-circle shadow border-primary mr-3"
-                        src="{{ auth()->user()->GetPicture() }}"
+                    @if (auth()->check())
+                        src="{{ (!empty(\App\Helpers\SettingHelper::getValue('logo'))) ? url('').'/public'.(\App\Helpers\SettingHelper::getValue('logo')) : Auth::user()->GetPicture()  }}"
                         alt="{{ auth()->user()->name }}">
+                    @endif
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-right my-4 py-0" aria-labelledby="navbarDropdownUser" style="width: 193px;left: inherit;right: 39px;">
                 <div class="bg-white rounded-soft py-2">
+                  @if (auth()->check())
                    @if (auth()->user()->role == 'super-admin')
                     <a class="dropdown-item has-icon loading-trigger" href="{{ route('application_settings') }}">
                         <i class="fa fa-cog mr-2"></i>Application Settings
                      </a>
+                     @endif
                      @endif
 
                     <a class="dropdown-item has-icon loading-trigger" href="{{ route('profiles.index') }}"><svg style="width: 25px"
@@ -87,7 +386,9 @@
                     </a>
 
                     <a class="dropdown-item has-icon loading-trigger" href="{{ route('settings') }}">
+                        @if (auth()->check())
                         <i class="fa fa-cog mr-2"></i>{{ (auth()->user()->role == 'super-admin')? 'Super-Admin' : 'User' }} Settings
+                        @endif
                      </a>
 
                     <a class="dropdown-item has-icon loading-trigger" href="{{ route('balance') }}"><svg style="width: 25px"
@@ -113,7 +414,7 @@
 
 
                     <div class="dropdown-divider"></div>
-
+                    @if (auth()->check())
                     @if (auth()->user()->role == 'super-admin')
                     <a class="dropdown-item has-icon" href="{{ route('contacts') }}">
                        <svg style="width: 25px"
@@ -124,6 +425,7 @@
                                 d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8 480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4 0 256-93.1 256-208S397.4 32 256 32zM128 272c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z">
                             </path>
                         </svg><!-- <i class="fas fa-comment-dots mr-2"></i> Font Awesome fontawesome.com -->Messages</a>
+                     @endif
                      @endif
 
 

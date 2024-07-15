@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Backend\Payment;
 use App\Http\Controllers\Controller;
 use App\Mail\PaymentToClientEmail;
 use App\Mail\PaymentToSuperAdminEmail;
+use App\Models\Notification;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Omnipay\Omnipay;
+use Pusher\Pusher;
 
 class PaypalController extends Controller
 {
@@ -65,8 +67,6 @@ class PaypalController extends Controller
 
                 $arr = $response->getData();
 
-                //return $arr;
-
                 $payment = Payment::create([
                     'user_id' => auth()->id(),
                     'payment_id' => $arr['id'],
@@ -77,6 +77,41 @@ class PaypalController extends Controller
                     'payment_status' => $arr['state'],
                     'payment_platform' => 'paypal',
 
+                ]);
+
+                // create the payment notification
+               $payment_notification =  Notification::create([
+                    'user_id'    => auth()->user()->id,
+                    'payment_id'    => $payment->id,
+                ]);
+
+                 // send push notification from client to super-admin
+                $options = array(
+                    'cluster' => 'ap2',
+                    'encrypted' => true
+                );
+                $pusher = new Pusher(
+                    env('PUSHER_APP_KEY'),
+                    env('PUSHER_APP_SECRET'),
+                    env('PUSHER_APP_ID'),
+                    $options
+                );
+
+                $data['message'] = 'success';
+                 $data['payment_notification'] = $payment_notification;
+                $data['data'] = $payment;
+
+
+
+
+                $pusher->trigger('payement_chanel', 'App\Events\PaymentNotification', [
+                    'message' => 'succes',
+                    'username' => $payment->user->name,
+                    'user_image' => $payment->user->GetPicture(),
+                    'amount' => $payment->amount,
+                    'message' => "Make Payment with amount: $".$payment->amount,
+                    'time' => $payment->created_at->format('m/d/Y H:i') . ' - ' . $payment->created_at->diffForHumans(),
+                    'url' => route('balance', ['id' => $payment->user->id]), // Adjust based on your routes
                 ]);
 
 

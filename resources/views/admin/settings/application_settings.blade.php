@@ -44,7 +44,7 @@
                                 {{-- start website settings --}}
                                 <div style="border: 1px #e83e8c solid;border-radius: 10px" class="col-md-5 mr-5 py-4">
                                     <h5 style="color: #e83e8c">Website Settings</h5>
-                                    <form action="{{ route('update_site_logo',1) }}" method="post">
+                                    <form action="{{ route('update_site_logo',1) }}" method="post" enctype="multipart/form-data">
                                         @csrf
                                     @method('PUT')
                                     <div class="form-group">
@@ -54,7 +54,7 @@
                                             </div>
                                              <div class="row">
                                                 <div class="col-md-6 pl-5">
-                                                    <img src="{{ Auth::user()->GetPicture() }}" alt="">
+                                                    <img style="width: 85px;height: 85ps;" src="{{ (!empty(\App\Helpers\SettingHelper::getValue('logo'))) ? url('').'/public'.(\App\Helpers\SettingHelper::getValue('logo')) : Auth::user()->GetPicture()  }}">
                                                 </div>
 
                                                 <div style="right: 0px;" class="col-md-6 pl-5">

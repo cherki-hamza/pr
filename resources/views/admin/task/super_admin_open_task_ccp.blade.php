@@ -155,7 +155,7 @@
                                     @if(empty($post))
                                     <button style="font-size: 18px" type="submit" name="action" value="in_progress"  class="btn btn-primary  mx-5">
                                         <i class="fas fa-save mr-2"></i>
-                                        Save The Post & is still in Progress
+                                        Start & Save The Post & is still in Progress
                                     </button>
 
                                     @else

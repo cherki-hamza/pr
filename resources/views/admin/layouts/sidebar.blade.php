@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('admin') }}" class="brand-link"> {{--  --}}
-        <img src="{{ asset('public/assets/images/logo.png') }}{{-- {{ asset(Setting::getValue('app_logo')) }} --}}" alt="PR OverTheTop"
+        <img src="{{ (!empty(\App\Helpers\SettingHelper::getValue('logo'))) ? url('').'/public'.(\App\Helpers\SettingHelper::getValue('logo')) : Auth::user()->GetPicture()  }}{{-- {{ asset(Setting::getValue('app_logo')) }} --}}" alt="PR OverTheTop"
             class="brand-image img-circle elevation-3 mr-5" style="opacity: .8">
         <span class="brand-text font-weight-light">PR</span>
     </a>
@@ -21,7 +21,8 @@
                     </a>
                 </li>
                 {{-- start navbar for super admin --}}
-                @if (auth()->user()->role == 'super-admin')
+
+                @if ( auth()->check() ? auth()->user()->role == 'super-admin' : '')
 
                     <li style="font-size: 20px" class="nav-header ml-2 text-danger">ACCESS</li>
                     <li class="nav-item">
@@ -140,7 +141,7 @@
                     {{-- end navbar for super admin --}}
 
 
-           @if(auth()->user()->role == 'client')
+           @if( auth()->check() ? auth()->user()->role == 'client' : '' )
                 {{-- start projects  --}}
                 <li class="nav-item my-3">
                     <a href="{{ route('projects.index') }}"

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendContactEmail;
 use App\Models\Contact;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -16,6 +17,7 @@ class ContactController extends Controller
 
     // method for store the contac page data and send email
     public function store(Request $request){
+
       $vaildation = $request->validate([
          'name' => 'required',
          'email' => 'required|email',
@@ -66,6 +68,9 @@ class ContactController extends Controller
 
     // show all contacts messages
     public function contacts(){
+
+       return  Notification::where('is_read',0)->with(['payement','task'])->get();
+
         $contacts = Contact::all();
 
         if (auth()->user()->role == 'super-admin'){

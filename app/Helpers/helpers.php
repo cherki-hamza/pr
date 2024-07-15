@@ -33,4 +33,10 @@ class Helper
    }
 
 
+   function removeAfterPeriod($string) {
+      $position = strpos($string, '.');
+      return $position !== false ? substr($string, 0, $position) : $string;
+   }
+
+
 }

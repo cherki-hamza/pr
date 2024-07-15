@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\TaskNotification;
 use App\Http\Controllers\Backend\BalanceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\TaskController;
 use App\Models\Message;
 use App\Models\Site;
+use App\Models\Task;
 use App\Models\User;
 use App\Notifications\EmailNotification;
 use App\Notifications\SmsNotification;
@@ -29,7 +31,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
-
+use Pusher\Pusher;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +56,83 @@ Route::get('/dev', function () {
     return view('dev');
 
 })->name('dev');
+
+
+Route::get('/service_worker', function () {
+
+    return view('admin.service_worker');
+
+})->name('service_worker');
+
+
+
+
+Route::get('/notification', function () {
+
+    return view('admin.notification');
+
+})->name('notification');
+
+
+Route::get('/hamza/pusher', function () {
+
+  return view('admin.hamza_pusher');
+
+
+})->name('pusher_test');
+
+Route::any('/hamza/pusher_dev/send', function () {
+
+    $options = array(
+        'cluster' => 'ap2',
+        'encrypted' => true
+    );
+    $pusher = new Pusher(
+        env('PUSHER_APP_KEY'),
+        env('PUSHER_APP_SECRET'),
+        env('PUSHER_APP_ID'),
+        $options
+    );
+
+
+    $pusher->trigger('task_chanel', 'App\Events\TaskNotification', 'hello hamza this is test notification from Pusher');
+
+     // Define the Artisan command
+    //$command = 'php ' . base_path('artisan') . ' queue:work --stop-when-empty > /dev/null 2>&1 &';
+
+    // Execute the command in the background
+    //exec($command);
+
+     return 'TaskNotification successfuly executed ..';
+
+
+  });
+
+Route::get('/notify', function () {
+
+    $task = Task::where('status',5)->with(['post','order'])->first();
+
+    // $user_id = $task->user_id;
+
+    $options = array(
+        'cluster' => 'ap2',
+        'encrypted' => true
+    );
+    $pusher = new Pusher(
+        env('PUSHER_APP_KEY'),
+        env('PUSHER_APP_SECRET'),
+        env('PUSHER_APP_ID'),
+        $options
+    );
+    $data['data'] = $task;
+
+
+    $pusher->trigger('my_chanel', 'App\Events\TaskNotification', $data);
+
+     return 'success';
+    //return event(new TaskNotification('test notification'));
+
+})->name('notify');
 
 
 
@@ -261,17 +340,17 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    // payements Gatways ***********************************************************************
 
     //Balance page
-    Route::get('/balance' , [BalanceController::class , 'balance'])->name('balance');
+    Route::get('/balance/{id?}' , [BalanceController::class , 'balance'])->name('balance');
     Route::get('/add_funds' , [BalanceController::class , 'add_funds'])->name('add_funds');
 
     Route::post('pay', [PaypalController::class, 'pay'])->name('paypal_pay');
-    Route::get('success/{paymentId}/{PayerID}', [PaypalController::class, 'success'])->name('success');
+    // Route::get('success/{paymentId}/{PayerID}', [PaypalController::class, 'success'])->name('success');
     Route::get('error', [PaypalController::class, 'error'])->name('error');
 
     // Paypal
     Route::post('/payment' , [PaypalController::class , 'payment'])->name('payment');
     Route::get('/cancel' , [PaypalController::class , 'cancel'])->name('cancel');
-    Route::get('/payment/success' , [PaypalController::class , 'success'])->name('success');
+   Route::get('/payment/success' , [PaypalController::class , 'success'])->name('success');
 
     // payements Gatways *************************************************************************
 

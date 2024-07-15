@@ -50,7 +50,7 @@
                                         <div class="row">
                                             <div class="col-4 col-md-4">
                                                 <label>Site Name</label>
-                                                <input type="text" class="form-control" value="{{ $site->site_name ?? '' }}" name="site_name" placeholder="Enter Site Name">
+                                                <input type="text" class="form-control" value="{{ !empty($site->site_name) ? $site->site_name : removeAfterPeriod($site->site_url) }}" name="site_name" placeholder="Enter Site Name">
                                             </div>
                                             <div class="col-4 col-md-4">
                                                 <label>Site Url</label>
@@ -124,6 +124,7 @@
                                                 <label>Word Limite</label>
                                                 <input type="text" class="form-control" name="word_limite" value="{{ $site->word_limite ?? '' }}">
                                             </div>
+                                            @if(empty($site->pr_site_id))
                                             <div class="col-4 col-md-3">
                                                 <label>Site Country/Region</label>
                                                 <input type="text" class="form-control" value="{{ $site->site_region_location ?? '' }}" name="site_country">
@@ -132,6 +133,20 @@
                                                 <label>Site Price</label>
                                                 <input type="number" class="form-control" value="{{  str_replace(',', '', $site->site_price)  ?? '' }}" name="site_price">
                                             </div>
+                                            @else
+                                            <div class="col-4 col-md-2">
+                                                <label>Site Country/Region</label>
+                                                <input type="text" class="form-control" value="{{ $site->site_region_location ?? '' }}" name="site_country">
+                                            </div>
+                                            <div class="col-4 col-md-2">
+                                                <label>Content Placment Price</label>
+                                                <input type="number" class="form-control" value="{{  str_replace(',', '', $site->site_c_p_price)  ?? '' }}" name="site_c_p_price">
+                                            </div>
+                                            <div class="col-4 col-md-2">
+                                                <label>Content Creation & Placement Price</label>
+                                                <input type="number" class="form-control" value="{{  str_replace(',', '', $site->site_c_c_p_price)  ?? '' }}" name="site_c_c_p_price">
+                                            </div>
+                                            @endif
                                         </div>
                                         {{--  --}}
 

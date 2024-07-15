@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="_token" content="{{ csrf_token() }}" />
         <title>{{ ($title) ?? ''." - "}}PR Over The Top</title>
-        <link rel="icon" href="" type="image/png" />
+        <link rel="icon" href="{{ asset('public/assets/images/favicon.png') }}" type="image/png" />
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -32,6 +32,11 @@
         <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/super-build/ckeditor.js"></script> --}}
         {{-- <script src="https://cdn.ckeditor.com/4.15.1/standard/ckeditor.js"></script> --}}
         <script src="//cdn.ckeditor.com/4.15.1/full/ckeditor.js"></script>
+        <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.1/ckeditor5.css" />
+
+        {{-- <script type="module" src="{{ URL::asset('assets/vendor/ckeditor.js') }}"></script> --}}
+
+        <script src="{{ asset('public/js/app.js') }}" defer></script>
 
 
         @yield('style')
@@ -127,6 +132,10 @@
         border-color: purple;
         }
 
+        .cke_notifications_area{
+          display: none;
+        }
+
 
 
         </style>
@@ -140,7 +149,7 @@
                 alert()->error('Pemberitahuan', implode('<br>', $errors->all()))->toToast()->toHtml();
             }
         @endphp
-        <div class="wrapper">
+        <div {{-- id="app" --}} class="wrapper">
             <!-- Preloader -->
             {{-- <div class="preloader flex-column justify-content-center align-items-center">
                 <img class="animation__shake" src="{{ asset(Setting::getValue('app_logo')) }}" alt="{{ Setting::getName('app_name') }}" height="60" width="60">
@@ -193,17 +202,139 @@
 
 
         @stack('script')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script>
+            /* $(document).ready(function(){
+               // Play the audio when the page loads
+                window.onload = function() {
+                    var audio = document.getElementById('myAudio');
+                    audio.play().catch(function(error) {
+                        console.log('Autoplay was prevented:', error);
+                    });
+                }
+            }) */
+        </script>
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
         @livewireScripts
-        <script>
 
-            function scrollDown() {
-             document.getElementById('chat').scrollTop =  document.getElementById('chat').scrollHeight
+ @if (auth()->user())
+
+
+@if (auth()->user()->role == 'super-admin')
+<script>
+
+$(document).ready(function(){
+
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+        // pusher creditial
+        var pusher = new Pusher('74b3e16fd1d7c4a266a3', {
+            cluster: 'ap2',
+            encrypted: true
+        });
+
+        // task chanel
+        let channel = pusher.subscribe('task_chanel');
+        channel.bind('App\\Events\\TaskNotification', function(data) {
+            console.log(data);
+
+            let element = document.getElementById('my_alert');
+            console.log(element);
+            let notifications_count = parseInt($('#number').text(), 10);
+            notifications_count = notifications_count + 1;
+            console.log(notifications_count);
+            $('#my_alert').css('display', 'block');
+            $('#number').text(notifications_count);
+            $('#input_notification').value = notifications_count;
+            // render notiication
+            addNotification(data, 'task');
+          });
+
+          // payment chanel
+          let payment_channel = pusher.subscribe('payement_chanel');
+          payment_channel.bind('App\\Events\\PaymentNotification', function(data) {
+            console.log(data);
+
+            let element = document.getElementById('my_alert');
+            let notifications_count = parseInt($('#number').text(), 10);
+            notifications_count = notifications_count + 1;
+            console.log(notifications_count);
+            $('#my_alert').css('display', 'block');
+            $('#number').text(notifications_count);
+            $('#input_notification').value = notifications_count;
+            // render notiication
+            addNotification(data, 'payment');
+
+            /* var notificationsContainer = document.querySelector('.cont');
+            var notificationHTML = `<div class="sec new">
+            <a href="${data.url}">
+                <div class="profCont">
+                <img style="width: 45px;height: 45px;border-radius: 100%" class="profile" src="${data.user_image}">
+                </div>
+                <div class="txt">${data.username} Make Payment with amount : $${data.amount}</div>
+                <div class="txt sub">${data.time}</div>
+            </a>
+            </div>`;
+
+            notificationsContainer.innerHTML += notificationHTML; // Append new notification */
+
+          });
+
+
+          function addNotification(data, type) {
+            var notificationsContainer = document.querySelector('.cont');
+            var notificationHTML = '';
+
+          /*  var no_notification = document.getElementById('alert_not');
+            no_notification.style.display = 'none'; */
+
+            /* var no_notification_2 = document.getElementById('notification_panel');
+            no_notification_2.style.display = 'none'; */
+
+            var no_notification = document.getElementById('alert_not');
+            if(no_notification){
+                no_notification.style.display = 'none';
             }
 
-            setInterval(scrollDown, 1000);
 
-         </script>
+           /*  var noNotificationMessage = document.getElementById('alert_not');
+            var notificationHTML = ''; */
+
+
+            if (type === 'payment') {
+            notificationHTML = `<div class="sec new">
+            <a href="${data.url}">
+                <div class="profCont">
+                <img style="width: 45px;height: 45px;border-radius: 100%" class="profile" src="${data.user_image}">
+                </div>
+                <div class="txt">${data.username} Make Payment with amount : $${data.amount}</div>
+                <div class="txt sub">${data.time}</div>
+            </a>
+            </div>`;
+            } else if (type === 'task') {
+            notificationHTML = `<div class="sec new">
+                <a href="${data.url}">
+                <div class="profCont">
+                    <img style="width: 45px;height: 45px;border-radius: 100%" class="profile" src="${data.user_image}">
+                </div>
+                <div class="txt">${data.username} Create New Task, Task Type: ${data.task_type}, Att Publisher: ${data.site_url}</div>
+                <div class="txt sub">${data.time}</div>
+                </a>
+            </div>`;
+            }
+
+            notificationsContainer.innerHTML += notificationHTML; // Append new notification
+        }
+
+});
+
+
+</script>
+@endif
+
+@endif
 
     </body>
 </html>

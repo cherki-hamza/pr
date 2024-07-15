@@ -249,8 +249,8 @@
                                                     <div class="card-body">
                                                         <div>
                                                             <form method="POST" action="{{route('billings.store')}}">
-
                                                             @csrf
+
                                                             <div class="form-group row gutters">
                                                                 <div class="col-xl-6 col-md-12">
                                                                     <label class="d-block ">Full Name <span
@@ -822,3 +822,5 @@
         }
         // end function to change amount
     </script>
+
+@endsection

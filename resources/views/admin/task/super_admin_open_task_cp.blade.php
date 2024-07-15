@@ -143,13 +143,13 @@
                                @elseif($task->status == 5)
                                  <span class="alert alert-success">This Task is Completed</span>
                                @elseif($task->status == 0)
-                                 <button style="font-size: 18px"  type="submit" name="action" value="in_progress"  class="btn btn-success mx-5">
+                                 <button style="font-size: 18px"  type="submit" name="action" value="task_completed"  class="btn btn-success mx-5">
                                     <i class="fas fa-check mr-2"></i>
                                     Approve The Task for the client  : {{ $task->user->name }} & Send Email Message With Status :In Progress
                                 </button>
 
-                                {{-- <a href="{{route('super_admin_approve' , ['task_id' => $task->id ])}}"  class="btn btn-info  mx-5">
-                                    <i class="fas fa-save mr-2"></i>Approve
+                               {{--  <a href="{{route('super_admin_approve' , ['task_id' => $task->id ])}}"  class="btn btn-success  mx-5">
+                                    <i class="fas fa-save mr-2"></i>Approve Task For Client: {{ $task->user->name }} , & Send Email Message With Status : Completed
                                  </a> --}}
 
                                     <a href="{{route('super_admin_reject' , ['task_id' => $task->id ])}}" class="btn btn-danger  mx-5">

@@ -46,7 +46,7 @@
                                             <th class="bg-primary">In Progress</th>
                                             <th class="bg-warning">Waiting Approve from Client</th>
                                             <th class="bg-info">Need Improvement</th>
-                                            <th class="bg-info">Publisher&Pr</th>
+                                            <th style="background-color: purple;color:white">Publisher&Pr</th>
                                             <th class="bg-success">Completed</th>
                                             <th class="bg-danger">Rejected</th>
                                             <th>See Projects</th>

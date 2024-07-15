@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Task extends Model
 {
@@ -48,6 +49,11 @@ class Task extends Model
     // relation betwenn task and post
     public function post(){
         return $this->hasOne(Post::class);
+    }
+
+     // relation betwenn task and notification
+     public function notification(){
+        return $this->hasOne(Notification::class);
     }
 
 
@@ -114,7 +120,6 @@ class Task extends Model
     {
         return Task::where('user_id',auth()->user()->id)->where('status',$taskStatus)->count();
     }
-
 
 }
 

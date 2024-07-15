@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Notification;
 use App\Models\Payment;
 use App\Models\Project;
 use App\Models\Task;
@@ -31,8 +32,15 @@ class ViewServiceProvider extends ServiceProvider
                 if(auth()->check()){
                     if( (auth()->user()->role == 'client') ){
                         $view->with('projects', Project::where('user_id',auth()->id())->where('status' , 1)->paginate(12));
+                        $view->with('notifications_count',  '');
+                        $view->with('notifications', '');
                     }else{
                         $view->with('projects', Project::where('status' , 1)->paginate(12));
+                        if(auth()->user()->role == 'super-admin'){
+                            $view->with('notifications_count', Notification::Notification_Witing() ??  []);
+                            $view->with('notifications', Notification::where('is_read',0)->with(['payement','task'])->get() ??  []);
+                        }
+
                     }
 
                     if(!empty(auth()->user()->payments) /* && auth()->user()->role == 'client' */){

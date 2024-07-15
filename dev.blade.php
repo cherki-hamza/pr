@@ -814,3 +814,65 @@
                                                 Billboard.com,$43,700,92,90,Entertainment,1-2 Weeks,'Discreet','Y','N','GLOBAL'
                                                 Tech Crunch (Includes Social Post),$52,500,93,92,Lifestyle,2-3 Weeks,'Y',Y,'N','GLOBAL'
                                                 Bloomberg,$155,000,94,92,'News',1 Month,'Y',Y,'Y',UNITED STATES
+
+
+                                                /* channel.bind('App\\Events\\TaskNotification', function(data) {
+                                                    let result = data;
+                                                    //alert(JSON.stringify(result));
+                                                    console.log(JSON.stringify(result));
+                                                    let element = document.getElementById('my_alert');
+                                                    //console.log(element);
+                                                    let notifications_count = parseInt($('#number').text(), 10);
+                                                    notifications_count = notifications_count + 1;
+                                                    console.log(notifications_count);
+                                                    $('#my_alert').css('display', 'block');
+                                                    $('#number').text(notifications_count); */
+
+
+                                                    // create the div container
+
+                                                    // after push the link in the top of container with real url from pusher notification
+
+                                                    // render the javascript dom wheen the dom is changed
+
+                                                    // clear the console and update the database :  column (payment_id)
+
+
+
+                                                   /*  if (notifications_count) {
+                                                      var abcd = document.getElementById("myAudio");
+                                                      abcd.muted = false;
+                                                      document.addEventListener('click', function playAudio() {
+                                                      abcd.play().then(() => {
+                                                        document.removeEventListener('click', playAudio); // Remove listener after audio plays
+                                                      }).catch(error => {
+                                                        console.error('Audio playback failed:', error);
+                                                      });
+                                                    }, { once: true });
+                                                      //abcd.play();
+                                                    } else {
+                                                      console.log('no no  tihdb');
+                                                    } */
+
+                                                  //});
+                                                  /*
+                                                    // get the notification
+                                                    // Get the div element using querySelector
+                                                  var notificationDiv = document.querySelector("#number");
+                                                  // Get the text content of the div
+                                                  var notificationNumber = notificationDiv.textContent;
+                                                  // Convert the text content to a number (if needed)
+                                                  var number = parseInt(notificationNumber, 10);
+                                                  // Log the number to the console
+                                                  console.log(number+10);
+                                                  */
+
+
+                                                  function handleAudioChange(event) {
+                                                    console.log('handel audio dev ..');
+                                                        let notifications_count = parseInt($('#number').text(), 10);
+                                                        notifications_count = notifications_count + 1;
+                                                        $('#input_notification').value = notifications_count;
+                                                            let audio = $('#myAudio')[0];
+                                                            audio.play().catch(e => console.error("Playback failed:", e));
+                                                    }

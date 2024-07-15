@@ -28,7 +28,8 @@ class SiteController extends Controller
 
         // start new instance from Site Model
         if(request()->routeIs('same_day_delivery')){
-            $query->where('site_time' ,'1 Day');
+            $query->where('site_time' ,'1 Day')
+                  ->orWhere('site_time' ,'1 day');
         }
 
 
@@ -351,6 +352,10 @@ class SiteController extends Controller
              'site_dofollow' => $request->get('site_dofollow'),
              'spam_score' => $request->get('spam_score'),
              'site_time' => $request->get('site_tat'),
+
+             'site_c_p_price' => $request->get('site_c_p_price'),
+             'site_c_c_p_price' => $request->get('site_c_c_p_price'),
+
         ]);
         return redirect()->back()->with('success', 'The Site Publisher Updated Successfully!');
     }
@@ -406,6 +411,9 @@ class SiteController extends Controller
             'site_dofollow' => $request->get('site_dofollow'),
             'spam_score' => $request->get('spam_score'),
             'site_time' => $request->get('site_tat'),
+
+            'site_c_p_price' => $request->get('site_c_p_price'),
+             'site_c_c_p_price' => $request->get('site_c_c_p_price'),
 
         ]);
 

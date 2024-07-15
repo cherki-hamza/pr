@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Billing;
 use Illuminate\Http\Request;
+use Pusher\Pusher;
 
 class BillingController extends Controller
 {
@@ -40,7 +41,7 @@ class BillingController extends Controller
         ]);
 
 
-        Billing::create([
+       $payement =  Billing::create([
             'user_id' => auth()->user()->id,
             'email'=> auth()->user()->email,
             'name'=> $request->name,

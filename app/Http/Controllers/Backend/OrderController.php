@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\CreateTaskEmail;
 use App\Models\Balance;
 use App\Models\ClientStatus;
+use App\Models\Notification;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PublisherStatus;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Pusher\Pusher;
 
 class OrderController extends Controller
 {
@@ -140,15 +142,11 @@ class OrderController extends Controller
             'db'                => $db
         ]);
 
-        // create the client status
-        /* ClientStatus::create([
-            'user_id'              => auth()->id(),
-            'task_id'              => $task->id,
-            'order_id'             => $order->id,
-            'site_id'              => $site_id,
-            'client_status'        =>  0,
-            'client_final_status'  =>  0
-        ]); */
+        // create the notification
+        Notification::create([
+            'user_id'    => auth()->user()->id,
+            'task_id'    => $task->id,
+        ]);
 
         // store the balance result for every user
         // 1) get the Total payments by auth user
@@ -164,6 +162,35 @@ class OrderController extends Controller
         ], [
             'balance' => $balance
         ]);
+
+        // send push notification from client to super-admin
+
+        $options = array(
+            'cluster' => 'ap2',
+            'encrypted' => true
+        );
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            $options
+        );
+
+        $data['message'] = 'success';
+        $data['data'] = $task;
+
+
+        $pusher->trigger('task_chanel', 'App\Events\TaskNotification', [
+            'message' => 'succes',
+            'username' => $task->user->name,
+            'task_type' => $task->task_type(),
+            'user_image' => $task->user->GetPicture(),
+            'site_url' => $task->site->site_url,
+            'time' => $task->created_at->format('m/d/Y H:i') . ' - ' . $task->created_at->diffForHumans(),
+            'url' => route('super_admin_open_task', ['task_id' => $task->id, 'user_id' => $task->user->id, 'project_id' => $task->project_id]),
+        ]);
+
+
 
         // send email for task as content placement is created
         Mail::to($task->user->email)->send(new CreateTaskEmail($task));
@@ -230,15 +257,11 @@ class OrderController extends Controller
             'db'                => $db
         ]);
 
-        // create the client status
-       /*  ClientStatus::create([
-            'user_id'              => auth()->id(),
-            'task_id'              => $task->id,
-            'order_id'             => $order->id,
-            'site_id'              => $site_id,
-            'client_status'        =>  0,
-            'client_final_status'  =>  0
-        ]); */
+        // create the notification
+        Notification::create([
+            'user_id'    => auth()->user()->id,
+            'task_id'    => $task->id,
+        ]);
 
         // store the balance result for every user
         // 1) get the Total payments by auth user
@@ -253,6 +276,32 @@ class OrderController extends Controller
             'user_id' => auth()->id()
             ], [
                 'balance' => $balance
+        ]);
+
+       // send push notification from client to super-admin
+        $options = array(
+            'cluster' => 'ap2',
+            'encrypted' => true
+        );
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            $options
+        );
+
+        $data['message'] = 'success';
+        $data['data'] = $task;
+
+
+        $pusher->trigger('task_chanel', 'App\Events\TaskNotification', [
+            'message' => 'succes',
+            'username' => $task->user->name,
+            'task_type' => $task->task_type(),
+            'user_image' => $task->user->GetPicture(),
+            'site_url' => $task->site->site_url,
+            'time' => $task->created_at->format('m/d/Y H:i') . ' - ' . $task->created_at->diffForHumans(),
+            'url' => route('super_admin_open_task', ['task_id' => $task->id, 'user_id' => $task->user->id, 'project_id' => $task->project_id]),
         ]);
 
         // send email for task as content placement is created
@@ -314,6 +363,35 @@ class OrderController extends Controller
         ], [
             'balance' => $balance
         ]);
+
+        // send push notification from client to super-admin
+        $options = array(
+            'cluster' => 'ap2',
+            'encrypted' => true
+        );
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            $options
+        );
+
+        $data['message'] = 'success';
+        $data['data'] = $task;
+
+
+        $pusher->trigger('task_chanel', 'App\Events\TaskNotification', [
+            'message' => 'succes',
+            'username' => $task->user->name,
+            'task_type' => $task->task_type(),
+            'user_image' => $task->user->GetPicture(),
+            'site_url' => $task->site->site_url,
+            'time' => $task->created_at->format('m/d/Y H:i') . ' - ' . $task->created_at->diffForHumans(),
+            'url' => route('super_admin_open_task', ['task_id' => $task->id, 'user_id' => $task->user->id, 'project_id' => $task->project_id]),
+        ]);
+
+        // send email for task as content placement is created
+        Mail::to($task->user->email)->send(new CreateTaskEmail($task));
 
           // send email for task as content placement is created
           Mail::to($task->user->email)->send(new CreateTaskEmail($task));

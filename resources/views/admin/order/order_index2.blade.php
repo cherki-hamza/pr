@@ -12,6 +12,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
+                        @if ($site_time == '1 day' || $site_time == '1 days')
+                          <span style="background-color: goldenrod;font-size: 22px">
+                             <span class="alert alert-warning">This Order Delivred in 1 Day</span>
+                          </span>
+                        @endif
+
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -39,7 +45,7 @@
                                      data-prefix="far" data-icon="calendar-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
                                       data-fa-i2svg=""><path fill="currentColor" d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"></path>
                                     </svg>
-                                </i>Estimated completion: <strong>  <span style="color: goldenrod">{{ $site_time ?? '' }} </span> </strong></span>
+                                </i>Estimated completion: <strong>  <span style="color: goldenrod"> {{ $site_time ?? '' }} </span> </strong></span>
                             </div>
 
                             <div class="card-body">
@@ -82,7 +88,7 @@
                                                 <div class="tab-pane fade active show" id="custom-tabs-four-home"
                                                     role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
 
-                                                    <form action="{{route('store_cp', ['project_id'=> request()->project_id , 'site_id' => request()->site_id ])}}" method="POST" enctype="multipart/form-data">
+                                                    <form id="taskForm" action="{{route('store_cp', ['project_id'=> request()->project_id , 'site_id' => request()->site_id ])}}" method="POST" enctype="multipart/form-data">
                                                         @csrf
                                                     {{-- start code editor --}}
                                                     <input type="hidden" name="task_type" value="c_p">
@@ -110,7 +116,7 @@
                                                                     <svg style="width: 15px" class="svg-inline--fa fa-info-circle fa-w-16" data-html="true" data-content="Enter the URL that you have included in your content above." data-placement="right" data-toggle="popover" data-container="body" data-trigger="hover" data-original-title="" title="" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="info-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
                                                                     <path fill="currentColor" d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"></path>
                                                                 </svg></span>
-                                                                <input type="text" name="task_target_url" value="" autocomplete="off" class="form-control  mt-2" id="targetUrl" placeholder="http(s)://your-site.com" required="">
+                                                                <input type="text" name="task_target_url" value="https://" autocomplete="off" class="form-control  mt-2" id="targetUrl" placeholder="http(s)://your-site.com" required="">
                                                             </label>
                                                         </div>
                                                     </div>
@@ -166,7 +172,7 @@
                                                 <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel"
                                                     aria-labelledby="custom-tabs-four-profile-tab">
 
-                                                    <form action="{{route('store_ccp',['project_id'=> request()->project_id , 'site_id' => request()->site_id ])}}" method="POST" enctype="multipart/form-data">
+                                                    <form id="taskForm" action="{{route('store_ccp',['project_id'=> request()->project_id , 'site_id' => request()->site_id ])}}" method="POST" enctype="multipart/form-data">
                                                         @csrf
 
                                                         @if ((!empty($price_c_c)))
@@ -199,7 +205,7 @@
                                                                     <path fill="currentColor" d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"></path>
                                                                 </svg></span>
                                                                 <input type="hidden" name="task_type" value="c_c_p">
-                                                                <input type="text" name="task_target_url" value="" autocomplete="off" class="form-control  mt-2" id="targetUrl" placeholder="http(s)://your-site.com" required="">
+                                                                <input type="text" name="task_target_url" value="https://" autocomplete="off" class="form-control  mt-2" id="targetUrl" placeholder="http(s)://your-site.com" required="">
                                                             </label>
                                                         </div>
                                                     </div>
@@ -305,4 +311,28 @@
         });
     });
     </script>
+
+
+<script>
+    // function for enable audio rington and pla audio in loop
+    function enableAudioPlay(){
+       var audio =  $('#myAudio');
+           audio.autoplay = true;
+           audio.load();
+
+
+    } // end function
+
+
+    // script for handle the audio rington
+    $(document).ready(function(){
+        $('#taskForm').submit(function(e){
+            // e.preventDefault();
+
+             enableAudioPlay();
+
+        });
+    }); // end script
+    </script>
+
 @endsection

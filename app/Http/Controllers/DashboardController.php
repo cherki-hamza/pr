@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use ConsoleTVs\Charts\Facades\Charts;
 
 class DashboardController extends Controller
 {
@@ -102,7 +103,7 @@ class DashboardController extends Controller
         ];
 
         $tasks_super_admin_names = ['Tasks Not Started' , 'Tasks In Progress' , 'Tasks Need Approvement' ,  'Tasks Need Immprovement' , 'Tasks Need Pr & Publisher To Approve' , 'Tasks Completed' , 'Tasks Rejected'];
-        $tasks_client_names = ['Tasks Not Started' , 'Tasks In Progress' , 'Tasks Need Approvement' ,  'Tasks Need Immprovement' , 'Tasks Completed' , 'Tasks Rejected'];
+        $tasks_client_names = ['Tasks Not Started' , 'Tasks In Progress' , 'Tasks Need Approvement' , 'Tasks Completed' , 'Tasks Rejected'];
         if(auth()->user()->role == 'client'){
             $tasks_title = $tasks_client_names;
             $task_backgrounds = $client_background;
@@ -201,16 +202,15 @@ class DashboardController extends Controller
 
            $file_name = 'pr_logo_'.rand(1,100).'_'.time() . '.' . $file_extension;
 
-           return $file_name;
+
 
            $photo->move($path,$file_name);
 
 
-          Setting::where('key' , 'logo')->first()->update([
-
-               'value' => '/assets/images/logo/'.$file_name,
-
-          ]);
+          Setting::updateOrCreate(
+            ['user_id' => 1 , 'key' => 'logo'],
+            ['user_id' => 1 , 'value' => '/assets/images/logo/'.$file_name]
+        );
 
        }
 
@@ -224,6 +224,31 @@ class DashboardController extends Controller
     public function chat_messages(){
         return view('admin.chat.chat2_messages');
     }
+
+    public function renderTaskChart(){
+        $statuses = [0,1,2,3,5,6];
+        $data = [];
+
+        foreach ($statuses as $status) {
+            $data[] = Task::where('status', $status)->count();
+        }
+
+          return $data;
+     }
+
+    public function createChart(){
+
+    $data = $this->renderTaskChart();
+    $chart = Charts::new('pie', 'chartjs')
+                    ->setTitle('Task Status Distribution')
+                    ->setLabels(['Not Started', 'In Progress', 'Need Approval', 'Improvement', 'Completed', 'Rejected'])
+                    ->setValues($data)
+                    ->setDimensions(1000,500)
+                    ->setResponsive(false);
+
+    return view('admin.dashboard_chart', ['chart' => $chart]);
+
+   }
 
 
 }

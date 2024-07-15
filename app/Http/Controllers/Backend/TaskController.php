@@ -7,6 +7,7 @@ use App\Mail\CompletedTaskEmail;
 use App\Mail\InProgressTaskEmail;
 use App\Mail\RejectedTaskEmail;
 use App\Models\Note;
+use App\Models\Notification;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\PublisherStatus;
@@ -52,8 +53,16 @@ class TaskController extends Controller
 
     // method for open the super admin tasks
     public function super_admin_open_task(Request $request){
+
         $task = Task::where('id',$request->task_id)->first();
         $post = Post::where('task_id',$request->task_id)->first();
+
+        $notification = Notification::where('task_id',$task->id)->first();
+            if(!empty($notification)){
+                $notification->update(['is_read' => 1]);
+            }
+
+
         if(!empty($task)){
            // tempate for c_c_p task
            if($task->task_type == 'c_c_p'){

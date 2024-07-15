@@ -188,10 +188,11 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\AdminProvider::class,
+
 
     ],
 
@@ -211,6 +212,7 @@ return [
         'ReCaptcha'     => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
         'Setting'       => App\Helpers\SettingHelper::class,
         'Datatables' => yajra\DataTables\Datatables::class,
+        //'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
     ])->toArray(),
 
 ];
