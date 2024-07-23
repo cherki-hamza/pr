@@ -85,6 +85,15 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     // application settings
     Route::get('settings/application_settings',[SettingController::class,'application_settings'])->name('application_settings');
 
+    // packages
+    // admin settings
+    Route::get('packages/all_packages',[SettingController::class,'all_packages'])->name('all_packages');
+    // admin settings
+    Route::post('packages/store_packages',[SettingController::class,'store_packages'])->name('store_packages');
+
+    // update package
+    Route::post('packages/editable-table/update', [SettingController::class, 'update_packages'])->name('update_packages');
+
 
     // update paypal
     Route::put('settings/update_paypal/{user_id}',[DashboardController::class,'update_paypal'])->name('update_paypal');

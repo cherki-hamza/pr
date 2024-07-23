@@ -110,7 +110,7 @@ class PaypalController extends Controller
                     'user_image' => $payment->user->GetPicture(),
                     'amount' => $payment->amount,
                     'message' => "Make Payment with amount: $".$payment->amount,
-                    'time' => $payment->created_at->format('m/d/Y H:i') . ' - ' . $payment->created_at->diffForHumans(),
+                    'time' =>  $payment->created_at->diffForHumans(), // $payment->created_at->format('m/d/Y H:i') . ' - ' .
                     'url' => route('balance', ['id' => $payment->user->id]), // Adjust based on your routes
                 ]);
 

@@ -186,9 +186,9 @@
                                                                     <input type="hidden" name="task_type" value="c_c_p">
                                                                      <select id="change_price" class="form-control" name="package" id="package">
                                                                         <option value="">Select Your Package</option>
-                                                                        <option value="250">500 - 700 Words  : <span class="text-primary">+$250</span></option>
-                                                                        <option value="350">700 - 1000 Words  : <span class="text-primary">+$350</span></option>
-                                                                        <option value="400">1000 - 1300 Words  : <span class="text-primary">+$400</span></option>
+                                                                        @foreach ($packages as $package)
+                                                                        <option value="{{ $package->package_price }}">{{ $package->package_offre }} Words  : <span class="text-primary">+${{ $package->package_price }}</span></option>
+                                                                        @endforeach
                                                                         {{-- <option value="custom"> More than > 1300 Words  : <span class="text-primary">$ Custom Price</span></option> --}}
                                                                      </select>
                                                                 </label>

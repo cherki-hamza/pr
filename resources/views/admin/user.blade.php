@@ -94,13 +94,16 @@
 @endsection
 
 @section('js')
+
     <script>
         $(document).ready(function() {
 
             // start user edit modal
             $(document).on("click", '.btn-edit', function() {
+                $('#modal-edit').modal('show');
                 let id = $(this).attr("data-id");
                 $('#modal-loading').modal({backdrop: 'static', keyboard: false, show: true});
+                console.log('btn edit');
                 $.ajax({
                     url: "{{ route('user.show') }}",
                     type: "POST",
@@ -125,6 +128,7 @@
 
               // start user delete modal
             $(document).on("click", '.btn-delete', function() {
+                $('#modal-delete').modal('show');
                 let id = $(this).attr("data-id");
                 let name = $(this).attr("data-name");
                 $("#did").val(id);
@@ -133,6 +137,20 @@
             });
             // end user delete modal
         });
+
+        $('#close').click(function() {
+             $('#modal-edit').modal('hide');
+          });
+
+
+          $('#close_delete_one').click(function() {
+             $('#modal-delete').modal('hide');
+          });
+
+          $('#close_delete_two').click(function() {
+             $('#modal-delete').modal('hide');
+          });
+
     </script>
 @endsection
 
@@ -207,7 +225,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Data</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -274,7 +292,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Delete User</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" id="close_delete_one" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -286,7 +304,7 @@
                         <input type="hidden" name="id" id="did">
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="close_delete_two" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </div>
                 </form>

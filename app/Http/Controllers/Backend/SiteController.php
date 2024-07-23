@@ -15,22 +15,21 @@ class SiteController extends Controller
     // client all publishers for client
     public function site_index(Request $request){
 
+        // this method for get the index and publishere website & make searsh by filter
+            $title = "publishers";
+            $project_id = $request->project_id;
+            // start get site instence
+            $query = Site::query();
+            //  remove the not approved site
+            $query->whereNot('site_status','2');
+          // $query->whereNot('publisher_status','2');
 
-        //return DB::select('SELECT * FROM sites WHERE site_monthly_traffic = ?', [140]);
-
-        $title = "publishers";
-        $project_id = $request->project_id;
-        // start get site instence
-        $query = Site::query();
-        //  remove the not approved site
-        $query->whereNot('site_status','2');
-       // $query->whereNot('publisher_status','2');
-
-        // start new instance from Site Model
-        if(request()->routeIs('same_day_delivery')){
-            $query->where('site_time' ,'1 Day')
-                  ->orWhere('site_time' ,'1 day');
-        }
+            // start new instance from Site Model
+            if(request()->routeIs('same_day_delivery')){
+                $query->where('site_time' ,'1 Day')
+                    ->orWhere('site_time' ,'1 day')
+                    ->orWhere('site_time' ,'1 days');
+            }
 
 
         $sites_count = $query->count();

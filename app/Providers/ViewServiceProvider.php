@@ -38,7 +38,7 @@ class ViewServiceProvider extends ServiceProvider
                         $view->with('projects', Project::where('status' , 1)->paginate(12));
                         if(auth()->user()->role == 'super-admin'){
                             $view->with('notifications_count', Notification::Notification_Witing() ??  []);
-                            $view->with('notifications', Notification::where('is_read',0)->with(['payement','task'])->get() ??  []);
+                            $view->with('notifications', Notification::where('is_read',0)->orderBy('id','DESC')->with(['payement','task'])->get() ??  []);
                         }
 
                     }

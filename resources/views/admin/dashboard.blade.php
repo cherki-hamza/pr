@@ -37,12 +37,13 @@
 
                         <div class="card-body">
                             <div class="card-body table-responsive">
-                                <table class="table table-bordered table-hover datatable">
+                                <table id="table" class="table table-bordered table-hover datatable">
                                     <thead>
                                         <tr>
+                                            <th>Client Image</th>
                                             <th>Client FullName</th>
                                             <th>Project Name</th>
-                                            <th>Project URL</th>
+                                            {{-- <th>Project URL</th> --}}
                                             <th>Publisher URL</th>
                                             <th>Date</th>
                                             <th>Task Type</th>
@@ -50,43 +51,52 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                          @foreach ($tasks as $task)
-                                            <tr>
-                                                <td>{{ $task->user->name }}</td>
-                                                <td>{{ $task->project->project_name }}</td>
-                                                <td><a href="https://{{ $task->project->project_url }}" target="_blink">https://{{ $task->project->project_url }}</a></td>
-                                                <td><a href="https://{{ $task->site->site_url }}" target="_blink">https://{{ $task->site->site_url }}</a></td>
-                                                <td>{{ $task->created_at->diffForHumans()  }}</td>
-                                                <td>{{ $task->task_type() }}</td>
-                                                <td>
-                                                    <span class="badge badge-{{ $task->show_status_style() }} p-2" title="number of tasks in approvement">
-                                                       {{ $task->show_status() }}
-                                                    </span>
-                                                </td>
+                                    <tbody id="from_here">
+                                          @forelse ($tasks as $task)
+                                          <tr>
+                                            <td><img style="width: 40px;border-radius: 100%" src="{{ $task->user->GetPicture() }}" alt=""></td>
+                                            <td>{{ $task->user->name }}</td>
+                                            <td>{{ $task->project->project_name }}</td>
+                                           {{--  <td><a href="https://{{ $task->project->project_url }}" target="_blink">https://{{ $task->project->project_url }}</a></td> --}}
+                                            <td><a href="https://{{ $task->site->site_url }}" target="_blink">https://{{ $task->site->site_url }}</a></td>
+                                            <td>{{ $task->created_at->diffForHumans()  }}</td>
+                                            <td>{{ $task->task_type() }}</td>
+                                            <td>
+                                                <span class="badge badge-{{ $task->show_status_style() }} p-2" title="number of tasks in approvement">
+                                                   {{ $task->show_status() }}
+                                                </span>
+                                            </td>
 
 
-                                                <td class="text-center">
-                                                    <div class="btn-group">
-                                                        @if(auth()->user()->role == 'client')
-                                                           <a href="#" class="btn btn-sm btn-{{ $task->show_status_style() }}"><i class="fas fa-eye mr-2"></i>The Task is Not Started</a>
-                                                        @elseif (auth()->user()->role == 'super-admin')
-                                                          <a href="{{ route('super_admin_open_task' , ['task_id' => $task->id , 'user_id' => $task->user_id , "project_id" => $task->project->id]) }}" class="btn btn-sm btn-{{ $task->show_status_style() }}"><i class="fas fa-eye mr-2"></i>Open The Task</a>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    @if(auth()->user()->role == 'client')
+                                                       <a href="#" class="btn btn-sm btn-{{ $task->show_status_style() }}"><i class="fas fa-eye mr-2"></i>The Task is Not Started</a>
+                                                    @elseif (auth()->user()->role == 'super-admin')
+                                                      <a style="color: white !important" href="{{ route('super_admin_open_task' , ['task_id' => $task->id , 'user_id' => $task->user_id , "project_id" => $task->project->id]) }}" class="btn btn-sm btn-{{ $task->show_status_style() }}"><i class="fas fa-eye mr-2"></i>Open The Task</a>
 
-                                                        @else
-                                                        <a href="#" class="btn btn-sm btn-{{ $task->show_status_style() }}"><i class="fas fa-eye mr-2"></i>Open The Task</a>
-                                                        @endif
+                                                    @else
+                                                    <a href="#" class="btn btn-sm btn-{{ $task->show_status_style() }}"><i class="fas fa-eye mr-2"></i>Open The Task</a>
+                                                    @endif
 
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                </div>
+                                            </td>
+                                        </tr>
+                                          @empty
+
+                                          <tr class="text-danger">
+                                             <td colspan="6">Oops there is no New Task</td>
+                                          </tr>
+
+                                          @endforelse
+
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
 
-                  </div>
+                     </div>
                </div>
            </div>
         </section>

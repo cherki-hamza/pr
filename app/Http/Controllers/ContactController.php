@@ -69,8 +69,6 @@ class ContactController extends Controller
     // show all contacts messages
     public function contacts(){
 
-       return  Notification::where('is_read',0)->with(['payement','task'])->get();
-
         $contacts = Contact::all();
 
         if (auth()->user()->role == 'super-admin'){

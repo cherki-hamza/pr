@@ -71,6 +71,8 @@ class Task extends Model
             return 'COMPLETED';
         }elseif($this->status == 6){
             return 'REJECTED';
+        }elseif($this->status == 9){
+            return 'Need Publisher APPROVAL';
         }else{
             return 'NOT STARTED';
         }
@@ -118,7 +120,12 @@ class Task extends Model
 
     public static function TasksCount($taskStatus = null)
     {
-        return Task::where('user_id',auth()->user()->id)->where('status',$taskStatus)->count();
+        if(auth()->user()->role == 'super-admin'){
+            return Task::where('status',$taskStatus)->count();
+        }else{
+            return Task::where('user_id',auth()->user()->id)->where('status',$taskStatus)->count();
+        }
+
     }
 
 }

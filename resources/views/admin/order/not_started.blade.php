@@ -97,7 +97,7 @@
                                                                 <td>#{{ $task->id }}</td>
                                                                 <td>{{ $task->created_at }}</td>
                                                                 <td>{{ $task->task_target_url }}</td>
-                                                                <td>{{ $task->project->project_name }}</td>
+                                                                <td>{{ $task->site->site_url }}</td>
                                                                 <td>{{ $task->task_anchor_text }}</td>
                                                                 <td>{{ $task->order->price }}</td>
                                                                 <td>Messges ..</td>

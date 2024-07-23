@@ -8,6 +8,7 @@ use App\Models\Balance;
 use App\Models\ClientStatus;
 use App\Models\Notification;
 use App\Models\Order;
+use App\Models\Package;
 use App\Models\Payment;
 use App\Models\PublisherStatus;
 use App\Models\Site;
@@ -51,12 +52,13 @@ class OrderController extends Controller
         $task_site_prices = Task::where('user_id' , auth()->id())/* ->where('task_status',1) */->sum('task_price'); //  15100
         $balance = ((int)$auth_user_payments - $task_site_prices);  // 20000  - 15100 == 4900 and  include reserved
 
+        $packages = Package::all();
         if($balance <= $price_c_c){
             $name = auth()->user()->name;
             //Session::flash('message', "Hello There $name, Your Balance is Not Enough, Please add Fond !");
             return redirect()->route('add_funds')->with('danger', 'Your Balance Not Enough, Please add Fond !');
         }else{
-            return view('admin.order.order_index2', compact('title','site','price_c_c', 'price_c_c_p' ,'site_url','site_time','date','from','to'));
+            return view('admin.order.order_index2', compact('title','site','price_c_c', 'price_c_c_p' ,'site_url','site_time','date','from','to','packages'));
         }
 
 
@@ -183,11 +185,15 @@ class OrderController extends Controller
         $pusher->trigger('task_chanel', 'App\Events\TaskNotification', [
             'message' => 'succes',
             'username' => $task->user->name,
+            'task_project_name' => $task->project->project_name,
+            'publisher_url' => $task->site->site_url,
             'task_type' => $task->task_type(),
+            'task_status' => $task->show_status(),
             'user_image' => $task->user->GetPicture(),
             'site_url' => $task->site->site_url,
-            'time' => $task->created_at->format('m/d/Y H:i') . ' - ' . $task->created_at->diffForHumans(),
+            'time' =>  $task->created_at->diffForHumans(), // $task->created_at->format('m/d/Y H:i') . ' - ' .
             'url' => route('super_admin_open_task', ['task_id' => $task->id, 'user_id' => $task->user->id, 'project_id' => $task->project_id]),
+            //'task' => $task
         ]);
 
 
@@ -300,7 +306,7 @@ class OrderController extends Controller
             'task_type' => $task->task_type(),
             'user_image' => $task->user->GetPicture(),
             'site_url' => $task->site->site_url,
-            'time' => $task->created_at->format('m/d/Y H:i') . ' - ' . $task->created_at->diffForHumans(),
+            'time' =>  $task->created_at->diffForHumans(),  // $task->created_at->format('m/d/Y H:i') . ' - ' .
             'url' => route('super_admin_open_task', ['task_id' => $task->id, 'user_id' => $task->user->id, 'project_id' => $task->project_id]),
         ]);
 
@@ -386,7 +392,7 @@ class OrderController extends Controller
             'task_type' => $task->task_type(),
             'user_image' => $task->user->GetPicture(),
             'site_url' => $task->site->site_url,
-            'time' => $task->created_at->format('m/d/Y H:i') . ' - ' . $task->created_at->diffForHumans(),
+            'time' => $task->created_at->diffForHumans(), //  $task->created_at->format('m/d/Y H:i') . ' - ' .
             'url' => route('super_admin_open_task', ['task_id' => $task->id, 'user_id' => $task->user->id, 'project_id' => $task->project_id]),
         ]);
 

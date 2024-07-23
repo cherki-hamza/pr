@@ -21,25 +21,25 @@ class DashboardController extends Controller
 
         // get all new tasks
         if(auth()->user()->role == 'client'){
-            $tasks = Task::where('user_id',auth()->id())->where('status',Task::NOT_STARDET)->get();
+            $tasks = Task::where('user_id',auth()->id())->where('status',Task::NOT_STARDET)->orderBy('id','DESC')->get();
         }elseif(auth()->user()->role == 'super-admin'){
-            $tasks = Task::where('status',Task::NOT_STARDET)->get();
+            $tasks = Task::where('status',Task::NOT_STARDET)->orderBy('id','DESC')->get();
         }else{
             $tasks = [];
         }
 
 
-        $array = [
+       /*  $array = [
             29, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6,
             148.5, 218, 194.1, 95.6, 54.4
         ];
 
         // Find the minimum and maximum values
         $minValue = min($array);
-        $maxValue = max($array);
+        $maxValue = max($array); */
 
         // Traverse the array and replace min and max values with objects
-        $result = array_map(function($value) use ($minValue, $maxValue) {
+       /*  $result = array_map(function($value) use ($minValue, $maxValue) {
             if ($value == $minValue) {
                 return ['y' => $value, 'id' => 'min'];
             } elseif ($value == $maxValue) {
@@ -47,7 +47,7 @@ class DashboardController extends Controller
             } else {
                 return $value;
             }
-        }, $array);
+        }, $array); */
 
         // Print the resulting array
         /* echo '<pre>';
@@ -149,7 +149,7 @@ class DashboardController extends Controller
             ]
         ]);
 
-          return view('admin.dashboard',  compact('chart' ,'title' , 'result','tasks'));
+          return view('admin.dashboard',  compact('chart' ,'title' ,'tasks'));
 
 
     }

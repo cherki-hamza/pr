@@ -77,8 +77,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="bg-primary text-white">Target URL</td>
-                                                    <td><a href="{{ $task->task_target_url }}"
-                                                            target="_blank">{{ $task->task_target_url }}</a></td>
+                                                    <td>
+                                                        <a href="{{ $task->task_target_url }}"
+                                                            target="_blank">{{ $task->task_target_url }}</a>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="bg-primary text-white">Post Placement URL</td>
