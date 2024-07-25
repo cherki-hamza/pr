@@ -31,7 +31,6 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
-use Pusher\Pusher;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +47,7 @@ Route::get('/', function () {
 
     $sites = Site::all();
     return view('site' , compact('sites'));
+    
 })->name('index');
 
 
@@ -133,6 +133,32 @@ Route::get('/notify', function () {
     //return event(new TaskNotification('test notification'));
 
 })->name('notify');
+
+
+
+Route::get('/hamza_msg', function () {
+
+
+    $message = 'hello from cherki hamza full stack at dubai';
+
+    $options = array(
+        'cluster' => 'ap2',
+        'encrypted' => true
+    );
+    $pusher = new Pusher(
+        env('PUSHER_APP_KEY'),
+        env('PUSHER_APP_SECRET'),
+        env('PUSHER_APP_ID'),
+        $options
+    );
+    $data['data'] = $message;
+
+
+    $pusher->trigger('my_message', 'App\Events\MessageEvent', $data);
+
+     return 'success';
+
+});
 
 
 

@@ -52,7 +52,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="from_here">
-                                          @forelse ($tasks as $task)
+                                          @foreach ($tasks as $task)
                                           <tr>
                                             <td><img style="width: 40px;border-radius: 100%" src="{{ $task->user->GetPicture() }}" alt=""></td>
                                             <td>{{ $task->user->name }}</td>
@@ -82,13 +82,14 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                          @empty
 
-                                          <tr class="text-danger">
-                                             <td colspan="6">Oops there is no New Task</td>
-                                          </tr>
+                                         {{--  @empty
 
-                                          @endforelse
+                                          <tr class="text-danger text-center">
+                                             <td colspan="8">Oops there is no New Task</td>
+                                          </tr> --}}
+
+                                          @endforeach
 
 
                                     </tbody>

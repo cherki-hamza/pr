@@ -358,29 +358,29 @@ a:visited{
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true">
                     <i style="font-size: 28px;" class="far fa-bell"></i>
-                    <span style="top:0px;right: 2px;" class="badge badge-warning navbar-badge count_notification_number_1">{{ $notifications_count }}</span>
+                    <span style="top:0px;right: 2px;font-size: 15px;" class="badge badge-warning navbar-badge count_notification_number_1">{{ $notifications_count }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;width: 400px;">
-                    <span class="dropdown-item dropdown-header"><span class="count_notification_number_2">{{ $notifications_count }}</span> Notifications</span>
+                    <span class="dropdown-item dropdown-header bg-primary text-white"><span class="count_notification_number_2">{{ $notifications_count }}</span> Notifications</span>
 
                     <div class="dropdown-divider"></div>
 
-                    <div id="not" style="margin-top: 5px;margin-bottom: 5px;height: 600px;overflow-y: auto;" class="row d-flex justify-content-center notification_container">
+                    <div id="not" style="margin-top: 5px;margin-bottom: 5px;overflow-y: auto;{{ ($notifications_count <= 0) ? '' : 'height: auto' }};max-height: 600px" class="row d-flex justify-content-center notification_container">
                     @if(!empty($notifications) && count($notifications) >= 1)
                     @foreach ($notifications as $notification)
 
 
                     @if( $notification->task_id == null)
                     <div class="dropdown-divider"></div>
-                    <a style="margin-left: 24px;padding-top: 20px;padding-bottom: 20px;" href = "{{ route('balance',['id'=>$notification->id]) }}">
+                    <a style="margin-left: 24px;padding-top: 20px;padding-bottom: 20px;border-bottom: #4B49AC solid 1px;margin-bottom: 2px;border-top: {{ ($loop->first)? '#4B49AC solid 1px':'' }}" href = "{{ route('balance',['id'=>$notification->id]) }}">
                     @else
-                    <a style="padding-top: 20px;padding-bottom: 20px;" href="{{ route('super_admin_open_task' , ['task_id' => $notification->task_id , 'user_id' => $notification->task->user->id , "project_id" => $notification->task->project_id]) }}">
+                    <a style="padding-top: 20px;padding-bottom: 20px;border-bottom: #4B49AC solid 1px;margin-bottom: 2px;border-top: {{ ($loop->first)? 'solid 1px;margin-bottom':'' }}" href="{{ route('super_admin_open_task' , ['task_id' => $notification->task_id , 'user_id' => $notification->task->user->id , "project_id" => $notification->task->project_id]) }}">
                     @endif
 
                         <img style="width: 25px;height: 25px;border-radius: 100%" class = "ml-2" src = "{{ $notification->user->GetPicture() }}">
 
                        @if( $notification->task_id == null)
-                           <span class="ml-3 text-muted" style="font-size: 10px"> {{ $notification->user->name }} Make Payment amount : ${{ $notification->payement['amount'] ?? '' }} </span>
+                           <span class="ml-3 text-muted" style="font-size: 9px"> {{ $notification->user->name }} Make Payment amount : ${{ $notification->payement['amount'] ?? '' }} </span>
                        @else
                            <span class="ml-3 text-muted" style="font-size: 14px"> {{ $notification->user->name }} Create New Task </span>
                        @endif

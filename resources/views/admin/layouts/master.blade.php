@@ -297,9 +297,9 @@ $(document).ready(function(){
         if (type === 'payment') {
             notificationHTML = `
              <div class="dropdown-divider"></div>
-               <a style="margin-left: 24px;padding-top: 20px;padding-bottom: 20px;" href = "${data.url}">
+               <a style="margin-left: 24px;padding-top: 20px;padding-bottom: 20px;border-top:#4B49AC solid 1px" href = "${data.url}">
                  <img style="width: 25px;height: 25px;border-radius: 100%" class = "ml-2" src = "${data.user_image}">
-                 <span class="ml-3 text-muted" style="font-size: 10px"> ${data.username} Make Payment amount : $${data.amount} </span>
+                 <span class="ml-3 text-muted" style="font-size: 9px"> ${data.username} Make Payment amount : $${data.amount} </span>
                  <span style="padding: 38px;font-size: 11px !important;" class="text-sm"> ${data.time}</span>
                </a>
                <div class="dropdown-divider"></div>`;
@@ -388,88 +388,7 @@ $(document).ready(function(){
 
 });
 
-/*
-$(document).ready(function(){
 
-
-        // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
-        // pusher creditial
-        var pusher = new Pusher('74b3e16fd1d7c4a266a3', {
-            cluster: 'ap2',
-            encrypted: true
-        });
-
-        // task chanel
-        let channel = pusher.subscribe('task_chanel');
-        channel.bind('App\\Events\\TaskNotification', function(data) {
-            console.log(data);
-
-
-            let notifications_count = parseInt($('#number').text(), 10);
-            notifications_count = notifications_count + 1;
-            console.log(notifications_count);
-            $('#number').text(notifications_count);
-            $('#input_notification').value = notifications_count;
-            // render notiication
-            addNotification(data, 'task');
-          });
-
-          // payment chanel
-          let payment_channel = pusher.subscribe('payement_chanel');
-          payment_channel.bind('App\\Events\\PaymentNotification', function(data) {
-            console.log(data);
-
-            let element = document.getElementById('my_alert');
-            let notifications_count = parseInt($('#number').text(), 10);
-            notifications_count = notifications_count + 1;
-            console.log(notifications_count);
-            $('#my_alert').css('display', 'block');
-            $('#number').text(notifications_count);
-            $('#input_notification').value = notifications_count;
-            // render notiication
-            addNotification(data, 'payment');
-
-          });
-
-
-          function addNotification(data, type) {
-            var notificationsContainer = document.querySelector('.cont');
-            var notificationHTML = '';
-
-            var no_notification = document.getElementById('alert_not');
-            if(no_notification){
-                no_notification.style.display = 'none';
-            }
-
-
-            if (type === 'payment') {
-            notificationHTML = `<div class="sec new">
-            <a href="${data.url}">
-                <div class="profCont">
-                <img style="width: 45px;height: 45px;border-radius: 100%" class="profile" src="${data.user_image}">
-                </div>
-                <div class="txt">${data.username} Make Payment with amount : $${data.amount}</div>
-                <div class="txt sub">${data.time}</div>
-            </a>
-            </div>`;
-            } else if (type === 'task') {
-            notificationHTML = `<div class="sec new">
-                <a href="${data.url}">
-                <div class="profCont">
-                    <img style="width: 45px;height: 45px;border-radius: 100%" class="profile" src="${data.user_image}">
-                </div>
-                <div class="txt">${data.username} Create New Task, Task Type: ${data.task_type}, Att Publisher: ${data.site_url}</div>
-                <div class="txt sub">${data.time}</div>
-                </a>
-            </div>`;
-            }
-
-            notificationsContainer.innerHTML += notificationHTML; // Append new notification
-        }
-
-});
- */
 
 </script>
 @endif
