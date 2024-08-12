@@ -87,7 +87,7 @@
                                                             target="_blank">{{ $task->task_target_url }}</a></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="bg-primary text-white">Post Placement URL</td>  {{ ( empty($task->task_post_placement_url)) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $task->task_post_placement_url }}
+                                                    <td class="bg-primary text-white">Post Placement URL</td>
                                                     <td class="table-success"><a href="#" target="_blank"
                                                             class="font-weight-bold">{{ empty($post->post_title) ? 'https://'.$task->site->site_url.'/'.Str::slug($task->task_anchor_text) :  $post->post_title  }}</a>
                                                     </td>

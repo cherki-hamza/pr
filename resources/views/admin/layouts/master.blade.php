@@ -323,10 +323,10 @@ $(document).ready(function(){
 
 
             // Insert the new link before the first link
-            if (div.find('a:first')) {
-                div.find('a:first').before(notificationHTML);
+            if (div.find('a:first').length) {
+                    div.find('a:first').before(notificationHTML);
             } else {
-                $('#not').append(notificationHTML);
+                div.append(notificationHTML);
             }
 
         // Optionally, log the entire container to see the result

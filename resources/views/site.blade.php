@@ -20,7 +20,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-32x32.png">
     <link rel="shortcut icon" type="image/x-icon" href="/favicon-32x32.png">
-    <link rel="manifest" href="/assets/img/favicons/manifest.json">
+    <link rel="manifest" href="public/assets/img/favicons/manifest.json">
     <meta name="msapplication-TileImage" content="/favicon-32x32.png">
     <meta name="theme-color" content="#ffffff">
 
@@ -66,7 +66,7 @@
         <nav class="navbar navbar-standard navbar-expand-lg fixed-top {{-- navbar-dark --}} navbar-theme {{-- shadow-bottom --}} text-dark {{-- bg-dark --}}">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('index') }}">
-                      <img style="width: 130px;height: 120px;"  src="{{ asset('public/assets/images/logo.png') }}" alt="Pr ott">
+                      <img style="width: 130px;height: 120px;"  src="{{ asset('assets/images/logo.png') }}" alt="Pr ott">
                 </a>
                 <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
                     data-target="#navbarStandard" aria-controls="navbarStandard" aria-expanded="false"

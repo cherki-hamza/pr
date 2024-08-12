@@ -396,8 +396,8 @@ a:visited{
 
                     @else
                         {{--  <div id="not" style="margin-top: 5px;margin-bottom: 5px;display: none" class="row activate_div notification_container"></div> --}}
-                      <div class="text-center my-2">
-                        <span id="alert_not" class="ml-3 text-danger text-center my-5" style="font-size: 10px">There is No Notification</span>
+                      <div id="alert_not" class="text-center my-2">
+                        <span  class="ml-3 text-danger text-center my-5" style="font-size: 10px">There is No Notification</span>
                      </div>
                      @endif
                     </div>

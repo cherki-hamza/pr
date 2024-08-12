@@ -31,7 +31,7 @@
             <div class="container-fluid">
                 <div id="content">
                     <div id="loading-overlay" style="display: none;">
-                        <img src="/img/loading.gif" alt="Loading...">
+                        <img src="public/img/loading.gif" alt="Loading...">
                     </div>
 
                     <div class="main-body pt-2" id="allPage">
