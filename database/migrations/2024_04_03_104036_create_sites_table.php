@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('site_name')->nullable();
             $table->string('site_url')->nullable();
             $table->string('site_category')->nullable();
-            $table->integer('site_monthly_traffic')->nullable();
+            $table->string('site_monthly_traffic')->nullable();
             $table->integer('site_domain_rating')->nullable();
             $table->integer('site_domain_authority')->nullable();
             $table->string('site_images')->nullable();

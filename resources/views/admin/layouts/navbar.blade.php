@@ -13,6 +13,7 @@
     <ul class="navbar-nav ml-auto">
 
         <li class="nav-item">
+            <span class="text-white mr-5">{{  DB::getDefaultConnection(); }}</span>
             <a href="{{ route('balance') }}">
 
                  {{-- check the user if login  --}}
@@ -46,6 +47,7 @@
                         <span style="font-size: 20px;">Balance Completed Tasks: ${{ \App\Models\Task::where('status',5)->sum('task_price') }}
                         </span>
                     </span> --}}
+
 
                     <span class="btn btn-warning">
                         <span style="font-size: 20px;">PR Content Balance: ${{ \App\Models\Payment::sum('amount') }}

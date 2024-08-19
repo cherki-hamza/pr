@@ -47,13 +47,17 @@ Route::get('/', function () {
 
     $sites = Site::all();
     return view('site' , compact('sites'));
-    
+
 })->name('index');
+
+
+
 
 
 Route::get('/dev', function () {
 
-    return view('dev');
+
+  return view('dev');
 
 })->name('dev');
 

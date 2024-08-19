@@ -9,7 +9,10 @@
 <body>
    <div id="app">
 
+    <center>
+       {{ $currentConnection }}
+    </center>
    </div>
-   <script src="{{ mix('public/js/app.js') }}"></script>
+   <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

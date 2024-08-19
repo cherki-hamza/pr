@@ -20,14 +20,18 @@ class PaypalController extends Controller
 
     public function __construct() {
         $this->gateway = Omnipay::create('PayPal_Rest');
+        /* $this->gateway->setClientId('AYOAujB6O-Td2iGjliGFxuxj951R7EBfKRRk52NJPNULERc5iTvOSPlreYtpYYQxxPrJjFFgTEivk2Gu');
+        $this->gateway->setSecret('EAgHyN4AUdAUWyLc9nk2DZEqKyDx-XhpG4YsROJ7ONDc_qClHmTQ7FhFp2lujx6wOPf5a9eRRfRLFy90'); */
         $this->gateway->setClientId(env('PAYPAL_SANDBOX_CLIENT_ID'));
         $this->gateway->setSecret(env('PAYPAL_SANDBOX_CLIENT_SECRET'));
-        $this->gateway->setTestMode(true);
+        $this->gateway->setTestMode(env('PAYPAL_TEST_MODE'));
     }
 
 
     public function pay(Request $request)
     {
+
+        //return $this->gateway;
 
         try {
 
@@ -42,11 +46,11 @@ class PaypalController extends Controller
                 $response->redirect();
             }
             else{
-                return $response->getMessage();
+                return 'hpac error: '.$response->getMessage();
             }
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            return 'hpac error: '.$th->getMessage();
         }
     }
 

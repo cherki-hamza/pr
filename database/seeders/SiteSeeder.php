@@ -103,7 +103,7 @@ class SiteSeeder extends Seeder
                 'site_name' => $site['site_name'],
                 'site_url' => preg_replace("(^https?://)", "", $site['site_url']),
                 'site_category' => $site['site_category'],
-                'site_price' => $site['site_price'],
+                'site_price' => ($site['site_price'] === '#VALUE!')? 1500:  $site['site_price'],
                 'site_region_location' => $site['site_region_location'],
                 'site_monthly_traffic' => $site_region_location,
                 'site_language' => $site['language'],
