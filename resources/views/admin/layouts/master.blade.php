@@ -6,24 +6,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="_token" content="{{ csrf_token() }}" >
         <title>{{ ($title) ?? ''." - "}}PR Over The Top</title>
-        <link rel="icon" href="{{ asset('public/assets/images/favicon.png') }}" type="image/png" />
+        <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/png" />
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="{{ asset('public/template/admin/plugins/fontawesome-free/css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('template/admin/plugins/fontawesome-free/css/all.min.css') }}">
         <!-- Ionicons -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         <!-- Theme style -->
-        <link rel="stylesheet" href="{{ asset('public/template/admin/dist/css/adminlte.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('template/admin/dist/css/adminlte.min.css') }}">
         <!-- icheck bootstrap -->
-        <link rel="stylesheet" href="{{ asset('public/template/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('template/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
         <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="{{ asset('public/template/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('template/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
         <!-- DataTables -->
-        <link rel="stylesheet" href="{{ asset('public/template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         {{-- select2 --}}
-        <link rel="stylesheet" href="{{ asset('public/template/admin/plugins/select2/css/select2.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('public/template/admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('template/admin/plugins/select2/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('template/admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 
         <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 
@@ -36,7 +36,7 @@
 
         {{-- <script type="module" src="{{ URL::asset('assets/vendor/ckeditor.js') }}"></script> --}}
 
-        <script src="{{ asset('public/js/app.js') }}" defer></script>
+        <script src="{{ asset('js/app.js') }}" defer></script>
 
 
         @yield('style')
@@ -173,28 +173,28 @@
         </div>
         <!-- ./wrapper -->
         <!-- jQuery -->
-        <script src="{{ asset('public/template/admin/plugins/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('template/admin/plugins/jquery/jquery.min.js') }}"></script>
         @yield('js')
         @include('admin.layouts.script')
         <!-- jQuery UI 1.11.4 -->
-        <script src="{{ asset('public/template/admin/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('template/admin/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
         <!-- DataTables  & Plugins -->
-        <script src="{{ asset('public/template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ asset('public/template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+        <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
         <script>
             $.widget.bridge('uibutton', $.ui.button)
         </script>
         <!-- Bootstrap 4 -->
-        <script src="{{ asset('public/template/admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('template/admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 
         <!-- overlayScrollbars -->
-        <script src="{{ asset('public/template/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+        <script src="{{ asset('template/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
         {{-- select2 --}}
 
         <!-- AdminLTE App -->
-        <script src="{{ asset('public/template/admin/dist/js/adminlte.js') }}"></script>
+        <script src="{{ asset('template/admin/dist/js/adminlte.js') }}"></script>
         {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script> --}}
         <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
         @include('sweetalert::alert')
