@@ -59,7 +59,7 @@ class SettingController extends Controller
 
     // Check if there are any validation errors
     if (!empty($errors)) {
-        return back()->withErrors($errors)->withInput();
+        return back()->with('danger', 'Package name is required AND Package Price is required .');
     }
 
      for ($i = 0; $i < count($names); $i++) {
