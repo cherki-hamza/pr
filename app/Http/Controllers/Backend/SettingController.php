@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Billing;
 use App\Models\Package;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SettingController extends Controller
 {
@@ -31,10 +32,35 @@ class SettingController extends Controller
     // method for store new package
     public function store_packages(Request $request){
 
-     //return $request->all();
+
 
      $names = $request->input('packageName');
      $prices = $request->input('packagePrice');
+
+
+     // Initialize an empty array to hold any validation errors
+    $errors = [];
+
+    for ($i = 0; $i < count($names); $i++) {
+        // Validate each package name and price
+        $validator = Validator::make([
+            'packageName' => $names[$i],
+            'packagePrice' => $prices[$i],
+        ], [
+            'packageName' => 'required|string|max:255',
+            'packagePrice' => 'required|numeric|min:0',
+        ]);
+
+        // If validation fails, add errors to the $errors array
+        if ($validator->fails()) {
+            $errors[$i] = $validator->errors()->all();
+        }
+    }
+
+    // Check if there are any validation errors
+    if (!empty($errors)) {
+        return back()->withErrors($errors)->withInput();
+    }
 
      for ($i = 0; $i < count($names); $i++) {
          Package::create([
