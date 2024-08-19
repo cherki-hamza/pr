@@ -13,7 +13,7 @@
     <ul class="navbar-nav ml-auto">
 
         <li class="nav-item">
-            <span class="text-white mr-5">{{  DB::getDefaultConnection(); }}</span>
+           {{--  <span class="text-white mr-5">{{  DB::getDefaultConnection(); }}</span> --}}
             <a href="{{ route('balance') }}">
 
                  {{-- check the user if login  --}}
